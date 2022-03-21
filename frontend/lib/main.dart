@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/drag_container.dart';
+import 'package:frontend/widgets/search_results.dart';
 import 'package:frontend/widgets/topbar.dart';
 import 'package:frontend/widgets/text_editor.dart';
 
@@ -34,31 +35,28 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color(0xff1D1D20),
         body: SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Container(
-        color: const Color(0xff181818),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const TopBar(),
-            const SizedBox(height: 50),
-            Flexible(
-              child: Stack(
-                clipBehavior: Clip.none,
-                fit: StackFit.expand,
-                children: const [
-                  DragContainer(
-                    child: TextEditor(),
-                    initPosition: Offset(0, 0),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    ));
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const TopBar(),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: const [
+                    TextEditor(),
+                    SearchResults(),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }
