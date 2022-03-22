@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/drag_container.dart';
+import 'package:frontend/widgets/pdf_viewer.dart';
 import 'package:frontend/widgets/search_results.dart';
 import 'package:frontend/widgets/topbar.dart';
 import 'package:frontend/widgets/text_editor.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Koios',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: const MyHomePage(),
     );
@@ -49,10 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: const [
-                    TextEditor(),
-                    SearchResults(),
-                  ],
+                  children: const [TextEditor(), SearchResults(), PdfViewer()],
                 ),
               )
             ],

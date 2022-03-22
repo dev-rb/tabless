@@ -18,11 +18,11 @@ class _TextEditorState extends State<TextEditor> {
   Widget getToolBar() {
     return quill.QuillToolbar(children: [
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          EditorToolbarOptions(
-            controller: _controller,
+          Flexible(
+            child: EditorToolbarOptions(
+              controller: _controller,
+            ),
           ),
           IconButton(
               splashRadius: 20,
@@ -117,114 +117,118 @@ class _EditorToolbarOptionsState extends State<EditorToolbarOptions> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Container(
-        decoration: BoxDecoration(color: Colors.transparent),
-        child: DropdownButton<String>(
-            onChanged: (obj) {
-              setState(() {
-                textStyleDropdown = obj!;
-              });
-            },
-            alignment: Alignment.bottomCenter,
-            value: textStyleDropdown,
-            icon: const Icon(Icons.arrow_drop_down),
-            isDense: true,
-            dropdownColor: Color.fromARGB(255, 42, 43, 46),
-            style: const TextStyle(color: Color(0xff72747B)),
-            items: const [
-              DropdownMenuItem<String>(
-                child: Text("Paragraph"),
-                value: "Paragraph",
-              ),
-              DropdownMenuItem<String>(
-                child: Text("Heading 1"),
-                value: "Heading 1",
-              ),
-              DropdownMenuItem<String>(
-                child: Text("Heading 2"),
-                value: "Heading 2",
-              )
-            ]),
-      ),
-      const SizedBox(width: 15),
-      const CustomVerticalDivider(
-          color: Color(0xff44444D), height: 20, thickness: 2),
-      IconButton(
-          splashRadius: 20,
-          onPressed: boldText,
-          icon: const Icon(
-            Icons.format_bold,
-            color: Color(0xff72747B),
-          )),
-      IconButton(
-          splashRadius: 20,
-          onPressed: italizeText,
-          icon: const Icon(
-            Icons.format_italic,
-            color: Color(0xff72747B),
-          )),
-      IconButton(
-          splashRadius: 20,
-          onPressed: underlineText,
-          icon: const Icon(
-            Icons.format_underline,
-            color: Color(0xff72747B),
-          )),
-      const CustomVerticalDivider(
-          color: Color(0xff44444D), height: 20, thickness: 2),
-      IconButton(
-          splashRadius: 20,
-          onPressed: () {},
-          icon: const Icon(
-            Icons.format_align_left,
-            color: Color(0xff72747B),
-          )),
-      IconButton(
-          splashRadius: 20,
-          onPressed: () {},
-          icon: const Icon(
-            Icons.format_align_center,
-            color: Color(0xff72747B),
-          )),
-      IconButton(
-          splashRadius: 20,
-          onPressed: () {},
-          icon: const Icon(
-            Icons.format_align_right,
-            color: Color(0xff72747B),
-          )),
-      IconButton(
-          splashRadius: 20,
-          onPressed: () {},
-          icon: const Icon(
-            Icons.format_align_justify,
-            color: Color(0xff72747B),
-          )),
-      const CustomVerticalDivider(
-          color: Color(0xff44444D), height: 20, thickness: 2),
-      IconButton(
-          splashRadius: 20,
-          onPressed: () {},
-          icon: const Icon(
-            Icons.format_size,
-            color: Color(0xff72747B),
-          )),
-      IconButton(
-          splashRadius: 20,
-          onPressed: () {},
-          icon: const Icon(
-            Icons.format_clear,
-            color: Color(0xff72747B),
-          )),
-      IconButton(
-          splashRadius: 20,
-          onPressed: () {},
-          icon: const Icon(
-            Icons.text_format,
-            color: Color(0xff72747B),
-          )),
-    ]);
+    return Wrap(
+        direction: Axis.horizontal,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(color: Colors.transparent),
+            child: DropdownButton<String>(
+                onChanged: (obj) {
+                  setState(() {
+                    textStyleDropdown = obj!;
+                  });
+                },
+                alignment: Alignment.bottomCenter,
+                value: textStyleDropdown,
+                icon: const Icon(Icons.arrow_drop_down),
+                isDense: true,
+                dropdownColor: Color.fromARGB(255, 42, 43, 46),
+                style: const TextStyle(color: Color(0xff72747B)),
+                items: const [
+                  DropdownMenuItem<String>(
+                    child: Text("Paragraph"),
+                    value: "Paragraph",
+                  ),
+                  DropdownMenuItem<String>(
+                    child: Text("Heading 1"),
+                    value: "Heading 1",
+                  ),
+                  DropdownMenuItem<String>(
+                    child: Text("Heading 2"),
+                    value: "Heading 2",
+                  )
+                ]),
+          ),
+          const SizedBox(width: 15),
+          const CustomVerticalDivider(
+              color: Color(0xff44444D), height: 20, thickness: 2),
+          IconButton(
+              splashRadius: 20,
+              onPressed: boldText,
+              icon: const Icon(
+                Icons.format_bold,
+                color: Color(0xff72747B),
+              )),
+          IconButton(
+              splashRadius: 20,
+              onPressed: italizeText,
+              icon: const Icon(
+                Icons.format_italic,
+                color: Color(0xff72747B),
+              )),
+          IconButton(
+              splashRadius: 20,
+              onPressed: underlineText,
+              icon: const Icon(
+                Icons.format_underline,
+                color: Color(0xff72747B),
+              )),
+          const CustomVerticalDivider(
+              color: Color(0xff44444D), height: 20, thickness: 2),
+          IconButton(
+              splashRadius: 20,
+              onPressed: () {},
+              icon: const Icon(
+                Icons.format_align_left,
+                color: Color(0xff72747B),
+              )),
+          IconButton(
+              splashRadius: 20,
+              onPressed: () {},
+              icon: const Icon(
+                Icons.format_align_center,
+                color: Color(0xff72747B),
+              )),
+          IconButton(
+              splashRadius: 20,
+              onPressed: () {},
+              icon: const Icon(
+                Icons.format_align_right,
+                color: Color(0xff72747B),
+              )),
+          IconButton(
+              splashRadius: 20,
+              onPressed: () {},
+              icon: const Icon(
+                Icons.format_align_justify,
+                color: Color(0xff72747B),
+              )),
+          const CustomVerticalDivider(
+              color: Color(0xff44444D), height: 20, thickness: 2),
+          IconButton(
+              splashRadius: 20,
+              onPressed: () {},
+              icon: const Icon(
+                Icons.format_size,
+                color: Color(0xff72747B),
+              )),
+          IconButton(
+              splashRadius: 20,
+              onPressed: () {},
+              icon: const Icon(
+                Icons.format_clear,
+                color: Color(0xff72747B),
+              )),
+          IconButton(
+              splashRadius: 20,
+              onPressed: () {},
+              icon: const Icon(
+                Icons.text_format,
+                color: Color(0xff72747B),
+              )),
+        ]);
   }
 }
 
@@ -243,6 +247,7 @@ class CustomVerticalDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+        width: thickness,
         height: height,
         child: Container(
             decoration: BoxDecoration(
