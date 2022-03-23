@@ -81,40 +81,6 @@ class EditorToolbarOptions extends StatefulWidget {
 class _EditorToolbarOptionsState extends State<EditorToolbarOptions> {
   String textStyleDropdown = 'Paragraph';
 
-  void changeTextColor() {}
-
-  void boldText() {
-    widget.controller.formatSelection(quill.Attribute.bold);
-  }
-
-  void italizeText() {
-    widget.controller.formatSelection(quill.Attribute.italic);
-  }
-
-  void underlineText() {
-    widget.controller.formatSelection(quill.Attribute.underline);
-  }
-
-  void leftAlignText() {
-    widget.controller.formatSelection(quill.Attribute.leftAlignment);
-  }
-
-  void centerALignText() {
-    widget.controller.formatSelection(quill.Attribute.centerAlignment);
-  }
-
-  void rightAlignText() {
-    widget.controller.formatSelection(quill.Attribute.rightAlignment);
-  }
-
-  void justifyAlignText() {
-    widget.controller.formatSelection(quill.Attribute.justifyAlignment);
-  }
-
-  void changeTextSize() {
-    widget.controller.formatSelection(quill.Attribute.size);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -154,80 +120,82 @@ class _EditorToolbarOptionsState extends State<EditorToolbarOptions> {
           const SizedBox(width: 15),
           const CustomVerticalDivider(
               color: Color(0xff44444D), height: 20, thickness: 2),
-          IconButton(
-              splashRadius: 20,
-              onPressed: boldText,
-              icon: const Icon(
-                Icons.format_bold,
-                color: Color(0xff72747B),
-              )),
-          IconButton(
-              splashRadius: 20,
-              onPressed: italizeText,
-              icon: const Icon(
-                Icons.format_italic,
-                color: Color(0xff72747B),
-              )),
-          IconButton(
-              splashRadius: 20,
-              onPressed: underlineText,
-              icon: const Icon(
-                Icons.format_underline,
-                color: Color(0xff72747B),
-              )),
+          quill.ToggleStyleButton(
+              attribute: quill.Attribute.bold,
+              icon: Icons.format_bold,
+              controller: widget.controller,
+              iconSize: 25,
+              iconTheme: const quill.QuillIconTheme(
+                  iconSelectedFillColor: Colors.transparent,
+                  iconUnselectedFillColor: Colors.transparent,
+                  iconSelectedColor: Color(0xff234AB2),
+                  iconUnselectedColor: Color(0xff72747B))),
+          quill.ToggleStyleButton(
+              attribute: quill.Attribute.italic,
+              icon: Icons.format_italic,
+              controller: widget.controller,
+              iconSize: 25,
+              iconTheme: const quill.QuillIconTheme(
+                  iconSelectedFillColor: Colors.transparent,
+                  iconUnselectedFillColor: Colors.transparent,
+                  iconSelectedColor: Color(0xff234AB2),
+                  iconUnselectedColor: Color(0xff72747B))),
+          quill.ToggleStyleButton(
+              attribute: quill.Attribute.underline,
+              icon: Icons.format_underline,
+              controller: widget.controller,
+              iconSize: 25,
+              iconTheme: const quill.QuillIconTheme(
+                  iconSelectedFillColor: Colors.transparent,
+                  iconUnselectedFillColor: Colors.transparent,
+                  iconSelectedColor: Color(0xff234AB2),
+                  iconUnselectedColor: Color(0xff72747B))),
           const CustomVerticalDivider(
               color: Color(0xff44444D), height: 20, thickness: 2),
-          IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: const Icon(
-                Icons.format_align_left,
-                color: Color(0xff72747B),
-              )),
-          IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: const Icon(
-                Icons.format_align_center,
-                color: Color(0xff72747B),
-              )),
-          IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: const Icon(
-                Icons.format_align_right,
-                color: Color(0xff72747B),
-              )),
-          IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: const Icon(
-                Icons.format_align_justify,
-                color: Color(0xff72747B),
-              )),
+          quill.SelectAlignmentButton(
+              showCenterAlignment: true,
+              showJustifyAlignment: true,
+              showLeftAlignment: true,
+              showRightAlignment: true,
+              controller: widget.controller,
+              iconSize: 25,
+              iconTheme: const quill.QuillIconTheme(
+                  iconSelectedFillColor: Colors.transparent,
+                  iconUnselectedFillColor: Colors.transparent,
+                  iconSelectedColor: Color(0xff234AB2),
+                  iconUnselectedColor: Color(0xff72747B))),
           const CustomVerticalDivider(
               color: Color(0xff44444D), height: 20, thickness: 2),
-          IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: const Icon(
-                Icons.format_size,
-                color: Color(0xff72747B),
-              )),
-          IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: const Icon(
-                Icons.format_clear,
-                color: Color(0xff72747B),
-              )),
-          IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: const Icon(
-                Icons.text_format,
-                color: Color(0xff72747B),
-              )),
+          quill.ToggleStyleButton(
+              attribute: quill.Attribute.size,
+              icon: Icons.format_size,
+              controller: widget.controller,
+              iconSize: 25,
+              iconTheme: const quill.QuillIconTheme(
+                  iconSelectedFillColor: Colors.transparent,
+                  iconUnselectedFillColor: Colors.transparent,
+                  iconSelectedColor: Color(0xff234AB2),
+                  iconUnselectedColor: Color(0xff72747B))),
+          quill.ClearFormatButton(
+              controller: widget.controller,
+              icon: Icons.format_clear,
+              iconSize: 25,
+              iconTheme: const quill.QuillIconTheme(
+                  iconSelectedFillColor: Colors.transparent,
+                  iconUnselectedFillColor: Colors.transparent,
+                  iconSelectedColor: Color(0xff234AB2),
+                  iconUnselectedColor: Color(0xff72747B))),
+          quill.ColorButton(
+            controller: widget.controller,
+            iconTheme: const quill.QuillIconTheme(
+                iconSelectedFillColor: Colors.transparent,
+                iconUnselectedFillColor: Colors.transparent,
+                iconSelectedColor: Color(0xff234AB2),
+                iconUnselectedColor: Color(0xff72747B)),
+            iconSize: 25,
+            icon: Icons.text_format,
+            background: false,
+          ),
         ]);
   }
 }
