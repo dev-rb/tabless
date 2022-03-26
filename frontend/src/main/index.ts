@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron'
 import type { BrowserWindowConstructorOptions } from 'electron'
 import contextMenu from 'electron-context-menu'
 import windowStateKeeper from 'electron-window-state'
+import path from 'path'
 
 const isDevelopment = !app.isPackaged
 
@@ -11,17 +12,18 @@ function createWindow() {
     minHeight: 600,
     backgroundColor: '#1D1D20',
     titleBarStyle: 'hidden',
-    frame: false,
+    // frame: false,
     autoHideMenuBar: true,
     trafficLightPosition: {
       x: 20,
       y: 32
     },
     webPreferences: {
-      contextIsolation: true,
+      contextIsolation: false,
       devTools: isDevelopment,
       spellcheck: false,
-      nodeIntegration: true
+      nodeIntegration: true,
+      preload: "preload.js"
     },
     show: false
   }

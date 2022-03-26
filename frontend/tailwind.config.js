@@ -15,6 +15,7 @@ module.exports = {
         },
         'control-color': '#72747B',
         'control-hover-color': '#2B2B2E',
+        paragraph: '#696C74',
         primary: {
           100: '#91C4D7',
           200: '#65ACC8',

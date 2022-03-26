@@ -21,11 +21,13 @@
     "@mantine/core": "^4.0.8",
     "@mantine/hooks": "^4.0.8",
     "@mantine/rte": "^4.0.8",
+    "custom-electron-titlebar": "^4.1.0",
     "electron-context-menu": "^2.5.0",
     "electron-window-state": "^5.0.3",
     "framer-motion": "3.7.0",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "react-icons": "^4.3.1"
   },
   "devDependencies": {
     "@sync-labs/eslint-config": "^2.2.6",

@@ -9,7 +9,12 @@ const TextEditor = () => {
 
     return(
         <RichTextEditor value={value} onChange={(val) => setValue(val)} 
-        classNames={{root: 'bg-transparent border-none', toolbar: 'bg-transparent border-none', toolbarControl: 'bg-transparent border-none text-control-color hover:bg-control-hover-color'}}>
+        classNames={
+            {root: 'bg-transparent border-none text-white p-0', 
+            toolbar: 'bg-transparent border-none', 
+            toolbarControl: 'large-icon-controls bg-transparent border-none text-control-color hover:bg-control-hover-color', 
+            toolbarGroup: 'flex flex-row gap-2'}
+            }>
 
         </RichTextEditor>
     );

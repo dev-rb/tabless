@@ -21,3 +21,8 @@ code {
 .title-bar-drag{
   -webkit-app-region: drag;
 }
+
+.large-icon-controls > svg{
+  width: 25px !important;
+  height: 25px !important;
+}
