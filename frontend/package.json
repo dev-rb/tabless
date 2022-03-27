@@ -23,6 +23,7 @@
     "@mantine/hooks": "^4.0.8",
     "@mantine/rte": "^4.0.8",
     "@react-pdf-viewer/core": "^3.1.2",
+    "@react-pdf-viewer/toolbar": "^3.1.2",
     "custom-electron-titlebar": "^4.1.0",
     "electron-context-menu": "^2.5.0",
     "electron-window-state": "^5.0.3",
