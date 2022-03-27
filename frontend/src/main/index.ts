@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, protocol } from 'electron'
 import type { BrowserWindowConstructorOptions } from 'electron'
 import contextMenu from 'electron-context-menu'
 import windowStateKeeper from 'electron-window-state'
@@ -12,7 +12,10 @@ function createWindow() {
     minHeight: 600,
     backgroundColor: '#1D1D20',
     titleBarStyle: 'hidden',
-    // frame: false,
+    frame: false,
+    titleBarOverlay: {
+      color: '#2B2B2E',
+    },
     autoHideMenuBar: true,
     trafficLightPosition: {
       x: 20,
@@ -23,7 +26,7 @@ function createWindow() {
       devTools: isDevelopment,
       spellcheck: false,
       nodeIntegration: true,
-      preload: "preload.js"
+      preload: "preload.js",
     },
     show: false
   }
@@ -78,3 +81,16 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+app.on('ready', async () => {
+  protocol.registerFileProtocol('app', (request, callback) => {
+    const url = request.url.replace('app://getMediaFile/', '')
+    try {
+      return callback(url)
+    }
+    catch (error) {
+      console.error(error)
+      return callback('404')
+    }
+  })
+});
