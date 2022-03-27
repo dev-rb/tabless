@@ -26,3 +26,35 @@ code {
   width: 25px !important;
   height: 25px !important;
 }
+
+.ql-toolbar, .ql-container, .ql-snow{
+  border: none !important;
+  padding-left: 0px !important;
+}
+
+.ql-editor::before{
+  color: #61636B !important;
+  left: 0px !important;
+}
+
+.ql-formats line, .ql-formats path, .ql-formats polyline{
+  /* fill: #72747B !important; */
+  stroke: #72747B !important;
+}
+
+.ql-snow .ql-picker{
+  color: #72747B !important;
+}
+
+.ql-snow .ql-picker.ql-expanded .ql-picker-label{
+  border: none !important;
+  color: #72747B !important;
+}
+
+.ql-snow .ql-picker-label{
+  padding-left: 0px !important;
+}
+
+.ql-editor{
+  padding-left: 0px !important;
+}

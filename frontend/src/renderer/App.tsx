@@ -10,8 +10,12 @@ function App() {
       <TitleBar />
       <div className="h-full px-6 overflow-hidden">
         <TopBar/>
-        <div className="flex flex-row justify-between h-full">
+        <div className="flex flex-row justify-between h-full pl-20">
           <TextDocument title={'Class Project 499 Capstone'} author={'Rahul Batra'} tags={['Research']} text={''}  />
+          {/* <div className="w-full h-full">
+            <img src={'./logo.png'} />
+          </div> */}
+          {/* <PdfViewer/> */}
         </div>
       </div>
     </div>
