@@ -9,15 +9,20 @@ import { DatabaseModule } from './database/database.module';
 import { DatabaseService } from './database/database.service';
 import { FirestoreModule } from './firestore/firestore.module';
 import { OpenaiModule } from './openai/openai.module';
+import { ApiController } from './api/api.controller';
+import { ApiModule } from './api/api.module';
 
 @Module({
-  imports: [DatabaseModule, FirestoreModule.forRoot({
-    imports: [],
-    useFactoy: () => ({
-      credentials: { client_email: serviceAccountKey.client_email, private_key: serviceAccountKey.private_key }
+  imports: [DatabaseModule,
+    FirestoreModule.forRoot({
+      imports: [],
+      useFactoy: () => ({
+        credentials: { client_email: serviceAccountKey.client_email, private_key: serviceAccountKey.private_key }
+      }),
+      inject: []
     }),
-    inject: []
-  }), OpenaiModule.forRoot({ apiKey: process.env.OPENAI_API_KEY, isJsonMime: (mime) => false })],
+    OpenaiModule.forRoot({ apiKey: process.env.OPENAI_API_KEY, isJsonMime: (mime) => false }),
+    ApiModule],
   controllers: [AppController],
   providers: [AppService],
 })
