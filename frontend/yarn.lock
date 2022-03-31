@@ -2954,10 +2954,10 @@
   "resolved" "https://registry.npmjs.org/ms/-/ms-2.1.2.tgz"
   "version" "2.1.2"
 
-"nanoid@^3.3.1":
-  "integrity" "sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw=="
-  "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-3.3.1.tgz"
-  "version" "3.3.1"
+"nanoid@^3.3.1", "nanoid@^3.3.2":
+  "integrity" "sha512-CuHBogktKwpm5g2sRgv83jEy2ijFzBwMoYA60orPDR7ynsLijJDqgsi4RDGj3OJpy3Ieb+LYwiRmIOGyytgITA=="
+  "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-3.3.2.tgz"
+  "version" "3.3.2"
 
 "natural-compare@^1.4.0":
   "integrity" "sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc="
@@ -3461,7 +3461,7 @@
     "react-fast-compare" "^3.0.1"
     "warning" "^4.0.2"
 
-"react-quill@2.0.0-beta.4":
+"react-quill@^2.0.0-beta.4", "react-quill@2.0.0-beta.4":
   "integrity" "sha512-KyAHvAlPjP4xLElKZJefMth91Z6FbbXRvq9OSu6xN3KBaoasLP9p+3dcxg4Ywr4tBlpMGXcPszYSAgd5CpJ45Q=="
   "resolved" "https://registry.npmjs.org/react-quill/-/react-quill-2.0.0-beta.4.tgz"
   "version" "2.0.0-beta.4"
