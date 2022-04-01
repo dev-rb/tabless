@@ -100,15 +100,21 @@ const DocumentTag = ({tagValues, removeTag, changeTagName}: DocumentTagProps) =>
     }
 
     const onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(inputRef.current){
-            inputRef.current.size = e.target.value.length;
-        }
         setName(e.target.value);
+        if(inputRef.current){
+            inputRef.current.size = e.target.value.length === 0 ? 1 : e.target.value.length + 1;
+        }
     }
 
     React.useEffect(() => {
         changeTagName(id, name);
     }, [name])
+
+    React.useEffect(() => {
+        if(inputRef.current){
+            inputRef.current.size = 6;
+        }
+    }, [])
 
     return(
         <div className="flex w-min h-6 px-2 bg-documentTagBg items-center justify-center text-documentTagText text-sm gap-3">
