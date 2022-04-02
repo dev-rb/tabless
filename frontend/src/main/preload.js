@@ -5,6 +5,13 @@ contextBridge.exposeInMainWorld('electron', {
     myPing() {
       ipcRenderer.send('ipc-example', 'ping');
     },
+    output: {
+      outTest() {
+        console.log("This works!")
+      }
+    }
+
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // on(channel, func: ) {
     //   const validChannels = ['ipc-example'];

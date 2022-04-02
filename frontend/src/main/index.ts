@@ -22,11 +22,11 @@ function createWindow() {
       y: 32
     },
     webPreferences: {
-      contextIsolation: false,
+      contextIsolation: true,
       devTools: isDevelopment,
       spellcheck: false,
-      nodeIntegration: true,
-      preload: "preload.js",
+      nodeIntegration: false,
+      preload: path.resolve(path.join(__dirname, "preload.js")),
     },
     show: false
   }
