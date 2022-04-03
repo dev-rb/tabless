@@ -121,7 +121,7 @@ const DocumentTag = ({ tagValues, removeTag, changeTagName }: DocumentTagProps) 
             <TextInput ref={inputRef} placeholder='Untitled' value={name}
                 type="text"
                 styles={{ input: { color: 'white', background: 'none', border: 'none', padding: 0, textOverflow: 'ellipsis', wordWrap: 'break-word', width: 'fit-content' } }}
-                autoFocus onChange={onTextChange} onBlur={handleBlur} />
+                autoFocus={tagName.length === 0} onChange={onTextChange} onBlur={handleBlur} />
             {/* <p> {tagName} </p> */}
             <button className="text-[#6F6F71] hover:text-red-600" onClick={() => removeTag(id)}> <MdClose size={16} /> </button>
 
