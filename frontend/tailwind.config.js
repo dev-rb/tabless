@@ -1,5 +1,9 @@
 module.exports = {
-  purge: false,
+  mode: 'jit',
+  purge: [
+    './public/**/*.html',
+    './src/**/*.{js,jsx,ts,tsx}',
+  ],
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
@@ -15,6 +19,11 @@ module.exports = {
         },
         'control-color': '#72747B',
         'control-hover-color': '#2B2B2E',
+        toolbarBorderColor: '#CFCFCF',
+        paragraph: '#696C74',
+        documentTagBg: '#424247',
+        documentTagText: '#9E9E9E',
+        documentTagAddBg: '#2A2A2E',
         primary: {
           100: '#91C4D7',
           200: '#65ACC8',
