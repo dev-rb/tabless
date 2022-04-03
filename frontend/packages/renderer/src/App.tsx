@@ -8,7 +8,7 @@ import TopBar from './components/Topbar'
 function App() {
   return (
     <div className="h-screen w-screen flex flex-col pt-12">
-      <TitleBar />
+      {/* <TitleBar /> */}
       <div className="h-full px-6 overflow-hidden">
         <TopBar />
         <div className="flex flex-row justify-between h-full pl-20">

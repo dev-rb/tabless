@@ -1,4 +1,4 @@
-import { BrowserWindow } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, protocol } from 'electron';
 import { join } from 'path';
 import { URL } from 'url';
 
@@ -70,3 +70,21 @@ export async function restoreOrCreateWindow() {
 
   window.focus();
 }
+
+
+app.on('ready', async () => {
+  protocol.registerFileProtocol('app', (request, callback) => {
+    const url = request.url.replace('app://getMediaFile/', '')
+    try {
+      return callback(url)
+    }
+    catch (error) {
+      console.error(error)
+      return callback('404')
+    }
+  })
+
+  ipcMain.on('open-file-dialog', () => {
+    dialog.showOpenDialogSync({ properties: ['openFile'] })
+  })
+});

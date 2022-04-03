@@ -3,6 +3,7 @@ import { SpecialZoomLevel, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { toolbarPlugin, ToolbarSlot } from '@react-pdf-viewer/toolbar';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
+import { dialog } from 'electron';
 // const electron = window.require('electron');
 // const {shell} = window.require('electron');
 // const remote = electron.remote
@@ -73,22 +74,22 @@ const CustomPdfToolbar = (props: ToolbarSlot, updateFilePath: (newFilePath: stri
     );
 }
 
-interface CustomOpenProps{
+interface CustomOpenProps {
     updateFilePath: (newFilePath: string) => void
 }
 declare global {
     interface Window {
-        electron : any
+        nodeCrypto: any
     }
 }
-const OpenFile = ({updateFilePath} : CustomOpenProps) => {
+const OpenFile = ({ updateFilePath }: CustomOpenProps) => {
 
     const openFileDialog = () => {
-        // dialog.showOpenDialogSync({properties: ['openFile']})
-        window.electron.output.outTest();
+        // dialog.showOpenDialogSync({ properties: ['openFile'] })
+        console.log(window.openFile.getFileOnSystem());
     }
 
-    return(
+    return (
         <button onClick={openFileDialog}>
             Open File
         </button>
