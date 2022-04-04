@@ -36,18 +36,18 @@ const modules = {
 };
 
 const icons = Quill.import('ui/icons');
-icons['bold'] = ReactDOMServer.renderToStaticMarkup(<MdFormatBold size={20}/>);
-icons['italic'] = ReactDOMServer.renderToStaticMarkup(<MdFormatItalic size={20}/>);
-icons['underline'] = ReactDOMServer.renderToStaticMarkup(<MdFormatUnderlined size={20}/>);
-icons['strike'] = ReactDOMServer.renderToStaticMarkup(<MdFormatStrikethrough size={20}/>);
-icons['list'].bullet = ReactDOMServer.renderToStaticMarkup(<MdFormatListBulleted size={20}/>);
-icons['list'].ordered = ReactDOMServer.renderToStaticMarkup(<MdFormatListNumbered size={20}/>);
-icons['align'][""] = ReactDOMServer.renderToStaticMarkup(<MdFormatAlignLeft size={20}/>);
-icons['align'].center = ReactDOMServer.renderToStaticMarkup(<MdFormatAlignCenter size={20}/>);
-icons['align'].right = ReactDOMServer.renderToStaticMarkup(<MdFormatAlignRight size={20}/>);
-icons['align'].justify = ReactDOMServer.renderToStaticMarkup(<MdFormatAlignJustify size={20}/>);
-icons['color'] = ReactDOMServer.renderToStaticMarkup(<MdFormatColorText size={20}/>);
-icons['background'] = ReactDOMServer.renderToStaticMarkup(<MdFormatColorFill size={20}/>);
+icons['bold'] = ReactDOMServer.renderToStaticMarkup(<MdFormatBold size={20} />);
+icons['italic'] = ReactDOMServer.renderToStaticMarkup(<MdFormatItalic size={20} />);
+icons['underline'] = ReactDOMServer.renderToStaticMarkup(<MdFormatUnderlined size={20} />);
+icons['strike'] = ReactDOMServer.renderToStaticMarkup(<MdFormatStrikethrough size={20} />);
+icons['list'].bullet = ReactDOMServer.renderToStaticMarkup(<MdFormatListBulleted size={20} />);
+icons['list'].ordered = ReactDOMServer.renderToStaticMarkup(<MdFormatListNumbered size={20} />);
+icons['align'][""] = ReactDOMServer.renderToStaticMarkup(<MdFormatAlignLeft size={20} />);
+icons['align'].center = ReactDOMServer.renderToStaticMarkup(<MdFormatAlignCenter size={20} />);
+icons['align'].right = ReactDOMServer.renderToStaticMarkup(<MdFormatAlignRight size={20} />);
+icons['align'].justify = ReactDOMServer.renderToStaticMarkup(<MdFormatAlignJustify size={20} />);
+icons['color'] = ReactDOMServer.renderToStaticMarkup(<MdFormatColorText size={20} />);
+icons['background'] = ReactDOMServer.renderToStaticMarkup(<MdFormatColorFill size={20} />);
 // console.log(icons['align'])
 const TextEditor = () => {
 
@@ -62,7 +62,7 @@ const TextEditor = () => {
                 className="placeholder-white border-none"
                 value={value}
                 placeholder={initialValue}
-                onChange={(val) => setValue(val)}
+                onChange={(val: React.SetStateAction<string>) => setValue(val)}
                 style={{ color: 'white' }}
                 formats={formats}
                 modules={modules}
@@ -75,7 +75,7 @@ export default TextEditor;
 
 const CustomEditorToolbar = () => {
     return (
-        <div id="toolbar" className="!flex items-center gap-2 text-[#72747B]">
+        <div id="toolbar" className="!flex items-center gap-2 text-[#72747B] flex-wrap">
             <span className="ql-formats !flex gap-2 !mr-0">
 
                 {/* <NativeSelect value={"Normal"} data={['Heading', 'Subheading', 'Normal']} styles={{root: {width: 'fit-content'}}} /> */}
