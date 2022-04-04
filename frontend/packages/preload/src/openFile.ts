@@ -1,9 +1,9 @@
 import { ipcRenderer } from "electron";
 import { exposeInMainWorld } from "./exposeInMainWorld";
 
-function getFileOnSystem() {
+async function getFileOnSystem() {
     // console.log("I can call open file function!")
-    ipcRenderer.send('open-file-dialog');
+    return await ipcRenderer.invoke('open-file-dialog');
 }
 
 export const openFile = { getFileOnSystem } as const;

@@ -84,7 +84,7 @@ app.on('ready', async () => {
     }
   })
 
-  ipcMain.on('open-file-dialog', () => {
-    dialog.showOpenDialogSync({ properties: ['openFile'] })
+  ipcMain.handle('open-file-dialog', (e, cb) => {
+    return dialog.showOpenDialogSync({ properties: ['openFile'] });
   })
 });
