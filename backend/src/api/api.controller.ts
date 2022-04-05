@@ -11,7 +11,7 @@ export class ApiController {
         return "Hello World";
     }
 
-    @Post('/generate/keywords')
+    @Get('/generate/keywords')
     async generateKeywords(@Body('text') textToCheck: string): Promise<string[]> {
         return await this.api.generateKeywords(textToCheck);
     }

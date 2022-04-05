@@ -1,19 +1,18 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthController } from './auth/auth.controller';
-import { AuthModule } from './auth/auth.module';
 import serviceAccountKey from './config/serviceAccountKey';
-import { DatabaseController } from './database/database.controller';
 import { DatabaseModule } from './database/database.module';
-import { DatabaseService } from './database/database.service';
 import { FirestoreModule } from './firestore/firestore.module';
 import { OpenaiModule } from './openai/openai.module';
-import { ApiController } from './api/api.controller';
 import { ApiModule } from './api/api.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [DatabaseModule,
+    ConfigModule.forRoot({
+      envFilePath: '.env.local'
+    }),
     FirestoreModule.forRoot({
       imports: [],
       useFactoy: () => ({
