@@ -4,11 +4,12 @@ import PdfViewer from './components/PdfViewer';
 import TextDocument from './components/TextDocument';
 import TitleBar from './components/title-bar'
 import TopBar from './components/Topbar'
+import SearchResults from './components/SearchResults';
 
 function App() {
   return (
     <div className="h-screen w-screen flex flex-col pt-12">
-      {/* <TitleBar /> */}
+      <TitleBar />
       <div className="h-full px-6 overflow-hidden">
         <TopBar />
         <div className="flex flex-row justify-between h-full pl-20">
@@ -16,6 +17,7 @@ function App() {
           {/* <div className="w-full h-full">
             <img src={'./logo.png'} />
           </div> */}
+          <SearchResults />
           <PdfViewer />
         </div>
       </div>
