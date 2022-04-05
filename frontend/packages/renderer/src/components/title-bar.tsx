@@ -21,9 +21,7 @@ const TitleBar = () => {
   }
 
   return (
-    <nav className="title-bar-drag w-screen h-8 border-white border-b items-center flex z-0 fixed top-0">
-
-      <button className="w-8 h-8 flex items-center justify-center bg-red-500" onClick={handleCloseWindow}>X</button>
+    <nav className="title-bar-drag w-screen h-8 items-center flex z-0 fixed top-0">
 
     </nav>
   );
