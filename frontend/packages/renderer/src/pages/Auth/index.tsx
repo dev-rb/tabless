@@ -3,6 +3,7 @@ import { AiOutlineGoogle } from 'react-icons/ai'
 import { Anchor, Button, PasswordInput, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
+import { Link } from 'react-router-dom';
 
 const schema = z.object({
     email: z.string().email({ message: 'Invalid Email' }),
@@ -72,7 +73,7 @@ const AuthPage = () => {
                         <Button variant='outline' size='md' leftIcon={<AiOutlineGoogle color="#B24323" />} className="border-[#383737] text-white hover:bg-[#75727148]"> Sign in with Google </Button>
                     </div>
                 </form>
-                <p className="self-center mt-8 text-white"> Don't have an account? <a className="text-[#B24323]" href=''>Sign up</a></p>
+                <p className="self-center mt-8 text-white"> Don't have an account? <Link className="text-[#B24323]" to='/'>Sign up</Link></p>
             </div>
         </div>
     );
