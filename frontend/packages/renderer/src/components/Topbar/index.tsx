@@ -16,7 +16,7 @@ const TopBar = () => {
     const [drawerOpen, setDrawerOpen] = React.useState(false);
 
     return (
-        <div className="w-full h-12">
+        <div className="w-full h-12 pr-6">
             <Drawer
                 opened={drawerOpen}
                 onClose={() => setDrawerOpen(false)}

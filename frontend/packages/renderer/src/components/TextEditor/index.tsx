@@ -63,7 +63,7 @@ const TextEditor = () => {
                 value={value}
                 placeholder={initialValue}
                 onChange={(val) => setValue(val)}
-                style={{ color: 'white' }}
+                style={{ color: 'white', wordBreak: 'break-word' }}
                 formats={formats}
                 modules={modules}
             />
@@ -75,7 +75,7 @@ export default TextEditor;
 
 const CustomEditorToolbar = () => {
     return (
-        <div id="toolbar" className="!flex items-center gap-2 text-[#72747B]">
+        <div id="toolbar" className="!flex items-center gap-2 text-[#72747B] flex-wrap">
             <span className="ql-formats !flex gap-2 !mr-0">
 
                 {/* <NativeSelect value={"Normal"} data={['Heading', 'Subheading', 'Normal']} styles={{root: {width: 'fit-content'}}} /> */}
