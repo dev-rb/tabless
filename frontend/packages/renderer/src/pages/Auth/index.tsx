@@ -4,11 +4,32 @@ import { Anchor, Button, PasswordInput, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { Link } from 'react-router-dom';
+import { nanoid } from 'nanoid';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithCustomToken } from 'firebase/auth';
+import { ref, getDatabase, onValue } from 'firebase/database';
+
+declare global {
+    interface Window {
+        openUrl: any
+    }
+}
 
 const schema = z.object({
     email: z.string().email({ message: 'Invalid Email' }),
     password: z.string().nonempty({ message: 'Password cannot be empty' })
 })
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBeUk01P9gT8SRl3SVMqKJBln1x_iIBk0E",
+    authDomain: "tabless-notes.firebaseapp.com",
+    projectId: "tabless-notes",
+    storageBucket: "tabless-notes.appspot.com",
+    messagingSenderId: "685635914796",
+    appId: "1:685635914796:web:482972591bbdbe2af09589"
+};
+
+const app = initializeApp(firebaseConfig);
 
 const AuthPage = () => {
 
@@ -20,7 +41,18 @@ const AuthPage = () => {
         schema: zodResolver(schema)
     });
 
-    const signInWithGoogle = () => {
+    const signInWithGoogle = async () => {
+        const uuid = nanoid();
+        window.openUrl.openUrl(`http://localhost:3000/login?id=${uuid}`);
+        const db = getDatabase();
+        // const auth = getAuth();
+        const dbRef = ref(db, `tabless-notes/${uuid}`);
+        onValue(dbRef, async (snap) => {
+            const val = snap.val();
+            console.log(val);
+            // const user = await signInWithCustomToken(auth, val);
+            // console.log(user);
+        });
 
     }
 
@@ -43,8 +75,8 @@ const AuthPage = () => {
                             styles={{
                                 input: {
                                     background: 'transparent', border: '1px solid #606064', color: 'white', "::placeholder": { color: '#444448' },
-                                    ":focus-within": { border: '1px solid #B24323' },
-                                    ":focus": { borderColor: '#B24323 !important' }
+                                    ":focus-within": { border: '1px solid #3071E8' },
+                                    ":focus": { borderColor: '#3071E8 !important' }
                                 },
                                 label: { color: '#A2A2A3', fontWeight: 400 },
                             }}
@@ -59,7 +91,7 @@ const AuthPage = () => {
                             required
                             styles={{
                                 innerInput: { "::placeholder": { color: '#444448' }, color: 'white' },
-                                input: { background: 'transparent', border: '1px solid #606064', ":focus-within": { borderColor: '#B24323 !important' } },
+                                input: { background: 'transparent', border: '1px solid #606064', ":focus-within": { borderColor: '#3071E8 !important' } },
                                 label: { color: '#A2A2A3', fontWeight: 400 },
                             }}
                             {...form.getInputProps('password')}
@@ -69,11 +101,11 @@ const AuthPage = () => {
                         <Anchor className="self-end -mt-2 text-[#515154]">Forgot Password?</Anchor>
                     </div>
                     <div className="flex flex-col gap-4">
-                        <Button variant='filled' size='md' className="bg-[#B24323] hover:bg-[#dd522b]" type='submit'>Sign In</Button>
-                        <Button variant='outline' size='md' leftIcon={<AiOutlineGoogle color="#B24323" />} className="border-[#383737] text-white hover:bg-[#75727148]"> Sign in with Google </Button>
+                        <Button variant='filled' size='md' className="bg-[#3071E8] hover:bg-[#457fec]" type='submit'>Sign In</Button>
+                        <Button variant='outline' size='md' leftIcon={<AiOutlineGoogle color="#3071E8" />} className="border-[#383737] text-white hover:bg-[#75727148]" onClick={signInWithGoogle}> Sign in with Google </Button>
                     </div>
                 </form>
-                <p className="self-center mt-8 text-white"> Don't have an account? <Link className="text-[#B24323]" to='/'>Sign up</Link></p>
+                <p className="self-center mt-8 text-white"> Don't have an account? <Link className="text-[#3071E8]" to="/">Sign up</Link></p>
             </div>
         </div>
     );
