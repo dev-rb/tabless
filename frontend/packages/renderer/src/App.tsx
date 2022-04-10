@@ -12,6 +12,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import { AuthState, signOutLocal } from './redux/slices/authSlice';
 import { IRootState } from './redux/store';
 import SignupPage from './pages/Auth/Signup';
+import HomePage from './pages/Home';
 
 function App() {
   const currUser = useSelector((state: IRootState) => state.authReducer.user);
@@ -29,9 +30,7 @@ function App() {
         <div className="h-full px-6 overflow-hidden">
           <Routes>
             <Route path='/' element={currUser !== null ? <HomePage /> : <Navigate to='/login' />} />
-            <Route path='/login' element={<AuthPage />} >
-
-            </Route>
+            <Route path='/login' element={<AuthPage />} />
             <Route path='/signup' element={<SignupPage />} />
           </Routes>
         </div>
@@ -39,27 +38,6 @@ function App() {
     </BrowserRouter>
   )
 }
-const auth = getAuth();
 
-function HomePage() {
-
-  const dispatch = useDispatch();
-
-  return (
-    <>
-      <TopBar />
-      <Link to={'/login'} > Go To Login Page </Link>
-      <button onClick={() => { dispatch(signOutLocal()); signOut(auth); }} > Signout </button>
-      <div className="flex flex-row justify-between h-full pl-20">
-        <TextDocument title={'Class Project 499 Capstone'} author={'Rahul Batra'} tags={[{ id: nanoid(), tagName: 'Research' }]} text={''} />
-        {/* <div className="w-full h-full">
-      <img src={'./logo.png'} />
-    </div> */}
-        <SearchResults />
-        <PdfViewer />
-      </div>
-    </>
-  );
-}
 
 export default App;
