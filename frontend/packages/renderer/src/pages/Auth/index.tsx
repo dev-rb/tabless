@@ -9,7 +9,7 @@ import { FirebaseError, initializeApp } from 'firebase/app';
 import { getAuth, signInWithCustomToken, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { ref, getDatabase, onValue } from 'firebase/database';
 import { useDispatch } from 'react-redux';
-import { signInUser, signOutLocal } from '@redux/slices/authSlice';
+import { signInUser, signOutLocal } from '@/redux/slices/authSlice';
 
 declare global {
     interface Window {
