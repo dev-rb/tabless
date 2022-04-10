@@ -3,11 +3,13 @@ import { AiOutlineGoogle } from 'react-icons/ai'
 import { Anchor, Button, PasswordInput, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithCustomToken } from 'firebase/auth';
+import { getAuth, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { ref, getDatabase, onValue } from 'firebase/database';
+import { useDispatch } from 'react-redux';
+import { signInUser, signOutLocal } from '/@/redux/slices/authSlice';
 
 declare global {
     interface Window {
@@ -31,7 +33,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+
 const AuthPage = () => {
+    const auth = getAuth();
 
     const form = useForm({
         initialValues: {
@@ -41,24 +45,42 @@ const AuthPage = () => {
         schema: zodResolver(schema)
     });
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const signInWithGoogle = async () => {
         const uuid = nanoid();
-        window.openUrl.openUrl(`http://localhost:3000/login?id=${uuid}`);
+        window.openUrl.openUrl(`http://localhost:3001/login?id=${uuid}`);
         const db = getDatabase();
-        // const auth = getAuth();
-        const dbRef = ref(db, `tabless-notes/${uuid}`);
+        const dbRef = ref(db, `onetime/${uuid}`);
         onValue(dbRef, async (snap) => {
             const val = snap.val();
-            console.log(val);
-            // const user = await signInWithCustomToken(auth, val);
-            // console.log(user);
+            if (val) {
+                await signInWithCustomToken(auth, val.token);
+            }
         });
-
     }
 
     const signInWithEmail = ({ email, password }: typeof form.values) => {
         console.log(email, password);
     }
+
+    React.useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // console.log(user);
+                user.getIdToken().then((val) => dispatch(signInUser(val)));
+                navigate('/');
+            } else {
+                dispatch(signOutLocal())
+            }
+        });
+
+        return () => {
+            unsubscribe()
+        };
+    }, [auth])
+
 
     return (
         <div className="flex w-full h-full items-center justify-center">
