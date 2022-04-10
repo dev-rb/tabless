@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, signOut } from 'firebase/auth';
 import { AuthState, signOutLocal } from './redux/slices/authSlice';
 import { IRootState } from './redux/store';
+import SignupPage from './pages/Auth/Signup';
 
 function App() {
   const currUser = useSelector((state: IRootState) => state.authReducer.user);
@@ -28,7 +29,10 @@ function App() {
         <div className="h-full px-6 overflow-hidden">
           <Routes>
             <Route path='/' element={currUser !== null ? <HomePage /> : <Navigate to='/login' />} />
-            <Route path='/login' element={<AuthPage />} />
+            <Route path='/login' element={<AuthPage />} >
+
+            </Route>
+            <Route path='/signup' element={<SignupPage />} />
           </Routes>
         </div>
       </div>

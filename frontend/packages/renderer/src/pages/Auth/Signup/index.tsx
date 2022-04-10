@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { FirebaseError, initializeApp } from 'firebase/app';
-import { getAuth, signInWithCustomToken, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithCustomToken, onAuthStateChanged, createUserWithEmailAndPassword } from 'firebase/auth';
 import { ref, getDatabase, onValue } from 'firebase/database';
 import { useDispatch } from 'react-redux';
 import { signInUser, signOutLocal } from '@redux/slices/authSlice';
@@ -34,11 +34,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 
-const AuthPage = () => {
+const SignupPage = () => {
     const auth = getAuth();
 
     const form = useForm({
         initialValues: {
+            username: '',
             email: '',
             password: ''
         },
@@ -48,7 +49,7 @@ const AuthPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const signInWithGoogle = async () => {
+    const signUpWithGoogle = async () => {
         const uuid = nanoid();
         window.openUrl.openUrl(`http://localhost:3001/login?id=${uuid}`);
         const db = getDatabase();
@@ -61,13 +62,14 @@ const AuthPage = () => {
         });
     }
 
-    const signInWithEmail = async ({ email, password }: typeof form.values) => {
+    const signUpWithEmail = async ({ email, password }: typeof form.values) => {
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            await createUserWithEmailAndPassword(auth, email, password);
         } catch (err) {
             const error = err as FirebaseError;
-            form.setErrors({ email: 'Wrong email or password' });
-            console.log(error.message, error.code)
+            if (error.code === 'auth/email-already-in-use') {
+                form.setErrors({ email: 'This email is already in use!' })
+            }
         }
     }
 
@@ -91,9 +93,25 @@ const AuthPage = () => {
     return (
         <div className="flex w-full h-full items-center justify-center">
             <div className="flex flex-col gap-4 max-w-xs w-full">
-                <form className="flex flex-col gap-4" onSubmit={form.onSubmit(signInWithEmail)}>
-                    <h1 className="text-white font-medium text-4xl uppercase">Sign In</h1>
+                <form className="flex flex-col gap-4" onSubmit={form.onSubmit(signUpWithEmail)}>
+                    <h1 className="text-white font-medium text-4xl uppercase">Sign Up</h1>
                     <div className="flex flex-col gap-4">
+                        <TextInput
+                            label='Username'
+                            placeholder='Enter a username'
+                            variant='filled'
+                            size='md'
+                            required
+                            styles={{
+                                input: {
+                                    background: 'transparent', border: '1px solid #606064', color: 'white', "::placeholder": { color: '#444448' },
+                                    ":focus-within": { border: '1px solid #3071E8' },
+                                    ":focus": { borderColor: '#3071E8 !important' }
+                                },
+                                label: { color: '#A2A2A3', fontWeight: 400 },
+                            }}
+                            {...form.getInputProps('username')}
+                        />
                         <TextInput
                             label='Email'
                             placeholder='email@example.com'
@@ -126,17 +144,16 @@ const AuthPage = () => {
                         // onChange={(e) => setPassword(e.target.value)}
                         />
 
-                        <Anchor className="self-end -mt-2 text-[#515154]">Forgot Password?</Anchor>
                     </div>
-                    <div className="flex flex-col gap-4">
-                        <Button variant='filled' size='md' className="bg-[#3071E8] hover:bg-[#457fec]" type='submit'>Sign In</Button>
-                        <Button variant='outline' size='md' leftIcon={<AiOutlineGoogle color="#3071E8" />} className="border-[#383737] text-white hover:bg-[#75727148]" onClick={signInWithGoogle}> Sign in with Google </Button>
+                    <div className="flex flex-col gap-4 mt-8">
+                        <Button variant='filled' size='md' className="bg-[#3071E8] hover:bg-[#457fec]" type='submit'>Sign Up</Button>
+                        <Button variant='outline' size='md' leftIcon={<AiOutlineGoogle color="#3071E8" />} className="border-[#383737] text-white hover:bg-[#75727148]" onClick={signUpWithGoogle}> Sign up with Google </Button>
                     </div>
                 </form>
-                <p className="self-center mt-8 text-white"> Don't have an account? <Link className="text-[#3071E8]" to="/signup">Sign up</Link></p>
+                <p className="self-center mt-8 text-white"> Already have an account? <Link className="text-[#3071E8]" to="/login">Sign in</Link></p>
             </div>
         </div>
     );
 }
 
-export default AuthPage;
+export default SignupPage;
