@@ -4,6 +4,7 @@ interface Exposed {
   readonly nodeCrypto: Readonly<typeof import('./src/nodeCrypto').nodeCrypto>;
   readonly versions: Readonly<typeof import('./src/versions').versions>;
   readonly openUrl: Readonly<typeof import('./src/openUrl').openUrlTool>;
+  readonly openFile: Readonly<typeof import('./src/openFile').getFileOnSystem>;
 }
 
 
