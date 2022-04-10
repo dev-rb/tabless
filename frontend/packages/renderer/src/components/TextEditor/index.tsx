@@ -63,7 +63,7 @@ const TextEditor = () => {
                 value={value}
                 placeholder={initialValue}
                 onChange={(val: React.SetStateAction<string>) => setValue(val)}
-                style={{ color: 'white' }}
+                style={{ color: 'white', wordBreak: 'break-word' }}
                 formats={formats}
                 modules={modules}
             />

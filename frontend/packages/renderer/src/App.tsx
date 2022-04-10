@@ -35,6 +35,7 @@ function App() {
             <Route path='/signup' element={<SignupPage />} />
           </Routes>
         </div>
+        <SearchResults />
       </div>
     </BrowserRouter>
   )

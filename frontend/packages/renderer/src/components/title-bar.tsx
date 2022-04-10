@@ -21,10 +21,10 @@ const TitleBar = () => {
   }
 
   return (
-    <nav className="title-bar-drag w-screen h-8 items-center flex z-0 fixed top-0">
+    <nav className="title-bar-drag w-screen h-8 items-center flex z-0 fixed top-0 border-b-2 border-b-white">
 
     </nav>
   );
 }
-  
+
 export default TitleBar;
