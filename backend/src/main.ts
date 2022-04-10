@@ -13,7 +13,6 @@ async function bootstrap() {
         clientEmail: serviceAccount.client_email,
         privateKey: serviceAccount.private_key,
       }),
-      databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
     });
   } catch (e) {
     console.log(e)
