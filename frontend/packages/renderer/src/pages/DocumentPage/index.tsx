@@ -14,7 +14,7 @@ const DocumentPage = () => {
     const { data, isFetching, isError } = useGetDocumentQuery(documentId!);
 
     return (
-        <div className="flex flex-row gap-4 h-full pl-20">
+        <div className="flex flex-row gap-4 h-full pl-10">
             {
                 data && !isFetching ? <TextDocument {...data} />
                     :

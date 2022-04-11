@@ -20,7 +20,7 @@ function App() {
     <BrowserRouter>
       <div className="h-screen w-screen flex flex-col pt-12">
         <TitleBar />
-        <div className="h-full px-6 overflow-hidden">
+        <div className="h-full overflow-hidden">
           <Routes>
             <Route path='/' element={<RequireAuth />} >
               <Route index element={<HomePage />} />
@@ -37,9 +37,11 @@ function App() {
 
 const Layout = () => {
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full overflow-hidden">
       <TopBar />
-      <Outlet />
+      <div className="px-6 w-full h-full pt-8">
+        <Outlet />
+      </div>
     </div>
   );
 }

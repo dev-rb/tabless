@@ -27,23 +27,24 @@ const PdfViewer = () => {
                     <MdExpandMore size={80} transform={'rotate(90)'} />
                 }
             </button>
-            <div className="overflow-hidden h-full w-full">
-                {isExpanded &&
-                    <div className="w-full flex flex-row items-center bg-white">
-                        <Toolbar>
-                            {(props: ToolbarSlot) => <CustomPdfToolbar {...props} updateFilePath={(str: string) => setFilePath(str)} />}
-                        </Toolbar>
-                    </div>}
-                {filePath !== "" && isExpanded
-                    ?
-                    <Viewer fileUrl={`app://getMediaFile/${filePath}`} plugins={[toolbarPluginInstance]} defaultScale={SpecialZoomLevel.PageFit} />
-                    :
-                    <div className="h-full w-full flex items-center justify-center flex-col gap-8">
-                        <h1 className="text-white font-bold text-xl"> Open a file </h1>
-                        <Loader />
-                    </div>}
-            </div>
-
+            {isExpanded &&
+                <div className="h-full w-full">
+                    {isExpanded &&
+                        <div className="w-full flex flex-row items-center bg-white">
+                            <Toolbar>
+                                {(props: ToolbarSlot) => <CustomPdfToolbar {...props} updateFilePath={(str: string) => setFilePath(str)} />}
+                            </Toolbar>
+                        </div>}
+                    {filePath !== "" && isExpanded
+                        ?
+                        <Viewer fileUrl={`app://getMediaFile/${filePath}`} plugins={[toolbarPluginInstance]} defaultScale={SpecialZoomLevel.PageFit} />
+                        :
+                        <div className="h-full w-full flex items-center justify-center flex-col gap-8">
+                            <h1 className="text-white font-bold text-xl"> Open a file </h1>
+                            <Loader />
+                        </div>}
+                </div>
+            }
         </div>
     );
 }
