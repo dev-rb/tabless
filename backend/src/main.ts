@@ -5,6 +5,7 @@ import serviceAccount from './config/serviceAccountKey';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
 
   try {
     admin.initializeApp({
@@ -18,6 +19,6 @@ async function bootstrap() {
     console.log(e)
   }
 
-  await app.listen(3000);
+  await app.listen(3002);
 }
 bootstrap();
