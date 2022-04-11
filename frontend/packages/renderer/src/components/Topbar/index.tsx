@@ -1,7 +1,9 @@
-import { Accordion, AccordionItem, Avatar, Burger, CSSObject, Drawer, Group, Space, Switch } from '@mantine/core';
+import { Accordion, AccordionItem, Avatar, Burger, Button, CSSObject, Drawer, Group, Loader, Space, Switch } from '@mantine/core';
 import * as React from 'react';
-import { MdExpandMore, MdFolder, MdPerson } from 'react-icons/md';
+import { MdExpandMore, MdFolder, MdHome, MdPerson } from 'react-icons/md';
 import { HiDocument } from 'react-icons/hi';
+import { useGetAllDocumentsQuery } from '@/redux/api/documentEndpoints';
+import { Link, useNavigate } from 'react-router-dom';
 
 const drawerStyles: CSSObject = {
     height: '70%',
@@ -48,17 +50,26 @@ const AccordionLabel = () => {
     );
 }
 
-const DrawerDocument = () => {
+interface DrawerDocumentProps {
+    documentName: string,
+    documentId: string
+}
+
+const DrawerDocument = ({ documentName, documentId }: DrawerDocumentProps) => {
     return (
-        <div className="flex flex-row gap-2 items-center text-md font-normal text-[#797E8A]">
+        <Link className="flex flex-row gap-2 items-center text-md font-normal text-[#797E8A] hover:bg-gray-600 p-1 rounded-sm" to={`/document/${documentId}`}>
             <HiDocument size={34} />
-            <h6 className="text-ellipsis overflow-hidden whitespace-nowrap"> Class 499 Project Capstone </h6>
-        </div>
+            <h6 className="text-ellipsis overflow-hidden whitespace-nowrap"> {documentName} </h6>
+        </Link>
     );
 }
 
 
 const DrawerContent = () => {
+
+    const { data, isLoading } = useGetAllDocumentsQuery();
+    const navigate = useNavigate();
+
     return (
         <div className="flex flex-col gap-8">
             <div className="flex flex-row items-center gap-4">
@@ -67,24 +78,21 @@ const DrawerContent = () => {
                 </Avatar>
                 <div className="flex flex-col text-white">
                     <h4 className="text-lg"> Rahul's Space </h4>
-                    <p className="text-[#797E8A] text-sm"> 20 documents </p>
+                    <p className="text-[#797E8A] text-sm"> {data && data.length} documents </p>
                 </div>
             </div>
-
+            <Button variant='filled' size='lg' onClick={() => navigate('/')} leftIcon={<MdHome color="white" />}> Home </Button>
             <div className="flex flex-col text-[#797E8A] gap-2">
                 <h1 className="uppercase text-sm font-bold"> Recent </h1>
                 <div className="flex flex-col">
-                    <div className="flex flex-row gap-2 items-center text-md font-normal">
-                        <HiDocument size={34} />
-                        <h6 className="text-ellipsis overflow-hidden whitespace-nowrap"> Class 499 Project Capstone </h6>
-                    </div>
+                    {data && !isLoading ? data.map((val) => <DrawerDocument key={val.id} documentId={val.id} documentName={val.title} />) : <Loader />}
                 </div>
             </div>
             <div className="flex flex-col text-[#797E8A] gap-2">
                 <h1 className="uppercase text-sm font-bold"> Folders </h1>
                 <Accordion>
                     <AccordionItem label={<AccordionLabel />} styles={{ icon: { color: 'white' }, control: { ":hover": { backgroundColor: '#41444B' }, padding: '4px' } }}>
-                        <DrawerDocument />
+                        {/* <DrawerDocument documentName="Random test document" /> */}
                     </AccordionItem>
                 </Accordion>
                 <div className="flex flex-col">

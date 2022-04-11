@@ -1,14 +1,26 @@
-import { Input, MANTINE_SIZES, TextInput } from '@mantine/core';
+import { Input, Loader, MANTINE_SIZES, TextInput } from '@mantine/core';
 import * as React from 'react';
 import { MdAdd, MdClose, MdPerson, MdTag } from 'react-icons/md';
 import TextEditor from '../TextEditor';
 import { nanoid } from 'nanoid';
 import { ITextDocument, ITextDocumentTag } from '@/types';
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { useUpdateDocumentMutation } from '@/redux/api/documentEndpoints';
+import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 
-const TextDocument = ({ title, author, tags, text, dateCreated }: ITextDocument) => {
+const TextDocument = ({ title, author, tags, text, dateCreated, id }: ITextDocument) => {
 
     const [docTitle, setDocTitle] = React.useState<string>(title);
     const [docTags, setDocTags] = React.useState<ITextDocumentTag[]>(tags);
+
+    const [updateDocumentMutation, { isLoading, status }] = useUpdateDocumentMutation();
+
+    const updateDocument = () => {
+        console.log("Update called!")
+        updateDocumentMutation({ title: docTitle, author, tags, text, dateCreated, id })
+    }
+
+    const { onInputChange } = useAutoSave({ callback: updateDocument });
 
     const addNewTag = (newTagName: string = '') => {
         const newTag: ITextDocumentTag = { id: nanoid(), title: newTagName };
@@ -35,11 +47,17 @@ const TextDocument = ({ title, author, tags, text, dateCreated }: ITextDocument)
 
     return (
         <div className="max-w-3xl w-full h-full flex flex-col justify-start">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 relative">
+                {isLoading && (status === QueryStatus.pending) &&
+                    <div className="text-blue-600 absolute -top-8 left-0 flex flex-row gap-2">
+                        <Loader size='sm' />
+                        <p> Autosaving... </p>
+                    </div>
+                }
                 <TextInput placeholder='Untitled' value={docTitle}
                     type="text"
                     styles={{ input: { color: 'white', background: 'none', border: 'none', fontSize: '1.875rem', fontWeight: '600', padding: 0, textOverflow: 'ellipsis', wordWrap: 'break-word' } }}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDocTitle(e.target.value)} />
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setDocTitle(e.target.value); onInputChange(e.target.value); }} />
 
                 {/* <h1 className="text-white font-semibold text-3xl"> {title} </h1> */}
 
