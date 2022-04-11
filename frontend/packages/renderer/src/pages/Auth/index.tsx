@@ -3,7 +3,7 @@ import { AiOutlineGoogle } from 'react-icons/ai'
 import { Anchor, Button, PasswordInput, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { FirebaseError, initializeApp } from 'firebase/app';
 import { getAuth, signInWithCustomToken, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
@@ -33,6 +33,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+interface LocationState {
+    from: string
+}
 
 const AuthPage = () => {
     const auth = getAuth();
@@ -47,6 +50,7 @@ const AuthPage = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const signInWithGoogle = async () => {
         const uuid = nanoid();
@@ -76,7 +80,7 @@ const AuthPage = () => {
             if (user) {
                 // console.log(user);
                 user.getIdToken().then((val) => dispatch(signInUser(val)));
-                navigate('/');
+                navigate((location.state as LocationState).from, { replace: true });
             } else {
                 dispatch(signOutLocal())
             }

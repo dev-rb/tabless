@@ -20,7 +20,7 @@ const PdfViewer = () => {
     const { Toolbar } = toolbarPluginInstance;
 
     return (
-        <div className={`${isExpanded ? 'w-full' : 'w-0'} h-full max-w-4xl select-text pb-20 relative transition-all`}>
+        <div className={`${isExpanded ? 'w-full' : 'w-0'} h-full max-w-4xl select-text pb-20 relative transition-all ml-auto`}>
             <button className="absolute -left-2 m-auto top-0 bottom-0 w-8 h-32 bg-red-500 z-10 flex items-center justify-center" onClick={() => setIsExpanded((prev) => !prev)}>
                 {isExpanded ?
                     <MdExpandLess size={80} transform={'rotate(90)'} /> :

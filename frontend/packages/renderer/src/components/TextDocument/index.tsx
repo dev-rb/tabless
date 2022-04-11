@@ -3,22 +3,15 @@ import * as React from 'react';
 import { MdAdd, MdClose, MdPerson, MdTag } from 'react-icons/md';
 import TextEditor from '../TextEditor';
 import { nanoid } from 'nanoid';
+import { ITextDocument, ITextDocumentTag } from '@/types';
 
-interface IDoc {
-    title: string,
-    author: string,
-    tags: IDocTag[],
-    dateCreated?: string
-    text: string
-}
-
-const TextDocument = ({ title, author, tags, text, dateCreated }: IDoc) => {
+const TextDocument = ({ title, author, tags, text, dateCreated }: ITextDocument) => {
 
     const [docTitle, setDocTitle] = React.useState<string>(title);
-    const [docTags, setDocTags] = React.useState<IDocTag[]>(tags);
+    const [docTags, setDocTags] = React.useState<ITextDocumentTag[]>(tags);
 
     const addNewTag = (newTagName: string = '') => {
-        const newTag: IDocTag = { id: nanoid(), tagName: newTagName };
+        const newTag: ITextDocumentTag = { id: nanoid(), title: newTagName };
         setDocTags((prev) => [...prev, newTag]);
     }
 
@@ -33,7 +26,7 @@ const TextDocument = ({ title, author, tags, text, dateCreated }: IDoc) => {
         const copyOfTags = [...docTags];
         copyOfTags.forEach((val) => {
             if (val.id === tagId) {
-                val.tagName = newTagName;
+                val.title = newTagName;
             }
         })
 
@@ -72,22 +65,17 @@ const TextDocument = ({ title, author, tags, text, dateCreated }: IDoc) => {
 
 export default TextDocument;
 
-interface IDocTag {
-    id: string,
-    tagName: string,
-}
-
 interface DocumentTagProps {
-    tagValues: IDocTag,
+    tagValues: ITextDocumentTag,
     removeTag: (tagId: string) => void,
     changeTagName: (tagId: string, newText: string) => void
 }
 
 const DocumentTag = ({ tagValues, removeTag, changeTagName }: DocumentTagProps) => {
 
-    const { id, tagName } = tagValues;
+    const { id, title } = tagValues;
 
-    const [name, setName] = React.useState(tagName);
+    const [name, setName] = React.useState(title);
 
     const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -121,7 +109,7 @@ const DocumentTag = ({ tagValues, removeTag, changeTagName }: DocumentTagProps) 
             <TextInput ref={inputRef} placeholder='Untitled' value={name}
                 type="text"
                 styles={{ input: { color: 'white', background: 'none', border: 'none', padding: 0, textOverflow: 'ellipsis', wordWrap: 'break-word', width: 'fit-content' } }}
-                autoFocus={tagName.length === 0} onChange={onTextChange} onBlur={handleBlur} />
+                autoFocus={title.length === 0} onChange={onTextChange} onBlur={handleBlur} />
             {/* <p> {tagName} </p> */}
             <button className="text-[#6F6F71] hover:text-red-600" onClick={() => removeTag(id)}> <MdClose size={16} /> </button>
 
