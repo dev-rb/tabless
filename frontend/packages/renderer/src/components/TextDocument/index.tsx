@@ -1,24 +1,29 @@
-import { Input, MANTINE_SIZES, TextInput } from '@mantine/core';
+import { Input, Loader, MANTINE_SIZES, TextInput } from '@mantine/core';
 import * as React from 'react';
 import { MdAdd, MdClose, MdPerson, MdTag } from 'react-icons/md';
 import TextEditor from '../TextEditor';
 import { nanoid } from 'nanoid';
+import { ITextDocument, ITextDocumentTag } from '@/types';
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { useUpdateDocumentMutation } from '@/redux/api/documentEndpoints';
+import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 
-interface IDoc {
-    title: string,
-    author: string,
-    tags: IDocTag[],
-    dateCreated?: string
-    text: string
-}
-
-const TextDocument = ({ title, author, tags, text, dateCreated }: IDoc) => {
+const TextDocument = ({ title, author, tags, text, dateCreated, id }: ITextDocument) => {
 
     const [docTitle, setDocTitle] = React.useState<string>(title);
-    const [docTags, setDocTags] = React.useState<IDocTag[]>(tags);
+    const [docTags, setDocTags] = React.useState<ITextDocumentTag[]>(tags);
+
+    const [updateDocumentMutation, { isLoading, status }] = useUpdateDocumentMutation();
+
+    const updateDocument = () => {
+        console.log("Update called!")
+        updateDocumentMutation({ title: docTitle, author, tags, text, dateCreated, id })
+    }
+
+    const { onInputChange } = useAutoSave({ callback: updateDocument });
 
     const addNewTag = (newTagName: string = '') => {
-        const newTag: IDocTag = { id: nanoid(), tagName: newTagName };
+        const newTag: ITextDocumentTag = { id: nanoid(), title: newTagName };
         setDocTags((prev) => [...prev, newTag]);
     }
 
@@ -33,7 +38,7 @@ const TextDocument = ({ title, author, tags, text, dateCreated }: IDoc) => {
         const copyOfTags = [...docTags];
         copyOfTags.forEach((val) => {
             if (val.id === tagId) {
-                val.tagName = newTagName;
+                val.title = newTagName;
             }
         })
 
@@ -42,11 +47,17 @@ const TextDocument = ({ title, author, tags, text, dateCreated }: IDoc) => {
 
     return (
         <div className="max-w-3xl w-full h-full flex flex-col justify-start">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 relative">
+                {isLoading && (status === QueryStatus.pending) &&
+                    <div className="text-blue-600 absolute -top-8 left-0 flex flex-row gap-2">
+                        <Loader size='sm' />
+                        <p> Autosaving... </p>
+                    </div>
+                }
                 <TextInput placeholder='Untitled' value={docTitle}
                     type="text"
                     styles={{ input: { color: 'white', background: 'none', border: 'none', fontSize: '1.875rem', fontWeight: '600', padding: 0, textOverflow: 'ellipsis', wordWrap: 'break-word' } }}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDocTitle(e.target.value)} />
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setDocTitle(e.target.value); onInputChange(e.target.value); }} />
 
                 {/* <h1 className="text-white font-semibold text-3xl"> {title} </h1> */}
 
@@ -72,22 +83,17 @@ const TextDocument = ({ title, author, tags, text, dateCreated }: IDoc) => {
 
 export default TextDocument;
 
-interface IDocTag {
-    id: string,
-    tagName: string,
-}
-
 interface DocumentTagProps {
-    tagValues: IDocTag,
+    tagValues: ITextDocumentTag,
     removeTag: (tagId: string) => void,
     changeTagName: (tagId: string, newText: string) => void
 }
 
 const DocumentTag = ({ tagValues, removeTag, changeTagName }: DocumentTagProps) => {
 
-    const { id, tagName } = tagValues;
+    const { id, title } = tagValues;
 
-    const [name, setName] = React.useState(tagName);
+    const [name, setName] = React.useState(title);
 
     const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -121,7 +127,7 @@ const DocumentTag = ({ tagValues, removeTag, changeTagName }: DocumentTagProps) 
             <TextInput ref={inputRef} placeholder='Untitled' value={name}
                 type="text"
                 styles={{ input: { color: 'white', background: 'none', border: 'none', padding: 0, textOverflow: 'ellipsis', wordWrap: 'break-word', width: 'fit-content' } }}
-                autoFocus={tagName.length === 0} onChange={onTextChange} onBlur={handleBlur} />
+                autoFocus={title.length === 0} onChange={onTextChange} onBlur={handleBlur} />
             {/* <p> {tagName} </p> */}
             <button className="text-[#6F6F71] hover:text-red-600" onClick={() => removeTag(id)}> <MdClose size={16} /> </button>
 
