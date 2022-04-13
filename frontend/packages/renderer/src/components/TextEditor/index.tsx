@@ -1,5 +1,6 @@
 import { NativeSelect, Select } from '@mantine/core';
 import RichTextEditor from '@mantine/rte';
+import { DeltaStatic } from 'quill';
 import * as React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { MdFormatAlignCenter, MdFormatAlignJustify, MdFormatAlignLeft, MdFormatAlignRight, MdFormatBold, MdFormatColorFill, MdFormatColorText, MdFormatItalic, MdFormatListBulleted, MdFormatListNumbered, MdFormatStrikethrough, MdFormatUnderlined } from 'react-icons/md';
@@ -49,9 +50,26 @@ icons['align'].justify = ReactDOMServer.renderToStaticMarkup(<MdFormatAlignJusti
 icons['color'] = ReactDOMServer.renderToStaticMarkup(<MdFormatColorText size={20} />);
 icons['background'] = ReactDOMServer.renderToStaticMarkup(<MdFormatColorFill size={20} />);
 // console.log(icons['align'])
-const TextEditor = () => {
 
-    const [value, setValue] = React.useState("");
+interface TextEditorProps {
+    updateText: (newVal: string) => void,
+    text?: string
+}
+
+const TextEditor = ({ updateText, text = '' }: TextEditorProps) => {
+
+    const [value, setValue] = React.useState(text);
+    const editorRef = React.useRef<ReactQuill>(null);
+
+    const getEditorText = (newVal: React.SetStateAction<string>, delta: DeltaStatic) => {
+        const editor = editorRef.current;
+        setValue(newVal);
+
+        if (editor) {
+            const text = editor.getEditor().getText();
+            updateText(text);
+        }
+    }
 
     return (
         <div className="w-full h-full">
@@ -59,10 +77,11 @@ const TextEditor = () => {
                 <CustomEditorToolbar />
             </div>
             <ReactQuill
+                ref={editorRef}
                 className="placeholder-white border-none"
                 value={value}
                 placeholder={initialValue}
-                onChange={(val: React.SetStateAction<string>) => setValue(val)}
+                onChange={(val: React.SetStateAction<string>, delta) => getEditorText(val, delta)}
                 style={{ color: 'white', wordBreak: 'break-word' }}
                 formats={formats}
                 modules={modules}

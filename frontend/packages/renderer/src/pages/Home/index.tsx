@@ -38,7 +38,7 @@ const HomePage = () => {
     return (
         <div className="flex flex-col justify-center items-center w-full h-full">
             <div className="flex flex-col justify-center items-center border-dashed border-2 border-[#707070] p-20 gap-16">
-                {data && !isLoading ?
+                {data?.length && !isLoading ?
                     <div className="flex flex-col gap-4 items-start w-full">
                         <h1 className="text-[#9D9D9D] text-3xl font-medium"> Recent Documents </h1>
                         {data.map((val) =>

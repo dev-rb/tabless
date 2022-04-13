@@ -1,25 +1,16 @@
 import { useProcessTextMutation } from '@/redux/api/searchEndpoints';
 import { ISearchResult } from '@/types';
-import { Avatar } from '@mantine/core';
+import { Avatar, Loader } from '@mantine/core';
+import { nanoid } from 'nanoid';
 import * as React from 'react';
 import { MdBookmark, MdCopyAll, MdSearch } from 'react-icons/md';
 
-const SearchResults = () => {
+interface Props {
+    searchResults: ISearchResult[],
+    isLoading: boolean
+}
 
-    const [results, setResults] = React.useState<ISearchResult[]>([]);
-
-    const [processText, { isLoading }] = useProcessTextMutation();
-
-    const fetchResults = async () => {
-        const results = await processText('text').unwrap();
-        setResults(results);
-    }
-
-    React.useEffect(() => {
-        // console.log("Process Text Mutation called!");
-        // fetchResults();
-    }, [])
-
+const SearchResults = ({ searchResults, isLoading }: Props) => {
 
     return (
         <div className="flex flex-col min-w-min max-w-sm w-full h-full gap-2 border-l-2 border-l-[#72747B] pl-8">
@@ -38,7 +29,8 @@ const SearchResults = () => {
                         low_res: 'https://www.google.com/s2/favicons?sz=64&domain_url=www.hollywoodsoapbox.com'
                     }}
                 /> */}
-                {results.map((val) => <ResultItem key={val.url} {...val} />)}
+                {isLoading ? <Loader /> : searchResults.map((val) => <ResultItem key={nanoid()} {...val} />)}
+                {/* {searchResults.map((val) => <ResultItem key={val.url} {...val} />)} */}
             </div>
         </div>
     );
@@ -60,9 +52,9 @@ const ResultItem = ({ description, title, favicons, url }: ISearchResult) => {
         <div className="bg-[#28282B] h-fit flex flex-col gap-6 p-3 flex-wrap">
             <div className="flex flex-row items-center gap-6 min-w-min">
                 <Avatar src={favicons.high_res} radius='xl' />
-                <div className="flex flex-col gap-0">
-                    <h6 className="text-white text-lg font-medium"> {title} </h6>
-                    <a className="text-[#E9E9E9] max-w-xs text-sm overflow-hidden overflow-ellipsis" href={url}> {url}  </a>
+                <div className="flex flex-col gap-0 max-w-xs ">
+                    <h6 className="text-white text-lg font-medium overflow-hidden overflow-ellipsis"> {title} </h6>
+                    <a className="text-[#E9E9E9] text-sm overflow-hidden overflow-ellipsis" href={url}> {url}  </a>
                 </div>
             </div>
             <p className="text-[#E9E9E9] flex-1 max-w-xs break-words text-sm" > {description}</p>

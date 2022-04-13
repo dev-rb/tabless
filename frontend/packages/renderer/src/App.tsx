@@ -10,12 +10,6 @@ import HomePage from './pages/Home';
 import DocumentPage from './pages/DocumentPage';
 
 function App() {
-
-  // React.useEffect(() => {
-  //   if (currUser) {
-  //     console.log("Current User: ", currUser)
-  //   }
-  // }, [currUser])
   return (
     <BrowserRouter>
       <div className="h-screen w-screen flex flex-col pt-12">
