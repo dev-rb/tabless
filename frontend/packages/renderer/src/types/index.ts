@@ -11,3 +11,13 @@ export interface ITextDocumentTag {
     id: string,
     title: string
 }
+
+export interface ISearchResult {
+    title: string,
+    description: string,
+    url: string,
+    favicons: {
+        high_res: string,
+        low_res: string
+    }
+}
