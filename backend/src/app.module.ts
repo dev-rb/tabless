@@ -4,9 +4,9 @@ import { AppService } from './app.service';
 import serviceAccountKey from './config/serviceAccountKey';
 import { FirestoreModule } from './firestore/firestore.module';
 import { OpenaiModule } from './openai/openai.module';
-import { ApiModule } from './api/api.module';
 import { ConfigModule } from '@nestjs/config';
 import { DocumentsModule } from './documents/documents.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -22,8 +22,8 @@ import { DocumentsModule } from './documents/documents.module';
       inject: []
     }),
     OpenaiModule.forRoot({ apiKey: process.env.OPENAI_API_KEY, isJsonMime: (mime) => false }),
-    ApiModule,
-    DocumentsModule],
+    DocumentsModule,
+    SearchModule],
   controllers: [AppController],
   providers: [AppService],
 })
