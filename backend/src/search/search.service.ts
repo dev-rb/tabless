@@ -11,7 +11,7 @@ export class SearchService {
 
     async processText(textToCheck: string): Promise<string[]> {
         const result = await this.openaiClient.createCompletion('text-ada-001', {
-            prompt: EXTRACT_KEYWORDS_TEXT + TEST_TEXT,
+            prompt: EXTRACT_KEYWORDS_TEXT + textToCheck,
             temperature: 0.3,
             max_tokens: 70,
             top_p: 1.0,
@@ -41,7 +41,7 @@ export class SearchService {
         }
 
         // console.log(allKeywordSearches);
-        // console.log(parsedKeywords)
+        console.log(parsedKeywords)
 
         return allKeywordSearches;
     }
