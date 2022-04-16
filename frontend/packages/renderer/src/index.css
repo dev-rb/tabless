@@ -9,8 +9,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-    /* used for behaving more like an app, selection inside inputs and textareas still work in chromium */
-    user-select: none;
+  /* used for behaving more like an app, selection inside inputs and textareas still work in chromium */
+  user-select: none;
 }
 
 code {
@@ -18,22 +18,26 @@ code {
     monospace;
 }
 
-.title-bar-drag{
+.title-bar-drag {
   -webkit-app-region: drag;
 }
 
-.toolbar-separator{
+.title-bar-no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.toolbar-separator {
   width: 2px;
   height: 20px;
   background: #44444D;
   /* border-left: 2px solid #44444D; */
 }
 
-.toolbar-no-margin{
+.toolbar-no-margin {
   margin-right: 0 !important;
 }
 
-.ql-snow .ql-formats:after{
+.ql-snow .ql-formats:after {
   content: none !important;
 }
 
@@ -42,7 +46,7 @@ code {
   gap: 0.5rem;
 } */
 
-#toolbar button{
+#toolbar button {
   width: auto;
   height: auto;
 }
@@ -61,12 +65,14 @@ code {
   height: 25px !important;
 } */
 
-.ql-toolbar, .ql-container, .ql-snow{
+.ql-toolbar,
+.ql-container,
+.ql-snow {
   border: none !important;
   padding-left: 0px !important;
 }
 
-.ql-editor::before{
+.ql-editor::before {
   color: #61636B !important;
   left: 0px !important;
 }
@@ -75,19 +81,19 @@ code {
   stroke: #72747B !important;
 } */
 
-.ql-snow .ql-picker{
+.ql-snow .ql-picker {
   color: #72747B !important;
 }
 
-.ql-snow .ql-picker.ql-expanded .ql-picker-label{
+.ql-snow .ql-picker.ql-expanded .ql-picker-label {
   border: none !important;
   color: #72747B !important;
 }
 
-.ql-snow .ql-picker-label{
+.ql-snow .ql-picker-label {
   padding-left: 0px !important;
 }
 
-.ql-editor{
+.ql-editor {
   padding-left: 0px !important;
 }

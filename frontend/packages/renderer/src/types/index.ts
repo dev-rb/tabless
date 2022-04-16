@@ -22,10 +22,10 @@ export interface ISearchResult {
     }
 }
 
-
 declare global {
     interface Window {
         openUrl: any,
-        openWindow: any
+        openWindow: any,
+        windowControls: any
     }
 }
