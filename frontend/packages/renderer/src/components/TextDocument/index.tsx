@@ -8,7 +8,13 @@ import { useAutoSave } from '@/hooks/useAutoSave';
 import { useUpdateDocumentMutation } from '@/redux/api/documentEndpoints';
 import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 
-const TextDocument = ({ title, author, tags, text, dateCreated, id }: ITextDocument) => {
+interface AdditionalProps {
+    updateText: (val: string) => void
+}
+
+type IDocumentProps = ITextDocument & AdditionalProps;
+
+const TextDocument = ({ title, author, tags, text, dateCreated, id, updateText }: IDocumentProps) => {
 
     const [docTitle, setDocTitle] = React.useState<string>(title);
     const [docTags, setDocTags] = React.useState<ITextDocumentTag[]>(tags);
@@ -76,7 +82,7 @@ const TextDocument = ({ title, author, tags, text, dateCreated, id }: ITextDocum
 
                 </div>
             </div>
-            <TextEditor />
+            <TextEditor updateText={updateText} text={text} />
         </div>
     );
 }

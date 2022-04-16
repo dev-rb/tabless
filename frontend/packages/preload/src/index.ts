@@ -6,4 +6,5 @@ import './nodeCrypto';
 import './versions';
 import './openUrl';
 import './openFile';
+import './openWindow';
 import './windowControls';

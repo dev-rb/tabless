@@ -11,12 +11,6 @@ import { ref, getDatabase, onValue } from 'firebase/database';
 import { useDispatch } from 'react-redux';
 import { signInUser, signOutLocal } from '@/redux/slices/authSlice';
 
-declare global {
-    interface Window {
-        openUrl: any
-    }
-}
-
 const schema = z.object({
     email: z.string().email({ message: 'Invalid Email' }),
     password: z.string().nonempty({ message: 'Password cannot be empty' })

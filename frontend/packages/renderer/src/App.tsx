@@ -10,15 +10,9 @@ import HomePage from './pages/Home';
 import DocumentPage from './pages/DocumentPage';
 
 function App() {
-
-  // React.useEffect(() => {
-  //   if (currUser) {
-  //     console.log("Current User: ", currUser)
-  //   }
-  // }, [currUser])
   return (
     <BrowserRouter>
-      <div className="h-screen w-screen flex flex-col">
+      <div className="h-screen w-screen flex flex-col pt-8">
         <TitleBar />
         <div className="h-full overflow-hidden">
           <Routes>

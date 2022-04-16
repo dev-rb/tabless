@@ -1,4 +1,4 @@
-import { useDebouncedValue } from "@mantine/hooks";
+import { useDebouncedValue, useDidUpdate } from "@mantine/hooks";
 import { RefObject, useEffect, useState } from "react"
 
 interface Props {
@@ -13,7 +13,7 @@ export const useAutoSave = ({ callback }: Props) => {
         setCurrentValue(newValue);
     }
 
-    useEffect(() => {
+    useDidUpdate(() => {
         if (debounced === currentValue) {
             console.log("Callback called")
             callback();

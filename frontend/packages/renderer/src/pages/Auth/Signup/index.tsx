@@ -71,6 +71,7 @@ const SignupPage = () => {
             await createUserWithEmailAndPassword(auth, email, password);
         } catch (err) {
             const error = err as FirebaseError;
+            console.log(error)
             if (error.code === 'auth/email-already-in-use') {
                 form.setErrors({ email: 'This email is already in use!' })
             }
@@ -82,9 +83,13 @@ const SignupPage = () => {
             if (user) {
                 // console.log(user);
                 user.getIdToken().then((val) => dispatch(signInUser(val)));
-                navigate((location.state as LocationState).from, { replace: true });
+                if (location.state) {
+                    navigate((location.state as LocationState).from, { replace: true });
+                } else {
+                    navigate('/', { replace: true });
+                }
             } else {
-                dispatch(signOutLocal())
+                dispatch(signOutLocal());
             }
         });
 

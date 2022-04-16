@@ -1,9 +1,12 @@
-import { Accordion, AccordionItem, Avatar, Burger, Button, CSSObject, Drawer, Group, Loader, Space, Switch } from '@mantine/core';
+import { Accordion, AccordionItem, Avatar, Burger, Button, CSSObject, Drawer, Group, Loader, Menu, MenuItem, Space, Switch } from '@mantine/core';
 import * as React from 'react';
-import { MdExpandMore, MdFolder, MdHome, MdPerson } from 'react-icons/md';
+import { MdExpandMore, MdFolder, MdHome, MdLogout, MdPerson } from 'react-icons/md';
 import { HiDocument } from 'react-icons/hi';
 import { useGetAllDocumentsQuery } from '@/redux/api/documentEndpoints';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signOutLocal } from '@/redux/slices/authSlice';
+import { getAuth, signOut } from 'firebase/auth';
 
 const drawerStyles: CSSObject = {
     height: '70%',
@@ -18,7 +21,7 @@ const TopBar = () => {
     const [drawerOpen, setDrawerOpen] = React.useState(false);
 
     return (
-        <div className="w-full h-12 px-6 border-b-[1px] border-[#A2A2A3]">
+        <div className="w-full h-fit justify-center px-6 py-1 border-b-[1px] border-[#A2A2A3]">
             <Drawer
                 opened={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
@@ -32,7 +35,7 @@ const TopBar = () => {
                 <DrawerContent />
             </Drawer>
             <Group position='apart'>
-                <Burger opened={drawerOpen} color='white' onClick={() => setDrawerOpen((prev) => !prev)} />
+                <Burger opened={drawerOpen} color='white' size={'sm'} onClick={() => setDrawerOpen((prev) => !prev)} />
                 <Switch></Switch>
             </Group>
         </div>
@@ -69,7 +72,16 @@ const DrawerContent = () => {
 
     const { data, isLoading } = useGetAllDocumentsQuery();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const auth = getAuth();
 
+    const signUserOut = () => {
+        signOut(auth).then(() => {
+            setTimeout(() => {
+                dispatch(signOutLocal());
+            }, 500)
+        });
+    }
     return (
         <div className="flex flex-col gap-8">
             <div className="flex flex-row items-center gap-4">
@@ -80,6 +92,9 @@ const DrawerContent = () => {
                     <h4 className="text-lg"> Rahul's Space </h4>
                     <p className="text-[#797E8A] text-sm"> {data && data.length} documents </p>
                 </div>
+                <Menu trigger='hover' closeOnItemClick>
+                    <MenuItem icon={<MdLogout />} onClick={signUserOut}> Sign out </MenuItem>
+                </Menu>
             </div>
             <Button variant='filled' size='lg' onClick={() => navigate('/')} leftIcon={<MdHome color="white" />}> Home </Button>
             <div className="flex flex-col text-[#797E8A] gap-2">

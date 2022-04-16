@@ -12,9 +12,20 @@ export interface ITextDocumentTag {
     title: string
 }
 
+export interface ISearchResult {
+    title: string,
+    description: string,
+    url: string,
+    favicons: {
+        high_res: string,
+        low_res: string
+    }
+}
+
 declare global {
     interface Window {
-        openFile: any,
+        openUrl: any,
+        openWindow: any,
         windowControls: any
     }
 }
