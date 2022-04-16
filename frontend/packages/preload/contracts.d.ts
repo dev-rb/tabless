@@ -6,6 +6,7 @@ interface Exposed {
   readonly openUrl: Readonly<typeof import('./src/openUrl').openUrlTool>;
   readonly openFile: Readonly<typeof import('./src/openFile').getFileOnSystem>;
   readonly openWindow: Readonly<typeof import('./src/openWindow').openExternalWindow>;
+  readonly windowControls: Readonly<typeof import('./src/windowControls').windowControls>;
 }
 
 
