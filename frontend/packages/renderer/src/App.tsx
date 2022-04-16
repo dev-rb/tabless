@@ -18,7 +18,7 @@ function App() {
   // }, [currUser])
   return (
     <BrowserRouter>
-      <div className="h-screen w-screen flex flex-col pt-12">
+      <div className="h-screen w-screen flex flex-col">
         <TitleBar />
         <div className="h-full overflow-hidden">
           <Routes>
