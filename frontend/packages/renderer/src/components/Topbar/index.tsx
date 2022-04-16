@@ -21,7 +21,7 @@ const TopBar = () => {
     const [drawerOpen, setDrawerOpen] = React.useState(false);
 
     return (
-        <div className="w-full h-12 px-6 border-b-[1px] border-[#A2A2A3]">
+        <div className="w-full h-fit justify-center px-6 py-1 border-b-[1px] border-[#A2A2A3]">
             <Drawer
                 opened={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
@@ -35,7 +35,7 @@ const TopBar = () => {
                 <DrawerContent />
             </Drawer>
             <Group position='apart'>
-                <Burger opened={drawerOpen} color='white' onClick={() => setDrawerOpen((prev) => !prev)} />
+                <Burger opened={drawerOpen} color='white' size={'sm'} onClick={() => setDrawerOpen((prev) => !prev)} />
                 <Switch></Switch>
             </Group>
         </div>

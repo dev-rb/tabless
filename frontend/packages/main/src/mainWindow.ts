@@ -82,9 +82,15 @@ app.on('ready', async () => {
       console.error(error)
       return callback('404')
     }
-  })
+  });
 
   ipcMain.handle('open-file-dialog', (e, cb) => {
     return dialog.showOpenDialogSync({ properties: ['openFile'] });
+  });
+
+  ipcMain.on('open-window', (e, url) => {
+    console.log("Main open called: ", url)
+    const win = new BrowserWindow({ width: 600, height: 400 });
+    win.loadURL(url);
   })
 });

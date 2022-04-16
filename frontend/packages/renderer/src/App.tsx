@@ -12,7 +12,7 @@ import DocumentPage from './pages/DocumentPage';
 function App() {
   return (
     <BrowserRouter>
-      <div className="h-screen w-screen flex flex-col pt-12">
+      <div className="h-screen w-screen flex flex-col pt-8">
         <TitleBar />
         <div className="h-full overflow-hidden">
           <Routes>

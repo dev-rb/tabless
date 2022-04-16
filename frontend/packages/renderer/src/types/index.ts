@@ -21,3 +21,11 @@ export interface ISearchResult {
         low_res: string
     }
 }
+
+
+declare global {
+    interface Window {
+        openUrl: any,
+        openWindow: any
+    }
+}

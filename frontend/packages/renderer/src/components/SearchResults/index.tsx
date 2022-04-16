@@ -1,6 +1,7 @@
 import { useProcessTextMutation } from '@/redux/api/searchEndpoints';
 import { ISearchResult } from '@/types';
-import { Avatar, Loader } from '@mantine/core';
+import { Avatar, Button, Loader } from '@mantine/core';
+import { BrowserWindow } from 'electron';
 import { nanoid } from 'nanoid';
 import * as React from 'react';
 import { MdBookmark, MdCopyAll, MdSearch } from 'react-icons/md';
@@ -12,9 +13,14 @@ interface Props {
 
 const SearchResults = ({ searchResults, isLoading }: Props) => {
 
+    const openWindow = () => {
+        window.openWindow.openExternalWindow('https://github.com')
+
+    }
+
     return (
-        <div className="flex flex-col min-w-min max-w-sm w-full h-full gap-2 border-l-2 border-l-[#72747B] pl-8">
-            <div className="max-w-full h-11 flex flex-row justify-between items-center px-4 rounded-[4px] border-[1px] border-[#A67AE9] text-[#707071]">
+        <div className="flex flex-col min-w-min max-w-sm w-full h-full gap-2 border-l-2 border-l-[#72747B] pl-4 items-center">
+            <div className="max-w-xs w-full h-11 flex flex-row justify-between items-center px-4 rounded-[4px] border-[1px] border-[#A67AE9] text-[#707071]">
                 <p> Search keywords </p>
                 <MdSearch size={25} />
             </div>
@@ -32,6 +38,8 @@ const SearchResults = ({ searchResults, isLoading }: Props) => {
                 {isLoading ? <Loader /> : searchResults.map((val) => <ResultItem key={nanoid()} {...val} />)}
                 {/* {searchResults.map((val) => <ResultItem key={val.url} {...val} />)} */}
             </div>
+
+            <Button onClick={openWindow} > Open Test </Button>
         </div>
     );
 }
