@@ -11,3 +11,10 @@ export interface ITextDocumentTag {
     id: string,
     title: string
 }
+
+declare global {
+    interface Window {
+        openFile: any,
+        windowControls: any
+    }
+}

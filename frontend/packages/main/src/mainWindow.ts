@@ -7,11 +7,7 @@ async function createWindow() {
     minWidth: 800,
     minHeight: 600,
     backgroundColor: '#1D1D20',
-    titleBarStyle: 'hidden',
     frame: false,
-    titleBarOverlay: {
-      color: '#2B2B2E',
-    },
     autoHideMenuBar: true,
     trafficLightPosition: {
       x: 20,
@@ -87,4 +83,29 @@ app.on('ready', async () => {
   ipcMain.handle('open-file-dialog', (e, cb) => {
     return dialog.showOpenDialogSync({ properties: ['openFile'] });
   })
+
+  ipcMain.handle('close-window', () => {
+    let window = BrowserWindow.getAllWindows().find(w => !w.isDestroyed());
+    if (window) {
+      window.close();
+    }
+  });
+
+  ipcMain.handle('minimize-window', () => {
+    let window = BrowserWindow.getAllWindows().find(w => !w.isDestroyed());
+    if (window) {
+      window.minimize();
+    }
+  });
+
+  ipcMain.handle('restore-window', () => {
+    let window = BrowserWindow.getAllWindows().find(w => !w.isDestroyed());
+    if (window) {
+      if (window.isMinimized() || window.isMaximized()) {
+        window.restore();
+      } else {
+        window.maximize();
+      }
+    }
+  });
 });
