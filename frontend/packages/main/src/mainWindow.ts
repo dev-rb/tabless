@@ -86,7 +86,7 @@ app.on('ready', async () => {
 
   ipcMain.on('open-window', (e, url) => {
     console.log("Main open called: ", url)
-    const win = new BrowserWindow({ width: 600, height: 400 });
+    const win = new BrowserWindow({ width: 600, height: 400, frame: false, titleBarStyle: 'hidden' });
     win.loadURL(url);
   })
 
@@ -94,6 +94,7 @@ app.on('ready', async () => {
     let window = BrowserWindow.getAllWindows().find(w => !w.isDestroyed());
     if (window) {
       window.close();
+      app.quit();
     }
   });
 

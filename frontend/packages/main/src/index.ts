@@ -1,6 +1,6 @@
-import {app} from 'electron';
+import { app } from 'electron';
 import './security-restrictions';
-import {restoreOrCreateWindow} from '/@/mainWindow';
+import { restoreOrCreateWindow } from '/@/mainWindow';
 
 
 /**
@@ -48,7 +48,7 @@ app.whenReady()
 if (import.meta.env.DEV) {
   app.whenReady()
     .then(() => import('electron-devtools-installer'))
-    .then(({default: installExtension, VUEJS3_DEVTOOLS}) => installExtension(VUEJS3_DEVTOOLS, {
+    .then(({ default: installExtension, REACT_DEVELOPER_TOOLS }) => installExtension(REACT_DEVELOPER_TOOLS, {
       loadExtensionOptions: {
         allowFileAccess: true,
       },
@@ -62,7 +62,7 @@ if (import.meta.env.DEV) {
 if (import.meta.env.PROD) {
   app.whenReady()
     .then(() => import('electron-updater'))
-    .then(({autoUpdater}) => autoUpdater.checkForUpdatesAndNotify())
+    .then(({ autoUpdater }) => autoUpdater.checkForUpdatesAndNotify())
     .catch((e) => console.error('Failed check updates:', e));
 }
 

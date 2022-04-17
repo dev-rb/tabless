@@ -35,6 +35,7 @@ const SearchResults = ({ searchResults, isLoading }: Props) => {
                         low_res: 'https://www.google.com/s2/favicons?sz=64&domain_url=www.hollywoodsoapbox.com'
                     }}
                 /> */}
+                <ResultItem description='' favicons={{ high_res: '', low_res: '' }} title='' url='https://github.com' />
                 {isLoading ? <Loader /> : searchResults.map((val) => <ResultItem key={nanoid()} {...val} />)}
                 {/* {searchResults.map((val) => <ResultItem key={val.url} {...val} />)} */}
             </div>
