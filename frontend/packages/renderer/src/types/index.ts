@@ -22,6 +22,12 @@ export interface ISearchResult {
     }
 }
 
+export interface IPdf {
+    id: string,
+    name: string,
+    location: string,
+}
+
 declare global {
     interface Window {
         openUrl: any,
