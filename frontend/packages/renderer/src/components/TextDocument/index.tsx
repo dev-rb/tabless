@@ -52,7 +52,7 @@ const TextDocument = ({ title, author, tags, text, dateCreated, id, updateText }
     }
 
     return (
-        <div className="max-w-3xl w-full h-full flex flex-col justify-start">
+        <div className="max-w-3xl w-full h-full flex flex-col justify-start  pt-8">
             <div className="flex flex-col gap-4 relative">
                 {isLoading && (status === QueryStatus.pending) &&
                     <div className="text-blue-600 absolute -top-8 left-0 flex flex-row gap-2">

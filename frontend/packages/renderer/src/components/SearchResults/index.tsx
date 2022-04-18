@@ -19,7 +19,7 @@ const SearchResults = ({ searchResults, isLoading }: Props) => {
     }
 
     return (
-        <div className="flex flex-col min-w-min max-w-sm w-full h-full gap-2 border-l-2 border-l-[#72747B] pl-4 items-center">
+        <div className="flex flex-col min-w-min max-w-sm w-full h-full gap-2 border-l-2 border-l-[#72747B] pl-4 pt-8 items-center">
             <div className="max-w-xs w-full h-11 flex flex-row justify-between items-center px-4 rounded-[4px] border-[1px] border-[#A67AE9] text-[#707071]">
                 <p> Search keywords </p>
                 <MdSearch size={25} />
