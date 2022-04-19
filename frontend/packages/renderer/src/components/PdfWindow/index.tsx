@@ -11,7 +11,7 @@ const useStyles = createStyles({
     tabControl: { ':hover:not(.mantine-Tabs-tabActive)': { borderRadius: 0, backgroundColor: '#3E315360 !important', color: '#A2A2A3' }, color: '#A2A2A3 !important' },
     tabActive: { borderRadius: 0, backgroundColor: '#3E3153 !important', color: 'white !important' },
     tabLabel: { maxWidth: '15ch', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
-    body: { maxHeight: '100%', overflow: 'hidden' }
+    body: { height: '100%' }
 })
 
 interface PdfWindowProps {
@@ -42,14 +42,14 @@ const PdfWindow = ({ pdfs }: PdfWindowProps) => {
     }
 
     return (
-        <div className="flex flex-col h-full max-w-4xl w-full">
+        <div className="flex flex-col h-full max-w-4xl w-full border-l-2 border-l-[#A2A2A3]">
             {/* Tab System */}
-            <div className="flex flex-row border-b-[1px] border-b-[#343437] " >
+            <div className="flex flex-row border-b-[1px] border-b-[#343437] relative" >
                 <Tabs variant='pills' tabPadding={"xl"} active={activeTab} onTabChange={onTabChange} classNames={classes}>
                     {currentPdfs ?
                         currentPdfs.map((val) =>
                             <Tab key={val.id} title={val.name} label={val.name}>
-                                <div className="w-full h-full max-h-screen overflow-auto">
+                                <div className="w-full h-full max-h-[80vh]">
                                     <PdfViewer fileLocation={val.location} />
                                 </div>
                             </Tab>

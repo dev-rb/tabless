@@ -17,6 +17,14 @@ const PdfViewer = ({ fileLocation }: PdfViewerProps) => {
     const toolbarPluginInstance = toolbarPlugin();
     const { Toolbar } = toolbarPluginInstance;
 
+    React.useEffect(() => {
+        console.log("Created pdf view");
+
+        return () => {
+            console.log("Destroyed pdf view");
+        }
+    }, [])
+
     return (
         <div className={"w-full h-full select-text pb-20 relative transition-all ml-auto"}>
             {/* <button className="absolute -left-2 m-auto top-0 bottom-0 w-8 h-32 bg-red-500 z-10 flex items-center justify-center" onClick={() => setIsExpanded((prev) => !prev)}>
@@ -32,7 +40,7 @@ const PdfViewer = ({ fileLocation }: PdfViewerProps) => {
                     </Toolbar>
                 </div>
                 {filePath !== "" &&
-                    <Viewer fileUrl={`app://getMediaFile/${fileLocation}`} onDocumentLoad={(e) => { console.log(e.doc) }} onZoom={(e) => console.log("Zoom: ", e)} plugins={[toolbarPluginInstance]} defaultScale={SpecialZoomLevel.PageFit} />
+                    <Viewer fileUrl={`app://getMediaFile/${fileLocation}`} onDocumentLoad={(e) => { console.log(e.doc) }} onZoom={(e) => console.log("Zoom: ", e)} plugins={[toolbarPluginInstance]} defaultScale={SpecialZoomLevel.PageWidth} />
                     // :
                     // <div className="h-full w-full flex items-center justify-center flex-col gap-8">
                     //     <h1 className="text-white font-bold text-xl"> Open a file </h1>
