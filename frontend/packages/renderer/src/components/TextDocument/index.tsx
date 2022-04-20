@@ -4,7 +4,7 @@ import { MdAdd, MdClose, MdPerson, MdTag } from 'react-icons/md';
 import TextEditor from '../TextEditor';
 import { nanoid } from 'nanoid';
 import { ITextDocument, ITextDocumentTag } from '@/types';
-import { useAutoSave } from '@/hooks/useAutoSave';
+import { useDocAutoSave } from '@/hooks/useDocAutoSave';
 import { useUpdateDocumentMutation } from '@/redux/api/documentEndpoints';
 import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 
@@ -14,19 +14,26 @@ interface AdditionalProps {
 
 type IDocumentProps = ITextDocument & AdditionalProps;
 
-const TextDocument = ({ title, author, tags, text, dateCreated, id, updateText }: IDocumentProps) => {
+const TextDocument = ({ updateText, ...doc }: IDocumentProps) => {
+
+    const { title, author, dateCreated, id, tags, text } = doc;
 
     const [docTitle, setDocTitle] = React.useState<string>(title);
     const [docTags, setDocTags] = React.useState<ITextDocumentTag[]>(tags);
 
     const [updateDocumentMutation, { isLoading, status }] = useUpdateDocumentMutation();
 
-    const updateDocument = () => {
+    const updateDocument = (fieldToUpdate: string, newValue: string) => {
         console.log("Update called!")
-        updateDocumentMutation({ title: docTitle, author, tags, text, dateCreated, id })
+        updateDocumentMutation({ ...doc, [fieldToUpdate]: newValue })
     }
 
-    const { onInputChange } = useAutoSave({ callback: updateDocument });
+    const { onInputChange } = useDocAutoSave({ updateDocument });
+
+    const updateTextFromEditor = (val: string) => {
+        updateText(val);
+        onInputChange(val, 'text');
+    }
 
     const addNewTag = (newTagName: string = '') => {
         const newTag: ITextDocumentTag = { id: nanoid(), title: newTagName };
@@ -63,7 +70,7 @@ const TextDocument = ({ title, author, tags, text, dateCreated, id, updateText }
                 <TextInput placeholder='Untitled' value={docTitle}
                     type="text"
                     styles={{ input: { color: 'white', background: 'none', border: 'none', fontSize: '1.875rem', fontWeight: '600', padding: 0, textOverflow: 'ellipsis', wordWrap: 'break-word' } }}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setDocTitle(e.target.value); onInputChange(e.target.value); }} />
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setDocTitle(e.target.value); onInputChange(e.target.value, 'title'); }} />
 
                 {/* <h1 className="text-white font-semibold text-3xl"> {title} </h1> */}
 
@@ -82,7 +89,7 @@ const TextDocument = ({ title, author, tags, text, dateCreated, id, updateText }
 
                 </div>
             </div>
-            <TextEditor updateText={updateText} text={text} />
+            <TextEditor updateText={updateTextFromEditor} text={text} />
         </div>
     );
 }
