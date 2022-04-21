@@ -7,6 +7,7 @@ import { OpenaiModule } from './openai/openai.module';
 import { ConfigModule } from '@nestjs/config';
 import { DocumentsModule } from './documents/documents.module';
 import { SearchModule } from './search/search.module';
+import { FoldersModule } from './folders/folders.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { SearchModule } from './search/search.module';
     }),
     OpenaiModule.forRoot({ apiKey: process.env.OPENAI_API_KEY, isJsonMime: (mime) => false }),
     DocumentsModule,
-    SearchModule],
+    SearchModule,
+    FoldersModule],
   controllers: [AppController],
   providers: [AppService],
 })
