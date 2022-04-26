@@ -12,6 +12,12 @@ export interface ITextDocumentTag {
     title: string
 }
 
+export interface IFolder {
+    id: string,
+    name: string,
+    documents: ITextDocument[]
+}
+
 export interface ISearchResult {
     title: string,
     description: string,
