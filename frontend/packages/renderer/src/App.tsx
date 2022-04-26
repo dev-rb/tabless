@@ -8,6 +8,7 @@ import { IRootState } from './redux/store';
 import SignupPage from './pages/Auth/Signup';
 import HomePage from './pages/Home';
 import DocumentPage from './pages/DocumentPage';
+import FoldersPage from './pages/FoldersPage';
 
 function App() {
   return (
@@ -19,6 +20,10 @@ function App() {
             <Route path='/' element={<RequireAuth />} >
               <Route index element={<HomePage />} />
               <Route path='/document/:documentId' element={<DocumentPage />} />
+              <Route path='/folders' element={<FoldersPage />} >
+                <Route index element={<FoldersPage.Home />} />
+                <Route path=':folderId' element={<FoldersPage.Content />} />
+              </Route>
             </Route>
             <Route path='/login' element={<AuthPage />} />
             <Route path='/signup' element={<SignupPage />} />

@@ -97,6 +97,7 @@ const DrawerContent = () => {
                 </Menu>
             </div>
             <Button variant='filled' size='lg' onClick={() => navigate('/')} leftIcon={<MdHome color="white" />}> Home </Button>
+            <Button variant='filled' size='lg' onClick={() => navigate('/folders')} leftIcon={<MdFolder color="white" />}> Folders </Button>
             <div className="flex flex-col text-[#797E8A] gap-2">
                 <h1 className="uppercase text-sm font-bold"> Recent </h1>
                 <div className="flex flex-col">
