@@ -11,6 +11,7 @@ export class DocumentsController {
      */
     @Get('/')
     getSavedDocuments(@Request() req) {
+        console.log("All documents get called!");
         return this.documentsService.getSavedDocuments(req.userId);
     }
 

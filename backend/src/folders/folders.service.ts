@@ -28,13 +28,14 @@ export class FoldersService {
         const userRef = await this.usersCollection.doc(userId);
         const docRef = await userRef.get();
         let allUserFolders = docRef.get('folders');
-        const folderWithId = allUserFolders.findIndex((val) => val.id === folderId);
 
-        if (folderWithId !== -1) {
-            const folderData = allUserFolders[folderWithId];
-            allUserFolders[folderWithId] = { ...folderData, name: newFolderName };
+        for (let i = 0; i < allUserFolders.length; i++) {
+            if (allUserFolders[i].id === folderId) {
+                allUserFolders[i].name = newFolderName;
+            }
         }
 
+        console.log("Folder updated here!", newFolderName);
         userRef.update({
             folders: allUserFolders
         }).catch((err) => console.log("Firebase update failed!"));
@@ -79,7 +80,7 @@ export class FoldersService {
         const userRef = await this.usersCollection.doc(userId);
         const docRef = await userRef.get();
         let allUserFolders = docRef.get('folders');
-        allUserFolders = allUserFolders.filter((val) => val.id === folderId);
+        allUserFolders = allUserFolders.filter((val) => val.id !== folderId);
 
         userRef.update({
             folders: allUserFolders
