@@ -74,7 +74,11 @@ const AuthPage = () => {
             if (user) {
                 // console.log(user);
                 user.getIdToken().then((val) => dispatch(signInUser(val)));
-                navigate((location.state as LocationState).from, { replace: true });
+                if (location.state) {
+                    navigate((location.state as LocationState).from, { replace: true });
+                } else {
+                    navigate('/', { replace: true });
+                }
             } else {
                 dispatch(signOutLocal())
             }

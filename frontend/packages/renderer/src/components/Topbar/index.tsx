@@ -1,19 +1,13 @@
-import { Accordion, AccordionItem, Avatar, Burger, Button, CSSObject, Drawer, Group, Loader, Menu, MenuItem, Space, Switch } from '@mantine/core';
+import { Burger, CSSObject, Drawer, Group, Switch } from '@mantine/core';
 import * as React from 'react';
-import { MdExpandMore, MdFolder, MdHome, MdLogout, MdPerson } from 'react-icons/md';
-import { HiDocument } from 'react-icons/hi';
-import { useGetAllDocumentsQuery } from '@/redux/api/documentEndpoints';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { signOutLocal } from '@/redux/slices/authSlice';
-import { getAuth, signOut } from 'firebase/auth';
+import { DrawerContent } from './components/Drawer';
 
 const drawerStyles: CSSObject = {
     height: '70%',
     margin: 'auto',
     borderTopRightRadius: '10px',
     borderBottomRightRadius: '10px',
-    background: '#31343B'
+    background: '#31343B',
 }
 
 const TopBar = () => {
@@ -27,7 +21,7 @@ const TopBar = () => {
                 onClose={() => setDrawerOpen(false)}
                 closeOnClickOutside={true}
                 withCloseButton={false}
-                padding="lg"
+                padding="xs"
                 size={"sm"}
                 overlayOpacity={0}
                 styles={{ drawer: drawerStyles }}
