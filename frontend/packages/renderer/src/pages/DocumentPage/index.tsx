@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useGetDocumentQuery } from '@/redux/api/documentEndpoints';
 import { LoadingOverlay } from '@mantine/core';
 import { useGenerateSearchResults } from '@/hooks/useGenerateSearchResults';
+import ResizeableSection from '@/components/ResizableSection';
 
 const DocumentPage = () => {
 
@@ -23,7 +24,7 @@ const DocumentPage = () => {
     }
 
     return (
-        <div className="flex flex-row gap-4 h-full pl-10">
+        <div className="flex flex-row gap-4 h-full pl-10 relative">
             {
                 data && !isFetching ? <TextDocument updateText={updateText} {...data} />
                     :
@@ -31,6 +32,7 @@ const DocumentPage = () => {
                         <LoadingOverlay visible={isFetching || !data} overlayColor={'#28282B'} overlayOpacity={0.8} />
                     </div>
             }
+            {/* <ResizeableSection /> */}
             <PdfViewer />
             <SearchResults searchResults={results} isLoading={isLoading} />
 
