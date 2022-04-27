@@ -43,7 +43,7 @@ export const foldersApi = api.injectEndpoints({
             query: (updateName: { id: string, newName: string }) => ({
                 url: `folders/update/${updateName.id}`,
                 method: 'PUT',
-                body: updateName.newName,
+                body: { newName: updateName.newName },
                 headers: { 'Content-Type': 'application/json' }
             }),
             invalidatesTags: [{ type: 'Folder', id: 'LIST' }]
