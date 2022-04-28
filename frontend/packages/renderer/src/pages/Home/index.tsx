@@ -8,6 +8,7 @@ import { MdAdd, MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { HiDocument } from 'react-icons/hi';
+import PrimaryButton from "@/components/PrimaryButton";
 
 const auth = getAuth();
 
@@ -52,15 +53,14 @@ const HomePage = () => {
                         <h1 className="text-[#9D9D9D] text-3xl font-medium"> You have no recent documents. </h1>
                 }
 
-                <Button
-                    className="bg-[#3071E8] w-72 hover:bg-[#457fec]"
+                <PrimaryButton
                     leftIcon={<MdAdd size={20} />}
                     variant='filled'
                     size='md'
                     onClick={handleCreateNewDocument}
                 >
                     Create New
-                </Button>
+                </PrimaryButton>
             </div>
         </div>
     );

@@ -19,13 +19,7 @@ const FolderContentPage = () => {
 
     return (
         <div className="w-full h-full">
-            {/* {data && data.documents.map((val) =>
-                <button className="w-full max-w-sm h-fit max-h-32 p-4 flex gap-4 text-[#6A6A6A] text-lg items-center rounded-sm border-[1px] border-[#44444A] hover:text-white hover:border-[#3071E8]">
-                    <HiDocument />
-                    <h6> {val.title} </h6>
-                </button>
-            )
-            } */}
+
             <div className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8">
                 {(isLoading || isFetching) ? <Loader /> : documents && documents.map((value) =>
 
