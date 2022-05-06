@@ -5,6 +5,7 @@ import { useDebouncedValue, useDidUpdate } from "@mantine/hooks";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { diffWords, diffSentences, diffTrimmedLines } from "diff";
+import Diff from "text-diff";
 import { addTextToHistory } from "@/redux/slices/historySlice";
 
 const MAX_CHAR_LIMIT = 800;
@@ -21,16 +22,18 @@ export const useGenerateSearchResults = (documentText: string) => {
 
     const shouldTextBeProcessed = (newText: string, historyText: string) => {
         console.log("Comparing the two following texts: ", newText, historyText)
-        const diff = diffTrimmedLines(historyText, newText);
-        console.log("Here are all the changes made! ", diff);
+        const diff = new Diff();
+        var textDiff = diff.main(newText, historyText);
+        console.log("Here are all the changes made! ", textDiff);
+        console.log(diff.levenshtein(textDiff));
 
-        diff.forEach((val) => {
-            if (val.added && val.count) {
-                if (val.count > 35) {
-                    return true;
-                }
-            }
-        })
+        // textDiff.forEach((val) => {
+        //     if (val.added && val.count) {
+        //         if (val.count > 35) {
+        //             return true;
+        //         }
+        //     }
+        // })
 
         return false;
     }
@@ -57,9 +60,11 @@ export const useGenerateSearchResults = (documentText: string) => {
                         console.log(textSlice)
                         dispatch(addTextToHistory({ position: { start, end }, content: textSlice }));
                         textParts.push(textSlice);
+                    } else {
+                        console.log("This text should not be processed because there aren't enough changes! ")
+                        console.log(textSlice)
+
                     }
-                    console.log("This text should not be processed because there aren't enough changes! ")
-                    console.log(textSlice)
 
                 } else {
                     console.log("This text is not in the history and will be processed! ")
@@ -85,8 +90,10 @@ export const useGenerateSearchResults = (documentText: string) => {
             if (shouldTextBeProcessed(debouncedText, historyText)) {
                 console.log("This text should be processed! ", debouncedText)
                 dispatch(addTextToHistory({ position: { start: 0, end: MAX_CHAR_LIMIT }, content: debouncedText }));
+            } else {
+
+                console.log("This text should not be processed! ", debouncedText)
             }
-            console.log("This text should not be processed! ", debouncedText)
         } else {
             console.log("This text is not in the history and will be processed! ", debouncedText)
             dispatch(addTextToHistory({ position: { start: 0, end: MAX_CHAR_LIMIT }, content: debouncedText }));
