@@ -6,10 +6,11 @@ import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { Loader } from '@mantine/core';
 
 interface PdfViewerProps {
+    isVisible: boolean,
     fileLocation: string
 }
 
-const PdfViewer = ({ fileLocation }: PdfViewerProps) => {
+const PdfViewer = ({ isVisible, fileLocation }: PdfViewerProps) => {
 
     const [filePath, setFilePath] = React.useState(fileLocation);
     const [isExpanded, setIsExpanded] = React.useState(false);
@@ -26,7 +27,7 @@ const PdfViewer = ({ fileLocation }: PdfViewerProps) => {
     }, [])
 
     return (
-        <div className={"w-full h-full select-text pb-20 relative transition-all ml-auto"}>
+        <div hidden={!isVisible} className={"w-full h-full select-text pb-20 relative transition-all ml-auto"}>
             {/* <button className="absolute -left-2 m-auto top-0 bottom-0 w-8 h-32 bg-red-500 z-10 flex items-center justify-center" onClick={() => setIsExpanded((prev) => !prev)}>
                 {isExpanded ?
                     <MdExpandLess size={80} transform={'rotate(90)'} /> :

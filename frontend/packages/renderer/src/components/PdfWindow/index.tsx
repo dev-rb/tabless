@@ -1,9 +1,10 @@
 import { IPdf } from '@/types';
-import { Button, createStyles, Tab, Tabs } from '@mantine/core';
+import { Button, createStyles } from '@mantine/core';
 import { nanoid } from 'nanoid';
 import * as React from 'react';
 import { MdFilePresent, MdFileUpload } from 'react-icons/md';
 import PdfViewer from '../PdfViewer';
+import Tabs from './Tabs';
 
 const useStyles = createStyles({
     root: { flex: 1 },
@@ -44,7 +45,15 @@ const PdfWindow = ({ pdfs }: PdfWindowProps) => {
     return (
         <div className="flex flex-col h-full max-w-4xl w-full border-l-2 border-l-[#A2A2A3]">
             {/* Tab System */}
-            <div className="flex flex-row border-b-[1px] border-b-[#343437] relative" >
+            <OpenFile openPdf={openNewPdf} />
+            {currentPdfs ?
+                <Tabs pdfs={currentPdfs} children={undefined} />
+                :
+                <div className="!bg-transparent pointer-events-none">
+                </div>
+            }
+            {/* <div className="flex flex-row border-b-[1px] border-b-[#343437] relative" >
+                
                 <Tabs variant='pills' tabPadding={"xl"} active={activeTab} onTabChange={onTabChange} classNames={classes}>
                     {currentPdfs ?
                         currentPdfs.map((val) =>
@@ -60,7 +69,7 @@ const PdfWindow = ({ pdfs }: PdfWindowProps) => {
                     }
                     <OpenFile openPdf={openNewPdf} />
                 </Tabs>
-            </div>
+            </div> */}
 
             {/* Pdf Viewer */}
             {/* {
