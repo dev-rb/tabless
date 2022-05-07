@@ -43,7 +43,7 @@ const PdfWindow = ({ pdfs }: PdfWindowProps) => {
     }
 
     return (
-        <div className="flex flex-col h-full max-w-4xl w-full border-l-2 border-l-[#A2A2A3]">
+        <div className="flex flex-col h-full max-w-4xl w-full border-l-2 border-l-[#A2A2A3] pl-2">
             {/* Tab System */}
             <OpenFile openPdf={openNewPdf} />
             {currentPdfs ?

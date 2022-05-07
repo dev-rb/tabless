@@ -41,7 +41,7 @@ const PdfViewer = ({ isVisible, fileLocation }: PdfViewerProps) => {
                     </Toolbar>
                 </div>
                 {filePath !== "" &&
-                    <Viewer fileUrl={`app://getMediaFile/${fileLocation}`} onDocumentLoad={(e) => { console.log(e.doc) }} onZoom={(e) => console.log("Zoom: ", e)} plugins={[toolbarPluginInstance]} defaultScale={SpecialZoomLevel.PageWidth} />
+                    <Viewer fileUrl={`app://getMediaFile/${fileLocation}`} onDocumentLoad={(e) => { console.log(e.doc) }} onPageChange={(e) => console.log("Page Change: ", e)} onZoom={(e) => console.log("Zoom: ", e)} plugins={[toolbarPluginInstance]} defaultScale={SpecialZoomLevel.PageWidth} />
                     // :
                     // <div className="h-full w-full flex items-center justify-center flex-col gap-8">
                     //     <h1 className="text-white font-bold text-xl"> Open a file </h1>
