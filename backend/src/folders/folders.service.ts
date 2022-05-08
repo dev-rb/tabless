@@ -1,89 +1,103 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CollectionReference, FieldValue } from 'firebase-admin/firestore';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class FoldersService {
-    constructor(@Inject('users') private usersCollection: CollectionReference) { }
+    constructor(@Inject('users') private prisma: PrismaService) { }
 
     async getAllFolders(userId: string) {
-        const docRef = await this.usersCollection.doc(userId).get();
-        return docRef.get('folders');
+        const user = await this.prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+            select: {
+                folders: {
+                    include: {
+                    }
+                }
+            },
+        })
+        return user.folders;
     }
 
     async getFolderWithId(folderId: string, userId: string) {
-        const docRef = await this.usersCollection.doc(userId).get();
-        const allFolders = docRef.get('folders');
+        const user = await this.prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+            select: {
+                folders: {
+                    where: {
+                        id: folderId,
+                    },
+                    include: {
+                    }
+                }
+            },
+        })
 
-        return allFolders.find((val) => val.id === folderId);
+        return user.folders.find((val) => val.id === folderId);
     }
 
     async createFolder(newFolderData, userId: string) {
-        const docRef = await this.usersCollection.doc(userId);
-        docRef.update({
-            folders: FieldValue.arrayUnion(newFolderData)
-        });
+        return this.prisma.folder.create({
+            data: {
+                name: newFolderData.name,
+                user: {
+                    connect: {
+                        id: userId
+                    }
+                }
+            },
+        })
     }
 
     async updateFolderName(newFolderName: string, folderId: string, userId: string) {
-        const userRef = await this.usersCollection.doc(userId);
-        const docRef = await userRef.get();
-        let allUserFolders = docRef.get('folders');
-
-        for (let i = 0; i < allUserFolders.length; i++) {
-            if (allUserFolders[i].id === folderId) {
-                allUserFolders[i].name = newFolderName;
+        return this.prisma.folder.update({
+            where: {
+                id: folderId,
+            },
+            data: {
+                name: newFolderName,
             }
-        }
-
-        console.log("Folder updated here!", newFolderName);
-        userRef.update({
-            folders: allUserFolders
-        }).catch((err) => console.log("Firebase update failed!"));
+        });
     }
 
     async addDocumentToFolder(documentId: string, folderId: string, userId: string) {
-        const userRef = await this.usersCollection.doc(userId);
-        const docRef = await userRef.get();
-        let allUserFolders = docRef.get('folders');
-        const folderWithId = allUserFolders.findIndex((val) => val.id === folderId);
-
-        if (folderWithId !== -1) {
-            const folderData = allUserFolders[folderWithId];
-            const folderDocs = allUserFolders[folderWithId].documents;
-            allUserFolders[folderWithId] = { ...folderData, documents: [...folderDocs, documentId] };
-        }
-
-        userRef.update({
-            folders: allUserFolders
-        }).catch((err) => console.log("Firebase update failed!"));
+        return this.prisma.folder.update({
+            where: {
+                id: folderId
+            },
+            data: {
+                textDoc: {
+                    connect: {
+                        id: documentId
+                    }
+                }
+            }
+        })
     }
 
     async deleteDocumentFromFolder(documentId: string, folderId: string, userId: string) {
-        const userRef = await this.usersCollection.doc(userId);
-        const docRef = await userRef.get();
-        let allUserFolders = docRef.get('folders');
-        const folderWithId = allUserFolders.findIndex((val) => val.id === folderId);
-
-        if (folderWithId !== -1) {
-            const folderData = allUserFolders[folderWithId];
-            let folderDocs = allUserFolders[folderWithId].documents;
-            folderDocs = folderDocs.filter((val) => val !== documentId);
-            allUserFolders[folderWithId] = { ...folderData, documents: folderDocs };
-        }
-
-        userRef.update({
-            folders: allUserFolders
-        }).catch((err) => console.log("Firebase update failed!"));
+        return this.prisma.folder.update({
+            where: {
+                id: folderId
+            },
+            data: {
+                textDoc: {
+                    disconnect: {
+                        id: documentId
+                    }
+                }
+            }
+        })
     }
 
     async deleteFolder(folderId: string, userId: string) {
-        const userRef = await this.usersCollection.doc(userId);
-        const docRef = await userRef.get();
-        let allUserFolders = docRef.get('folders');
-        allUserFolders = allUserFolders.filter((val) => val.id !== folderId);
-
-        userRef.update({
-            folders: allUserFolders
-        }).catch((err) => console.log("Firebase update failed!"));
+        return this.prisma.folder.delete({
+            where: {
+                id: folderId,
+            }
+        })
     }
 }

@@ -2,11 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as admin from 'firebase-admin'
 import serviceAccount from './config/serviceAccountKey';
+import { PrismaService } from './prisma/prisma.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-
+  const prismaService = app.get(PrismaService);
+  await prismaService.enableShutdownHooks(app)
   try {
     admin.initializeApp({
       credential: admin.credential.cert({

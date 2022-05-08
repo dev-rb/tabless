@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DocumentsModule } from './documents/documents.module';
 import { SearchModule } from './search/search.module';
 import { FoldersModule } from './folders/folders.module';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
   imports: [
@@ -27,6 +28,6 @@ import { FoldersModule } from './folders/folders.module';
     SearchModule,
     FoldersModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule { }

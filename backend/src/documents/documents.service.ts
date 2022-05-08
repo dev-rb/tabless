@@ -1,55 +1,95 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CollectionReference, FieldValue, Firestore } from 'firebase-admin/firestore';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class DocumentsService {
 
-    constructor(@Inject('users') private usersCollection: CollectionReference) { }
+    constructor(private prisma: PrismaService) { }
 
     async getSavedDocuments(userId: string) {
-        const docRef = await this.usersCollection.doc(userId).get();
-        return docRef.get('documents');
+        const documents = await this.prisma.user.findUnique({
+            where: {
+                id: userId
+            },
+            select: {
+                textDoc: {
+                    include: {
+                        pdfs: true,
+                        tags: true
+                    }
+                }
+            }
+        });
+        return documents.textDoc;
     }
 
     async getRecentDocuments(userId: string) {
-        const docRef = await this.usersCollection.doc(userId).get();
-        return docRef.get('documents');
+        return this.prisma.textDoc.findMany({
+            where: {
+                userId: userId,
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+            include: {
+                tags: true,
+                pdfs: true
+            }
+        })
     }
     async getDocumentWithId(docId: string, userId: string) {
-        const docRef = await this.usersCollection.doc(userId).get();
-        const allUserDocuments = docRef.get('documents');
-
-        return allUserDocuments.find((val) => val.id === docId);
+        return this.prisma.textDoc.findUnique({
+            where: {
+                id: docId
+            },
+            include: {
+                pdfs: true
+            }
+        })
 
     }
     async createDocument(newDoc, userId: string) {
-        const docRef = await this.usersCollection.doc(userId);
-        docRef.update({
-            documents: FieldValue.arrayUnion(newDoc)
+        return this.prisma.textDoc.create({
+            data: {
+                text: newDoc.text,
+                title: newDoc.title,
+                author: {
+                    connectOrCreate: {
+                        create: {
+                            id: userId,
+                            name: newDoc.author
+                        },
+                        where: {
+                            id: userId
+                        }
+                    }
+                },
+
+            },
+            include: {
+                tags: true,
+                pdfs: true
+            }
         });
     }
     async updateDocument(newDocumentData, docId: string, userId: string) {
-        const userRef = this.usersCollection.doc(userId);
-        const docRef = await userRef.get();
-        let allUserDocuments = docRef.get('documents');
-        const documentWithId = allUserDocuments.findIndex((val) => val.id === docId);
-
-        if (documentWithId !== -1) {
-            allUserDocuments[documentWithId] = { ...newDocumentData };
-        }
-
-        userRef.update({
-            documents: allUserDocuments
-        }).catch((err) => console.log("Firebase update failed!"));
+        return this.prisma.textDoc.update({
+            where: {
+                id: docId
+            },
+            data: {
+                text: newDocumentData.text
+            },
+            include: {
+                pdfs: true
+            }
+        })
     }
     async deleteDocument(docId: string, userId: string) {
-        const userRef = this.usersCollection.doc(userId);
-        const docRef = await userRef.get();
-        let allUserDocuments = docRef.get('documents');
-        allUserDocuments = allUserDocuments.filter((val) => val.id !== docId);
-
-        userRef.update({
-            documents: allUserDocuments
-        });
+        return this.prisma.textDoc.delete({
+            where: {
+                id: docId
+            }
+        })
     }
 }

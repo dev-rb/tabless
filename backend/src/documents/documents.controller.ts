@@ -1,18 +1,25 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { DocumentsService } from './documents.service';
 
 @Controller('documents')
-@UseGuards(AuthGuard)
 export class DocumentsController {
     constructor(private readonly documentsService: DocumentsService) { };
     /**
      * Get saved documents 
      */
     @Get('/')
-    getSavedDocuments(@Request() req) {
+    async getSavedDocuments(@Request() req) {
         console.log("All documents get called!");
-        return this.documentsService.getSavedDocuments(req.userId);
+        try {
+            console.log(req.userId)
+            const docs = await this.documentsService.getSavedDocuments("123");
+            return docs;
+        } catch (e) {
+            console.log(e);
+            return;
+        }
     }
 
     @Get('/recent')
@@ -28,9 +35,15 @@ export class DocumentsController {
     }
 
     @Post('/create')
-    createDocument(@Request() req, @Body() documentToCreate) {
+    async createDocument(@Request() req, @Body() documentToCreate) {
         console.log("Create called!")
-        return this.documentsService.createDocument(documentToCreate, req.userId)
+        try {
+
+            return await this.documentsService.createDocument(documentToCreate, "123");
+        } catch (e) {
+            console.log("Failed! ", e);
+            return "Failed";
+        }
     }
 
     @Put('/update/:id')
