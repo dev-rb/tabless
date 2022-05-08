@@ -1,17 +1,16 @@
 import { IPdf } from '@/types';
-import { Button, createStyles } from '@mantine/core';
+import { ActionIcon, Button, createStyles, Tab, Tabs } from '@mantine/core';
 import { nanoid } from 'nanoid';
 import * as React from 'react';
-import { MdFilePresent, MdFileUpload } from 'react-icons/md';
+import { MdClose, MdFilePresent, MdFileUpload } from 'react-icons/md';
 import PdfViewer from '../PdfViewer';
-import Tabs from './Tabs';
 
 const useStyles = createStyles({
     root: { flex: 1 },
-    tabsList: { gap: 0 },
+    tabsList: { gap: 0, borderBottom: '1px solid #343437' },
     tabControl: { ':hover:not(.mantine-Tabs-tabActive)': { borderRadius: 0, backgroundColor: '#3E315360 !important', color: '#A2A2A3' }, color: '#A2A2A3 !important' },
     tabActive: { borderRadius: 0, backgroundColor: '#3E3153 !important', color: 'white !important' },
-    tabLabel: { maxWidth: '15ch', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
+    // tabLabel: { maxWidth: '15ch', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: 'fit-content' },
     body: { height: '100%' }
 })
 
@@ -44,22 +43,15 @@ const PdfWindow = ({ pdfs }: PdfWindowProps) => {
 
     return (
         <div className="flex flex-col h-full max-w-4xl w-full border-l-2 border-l-[#A2A2A3] pl-2">
-            {/* Tab System */}
             <OpenFile openPdf={openNewPdf} />
-            {currentPdfs ?
-                <Tabs pdfs={currentPdfs} children={undefined} />
-                :
-                <div className="!bg-transparent pointer-events-none">
-                </div>
-            }
-            {/* <div className="flex flex-row border-b-[1px] border-b-[#343437] relative" >
-                
+            {/* Tab System */}
+            <div className="flex flex-row" >
                 <Tabs variant='pills' tabPadding={"xl"} active={activeTab} onTabChange={onTabChange} classNames={classes}>
                     {currentPdfs ?
                         currentPdfs.map((val) =>
-                            <Tab key={val.id} title={val.name} label={val.name}>
+                            <Tab key={val.id} title={val.name} label={<TabControlLabel text={val.name} onClose={() => { }} />}>
                                 <div className="w-full h-full max-h-[80vh]">
-                                    <PdfViewer fileLocation={val.location} />
+                                    <PdfViewer {...val} />
                                 </div>
                             </Tab>
                         )
@@ -67,23 +59,30 @@ const PdfWindow = ({ pdfs }: PdfWindowProps) => {
                         <Tab label="No PDFs open" className="!bg-transparent pointer-events-none">
                         </Tab>
                     }
-                    <OpenFile openPdf={openNewPdf} />
-                </Tabs>
-            </div> */}
 
-            {/* Pdf Viewer */}
-            {/* {
-                activePdf ?
-                    <PdfViewer fileLocation={activePdf.location} /> :
-                    <div className="flex w-full h-full items-center justify-center">
-                        <OpenFile openPdf={openNewPdf} />
-                    </div>
-            } */}
+                </Tabs>
+            </div>
         </div>
     );
 }
 
 export default PdfWindow;
+
+interface TabControlLabelProps {
+    text: string,
+    onClose: () => void
+}
+
+const TabControlLabel = ({ onClose, text }: TabControlLabelProps) => {
+    return (
+        <div className="flex items-center gap-2 text-white w-fit max-w-[10rem]">
+            <h6 className="max-w-full whitespace-nowrap text-ellipsis overflow-hidden"> {text} </h6>
+            <ActionIcon component='div' size={'xs'} styles={{ root: { ':hover': { background: '#54446E !important', color: 'white' }, color: '#6F5C8E' } }}>
+                <MdClose />
+            </ActionIcon>
+        </div>
+    );
+}
 
 
 interface CustomOpenProps {
@@ -103,7 +102,7 @@ const OpenFile = ({ openPdf }: CustomOpenProps) => {
     }
 
     return (
-        <Button className="bg-blue-600 ml-auto" leftIcon={<MdFilePresent size={20} />} onClick={openFileDialog}>
+        <Button className="bg-blue-600 min-h-fit mr-auto" leftIcon={<MdFilePresent size={20} />} onClick={openFileDialog}>
             Open File
         </Button>
     );

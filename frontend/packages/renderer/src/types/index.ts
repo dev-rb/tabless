@@ -26,6 +26,7 @@ export interface IPdf {
     id: string,
     name: string,
     location: string,
+    initialPage?: number
 }
 
 declare global {
