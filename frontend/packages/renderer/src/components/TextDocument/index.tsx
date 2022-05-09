@@ -3,7 +3,7 @@ import * as React from 'react';
 import { MdAdd, MdClose, MdPerson, MdTag } from 'react-icons/md';
 import TextEditor from '../TextEditor';
 import { nanoid } from 'nanoid';
-import { ITextDocument, ITextDocumentTag } from '@/types';
+import { IDocument, ITextDocument, ITextDocumentTag } from '@/types';
 import { useDocAutoSave } from '@/hooks/useDocAutoSave';
 import { useUpdateDocumentMutation } from '@/redux/api/documentEndpoints';
 import { QueryStatus } from '@reduxjs/toolkit/dist/query';
@@ -14,11 +14,11 @@ interface AdditionalProps {
     updateText: (val: string) => void
 }
 
-type IDocumentProps = ITextDocument & AdditionalProps;
+type IDocumentProps = IDocument & AdditionalProps;
 
 const TextDocument = ({ updateText, ...doc }: IDocumentProps) => {
 
-    const { title, author, dateCreated, id, tags, text } = doc;
+    const { title, author, createdAt, id, tags, text } = doc;
 
     const [docTitle, setDocTitle] = React.useState<string>(title);
     const [docTags, setDocTags] = React.useState<ITextDocumentTag[]>(tags);

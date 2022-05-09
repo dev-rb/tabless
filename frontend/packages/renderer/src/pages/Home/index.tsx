@@ -1,5 +1,5 @@
 import { useDeleteDocumentMutation, useGetAllDocumentsQuery, useNewDocumentMutation } from "@/redux/api/documentEndpoints";
-import { ITextDocument } from "@/types";
+import { IDocument, ITextDocument } from "@/types";
 import { Button, Loader } from "@mantine/core";
 import { getAuth } from "firebase/auth";
 import { nanoid } from "nanoid";
@@ -21,9 +21,11 @@ const HomePage = () => {
     const location = useLocation();
 
     const handleCreateNewDocument = () => {
-        const newDocument: ITextDocument = { id: nanoid(), author: 'Rahul Batra', title: 'Untitled', tags: [], dateCreated: 'Today' };
-        createNewDocument(newDocument);
-        navigate(`/document/${newDocument.id}`, { replace: true, state: location.search });
+        const newDocument: Pick<ITextDocument, 'author' | 'title'> = { author: 'Rahul Batra', title: 'Untitled' };
+        createNewDocument(newDocument).unwrap().then((val: IDocument) => {
+            // console.log("Response from create: ", val);
+            navigate(`/document/${val.id}`, { replace: true, state: location.search });
+        });
     }
 
     const deleteDocument = (id: string) => {

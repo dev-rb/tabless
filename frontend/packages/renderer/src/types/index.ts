@@ -1,3 +1,14 @@
+export interface IDocument {
+    id: string,
+    title: string,
+    author: string,
+    createdAt: string,
+    tags: ITextDocumentTag[],
+    pdfs: [],
+    folders: IFolder[],
+    text?: string
+}
+
 export interface ITextDocument {
     id: string,
     title: string,
