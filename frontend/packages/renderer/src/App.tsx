@@ -9,10 +9,12 @@ import SignupPage from './pages/Auth/Signup';
 import HomePage from './pages/Home';
 import DocumentPage from './pages/DocumentPage';
 import FoldersPage from './pages/FoldersPage';
+import HistoryRouter from './components/HistoryRouter';
+import { history } from './components/HistoryRouter/history';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HistoryRouter history={history}>
       <div className="h-screen w-screen flex flex-col">
         <TitleBar />
         <div className="h-full overflow-hidden">
@@ -30,7 +32,7 @@ function App() {
           </Routes>
         </div>
       </div>
-    </BrowserRouter>
+    </HistoryRouter>
   )
 }
 
@@ -49,7 +51,7 @@ const RequireAuth = () => {
   const currUser = useSelector((state: IRootState) => state.auth.user);
   const location = useLocation();
   if (!currUser) {
-    return <Navigate to='/login' replace state={{ from: location.pathname }} />;
+    return <Navigate to='/login' replace state={{ from: location.pathname, to: '/login' }} />;
   }
   return <Layout />;
 }

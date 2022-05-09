@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { Burger, CSSObject, Drawer, Group, Switch } from '@mantine/core';
+import { ActionIcon, Burger, CSSObject, Drawer, Group, Switch } from '@mantine/core';
 import { DrawerContent } from './components/Drawer';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { useLocation, Location, useNavigate } from 'react-router-dom';
+import { history } from '../HistoryRouter/history';
 
 const drawerStyles: CSSObject = {
     height: '70%',
@@ -13,9 +16,41 @@ const drawerStyles: CSSObject = {
 const TopBar = () => {
 
     const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const [locationPaths, setLocationPaths] = React.useState<string[]>([]);
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const updatePaths = () => {
+        console.log(history)
+
+        switch (history.action) {
+            case "POP":
+                {
+                    let copy = [...locationPaths];
+                    copy.pop();
+                    setLocationPaths([...copy])
+                    break;
+                }
+            case "PUSH":
+                {
+                    let copy = [...locationPaths];
+                    copy.push(history.location.pathname);
+                    setLocationPaths([...copy])
+                    break;
+                }
+            default:
+                break;
+        }
+
+    }
+
+    React.useLayoutEffect(() => {
+        updatePaths();
+    }, [location])
 
     return (
-        <div className="w-full h-fit justify-center px-6 py-1 border-b-[1px] border-[#A2A2A3]">
+        <div className="w-full h-fit justify-center px-6 py-1">
             <Drawer
                 opened={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
@@ -28,10 +63,20 @@ const TopBar = () => {
             >
                 <DrawerContent />
             </Drawer>
-            <Group position='apart'>
+            <div className="flex items-center w-full">
                 <Burger opened={drawerOpen} color='white' size={'sm'} onClick={() => setDrawerOpen((prev) => !prev)} />
-                <Switch></Switch>
-            </Group>
+                <div className="flex items-center gap-1 ml-4">
+                    <ActionIcon onClick={() => navigate(-1)} styles={{ root: { backgroundColor: locationPaths.length > 0 ? 'blue !important' : 'red !important' } }}>
+                        <FaArrowLeft />
+                    </ActionIcon>
+                    <ActionIcon onClick={() => navigate(1)} styles={{ root: { backgroundColor: locationPaths.length > 0 ? 'blue !important' : 'red !important' } }}>
+                        <FaArrowRight />
+                    </ActionIcon>
+                </div>
+                <div className="ml-auto">
+                    <Switch></Switch>
+                </div>
+            </div>
         </div>
     );
 }

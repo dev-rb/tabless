@@ -62,8 +62,8 @@ export const DrawerContent = () => {
             >
                 <MenuItem icon={<MdLogout />} onClick={signUserOut}> Sign out </MenuItem>
             </Menu>
-            <Link className="flex gap-2 items-center text-lg p-1 text-[#797E8A] hover:text-white hover:bg-gray-600 rounded-sm" to={'/'} replace> <MdHome /> Home </Link>
-            <Link className="flex gap-2 items-center text-lg p-1 text-[#797E8A] hover:text-white hover:bg-gray-600 rounded-sm" to={'/folders'} replace> <MdFolder /> Folders </Link>
+            <Link className="flex gap-2 items-center text-lg p-1 text-[#797E8A] hover:text-white hover:bg-gray-600 rounded-sm" to={'/'} > <MdHome /> Home </Link>
+            <Link className="flex gap-2 items-center text-lg p-1 text-[#797E8A] hover:text-white hover:bg-gray-600 rounded-sm" to={'/folders'} > <MdFolder /> Folders </Link>
             {/* <Button variant='filled' size='lg' onClick={() => navigate('/')} leftIcon={<MdHome color="white" />}> Home </Button> */}
             <div className="flex flex-col gap-6">
                 <div className="flex flex-col text-[#797E8A] gap-2">
