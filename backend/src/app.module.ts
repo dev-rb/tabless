@@ -9,6 +9,7 @@ import { DocumentsModule } from './documents/documents.module';
 import { SearchModule } from './search/search.module';
 import { FoldersModule } from './folders/folders.module';
 import { PrismaService } from './prisma/prisma.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { PrismaService } from './prisma/prisma.service';
     OpenaiModule.forRoot({ apiKey: process.env.OPENAI_API_KEY, isJsonMime: (mime) => false }),
     DocumentsModule,
     SearchModule,
-    FoldersModule],
+    FoldersModule,
+    AuthModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

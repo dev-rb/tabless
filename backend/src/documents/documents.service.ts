@@ -10,17 +10,9 @@ export class DocumentsService {
         const documents = await this.prisma.user.findUnique({
             where: {
                 id: userId
-            },
-            select: {
-                textDoc: {
-                    include: {
-                        pdfs: true,
-                        tags: true
-                    }
-                }
             }
-        });
-        return documents.textDoc;
+        }).textDoc();
+        return documents;
     }
 
     async getRecentDocuments(userId: string) {
@@ -38,30 +30,28 @@ export class DocumentsService {
         })
     }
     async getDocumentWithId(docId: string, userId: string) {
-        return this.prisma.textDoc.findUnique({
+
+        const res = await this.prisma.textDoc.findUnique({
             where: {
                 id: docId
             },
             include: {
-                pdfs: true
+                pdfs: true,
+                tags: true,
+                author: true
             }
-        })
+        });
+        return { ...res, author: res.author.name }
 
     }
     async createDocument(newDoc, userId: string) {
+        console.log("New Doc ", newDoc, userId)
         return this.prisma.textDoc.create({
             data: {
-                text: newDoc.text,
                 title: newDoc.title,
                 author: {
-                    connectOrCreate: {
-                        create: {
-                            id: userId,
-                            name: newDoc.author
-                        },
-                        where: {
-                            id: userId
-                        }
+                    connect: {
+                        id: userId
                     }
                 },
 

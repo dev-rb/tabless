@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class FoldersService {
-    constructor(@Inject('users') private prisma: PrismaService) { }
+    constructor(private prisma: PrismaService) { }
 
     async getAllFolders(userId: string) {
         const user = await this.prisma.user.findUnique({
@@ -13,6 +13,7 @@ export class FoldersService {
             select: {
                 folders: {
                     include: {
+                        textDoc: true
                     }
                 }
             },
@@ -31,6 +32,7 @@ export class FoldersService {
                         id: folderId,
                     },
                     include: {
+                        textDoc: true
                     }
                 }
             },

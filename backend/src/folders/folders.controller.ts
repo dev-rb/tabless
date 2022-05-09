@@ -20,7 +20,6 @@ export class FoldersController {
 
     @Post('/create')
     createFolder(@Request() req, @Body() newFolderData) {
-        console.log("Create called!")
         return this.foldersService.createFolder(newFolderData, req.userId)
     }
 

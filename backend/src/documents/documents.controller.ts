@@ -4,6 +4,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { DocumentsService } from './documents.service';
 
 @Controller('documents')
+@UseGuards(AuthGuard)
 export class DocumentsController {
     constructor(private readonly documentsService: DocumentsService) { };
     /**
@@ -14,7 +15,7 @@ export class DocumentsController {
         console.log("All documents get called!");
         try {
             console.log(req.userId)
-            const docs = await this.documentsService.getSavedDocuments("123");
+            const docs = await this.documentsService.getSavedDocuments(req.userId);
             return docs;
         } catch (e) {
             console.log(e);
@@ -39,7 +40,7 @@ export class DocumentsController {
         console.log("Create called!")
         try {
 
-            return await this.documentsService.createDocument(documentToCreate, "123");
+            return await this.documentsService.createDocument(documentToCreate, req.userId);
         } catch (e) {
             console.log("Failed! ", e);
             return "Failed";
