@@ -4,6 +4,8 @@ import { DrawerContent } from './components/Drawer';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { useLocation, Location, useNavigate } from 'react-router-dom';
 import { history } from '../HistoryRouter/history';
+import DocumentOptions from './components/DocumentOptions';
+import FolderOptions from './components/FolderOptions';
 
 const drawerStyles: CSSObject = {
     height: '70%',
@@ -45,12 +47,24 @@ const TopBar = () => {
 
     }
 
+    const getOptionsForPage = React.useCallback(() => {
+        if (location.pathname.includes('document')) {
+            return <DocumentOptions />
+        } else if (location.pathname.includes('folder')) {
+            return <FolderOptions />
+        }
+    }, [location])
+
     React.useLayoutEffect(() => {
         updatePaths();
     }, [location])
 
+    React.useEffect(() => {
+        console.log("Current paths: ", locationPaths)
+    }, [locationPaths])
+
     return (
-        <div className="w-full h-fit justify-center px-6 py-1">
+        <div className="w-full h-fit justify-center px-6 py-2">
             <Drawer
                 opened={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
@@ -74,7 +88,7 @@ const TopBar = () => {
                     </ActionIcon>
                 </div>
                 <div className="ml-auto">
-                    <Switch></Switch>
+                    {getOptionsForPage()}
                 </div>
             </div>
         </div>
