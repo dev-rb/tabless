@@ -1,7 +1,7 @@
 import NewFolderModal from '@/components/NewFolderModal';
 import { useDeleteFolderMutation, useGetAllFoldersQuery, useNewFolderMutation } from '@/redux/api/folderEndpoints';
 import { IFolder } from '@/types';
-import { Loader, Menu, MenuItem, UnstyledButton } from '@mantine/core';
+import { Drawer, Loader, Menu, MenuItem, UnstyledButton } from '@mantine/core';
 import { useClickOutside } from '@mantine/hooks';
 import { nanoid } from 'nanoid';
 import * as React from 'react';
@@ -59,17 +59,33 @@ interface IOutletContext {
 
 const FoldersHome = () => {
 
+    const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+
     const { data, isLoading, isFetching } = useGetAllFoldersQuery();
+
+    const openDrawer = () => {
+        setIsDrawerOpen((prev) => !prev);
+    }
 
     return (
         <>
+            <div className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8 relative">
 
-            <div className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8">
                 {(isLoading || isFetching) ? <Loader /> : data && data.map((value) =>
 
-                    <FolderItem key={value.id} folderInfo={value} />
+                    <FolderItem key={value.id} folderInfo={value} openDrawer={openDrawer} />
                 )
                 }
+                <Drawer
+                    position='right'
+                    size={'md'}
+                    withinPortal={false}
+                    withOverlay={false}
+                    opened={isDrawerOpen}
+                    onClose={() => setIsDrawerOpen(false)}
+                >
+                    <h1> Documents </h1>
+                </Drawer>
             </div>
         </>
     );
@@ -82,10 +98,11 @@ FoldersPage.Home = FoldersHome;
 export default FoldersPage;
 
 interface FolderItemProps {
-    folderInfo: IFolder
+    folderInfo: IFolder,
+    openDrawer: () => void
 }
 
-const FolderItem = ({ folderInfo }: FolderItemProps) => {
+const FolderItem = ({ folderInfo, openDrawer }: FolderItemProps) => {
 
 
     const navigate = useNavigate();
@@ -100,7 +117,8 @@ const FolderItem = ({ folderInfo }: FolderItemProps) => {
     }
 
     const openFolder = () => {
-        navigate(folderInfo.id);
+        openDrawer();
+        // navigate(folderInfo.id);
     }
 
     return (
