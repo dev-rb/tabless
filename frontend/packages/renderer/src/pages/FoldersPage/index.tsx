@@ -1,13 +1,13 @@
 import NewFolderModal from '@/components/NewFolderModal';
 import { useDeleteFolderMutation, useGetAllFoldersQuery, useNewFolderMutation } from '@/redux/api/folderEndpoints';
 import { IFolder } from '@/types';
-import { Drawer, Loader, Menu, MenuItem, UnstyledButton } from '@mantine/core';
+import { Divider, Drawer, Loader, Menu, MenuItem, UnstyledButton } from '@mantine/core';
 import { useClickOutside } from '@mantine/hooks';
 import { nanoid } from 'nanoid';
 import * as React from 'react';
 import { MdArrowBack, MdCreateNewFolder, MdDelete, MdFolder, MdShortText } from 'react-icons/md';
 import { Outlet, useNavigate, useOutletContext } from 'react-router-dom';
-import FolderContentPage from '../FolderContentPage';
+import FolderContentPage, { DocumentItem } from '../FolderContentPage';
 
 const FoldersPage = () => {
 
@@ -54,7 +54,7 @@ const FoldersPage = () => {
 }
 
 interface IOutletContext {
-    renameFolder: (folder: IFolder) => void
+    renameFolder: (folder: IFolder) => void,
 }
 
 const FoldersHome = () => {
@@ -63,8 +63,14 @@ const FoldersHome = () => {
 
     const { data, isLoading, isFetching } = useGetAllFoldersQuery();
 
-    const openDrawer = () => {
-        setIsDrawerOpen((prev) => !prev);
+    const [selectedFolder, setSelectedFolder] = React.useState('');
+
+    const documentsInFolder = data?.find((val) => val.id === selectedFolder)?.documents;
+    const selectedFolderName = data?.find((val) => val.id === selectedFolder)?.name;
+
+    const openDrawer = (folderId: string) => {
+        setIsDrawerOpen(true);
+        setSelectedFolder(folderId);
     }
 
     return (
@@ -73,18 +79,34 @@ const FoldersHome = () => {
 
                 {(isLoading || isFetching) ? <Loader /> : data && data.map((value) =>
 
-                    <FolderItem key={value.id} folderInfo={value} openDrawer={openDrawer} />
+                    <FolderItem key={value.id} folderInfo={value} openDrawer={() => openDrawer(value.id)} />
                 )
                 }
                 <Drawer
+                    styles={{
+                        drawer: {
+                            marginTop: '2rem',
+                            background: '#1D1D20',
+                            borderLeft: '1px solid #A2A2A3',
+                            padding: '4rem 1rem 2rem 1rem !important',
+                        }
+                    }}
                     position='right'
                     size={'md'}
+                    withCloseButton
                     withinPortal={false}
                     withOverlay={false}
                     opened={isDrawerOpen}
                     onClose={() => setIsDrawerOpen(false)}
                 >
-                    <h1> Documents </h1>
+                    <h1 className="text-white text-2xl"> {selectedFolderName} </h1>
+                    <Divider className="mt-2" />
+                    <div className="mt-8 flex flex-col">
+                        {documentsInFolder
+                            ?
+                            documentsInFolder.map((val) => <DocumentItem key={val.id} documentInfo={val} />)
+                            : <h1 className="text-[#6A6A6A] text-2xl"> No documents </h1>}
+                    </div>
                 </Drawer>
             </div>
         </>
@@ -116,15 +138,20 @@ const FolderItem = ({ folderInfo, openDrawer }: FolderItemProps) => {
         }
     }
 
-    const openFolder = () => {
+    const openFolderDetails = () => {
         openDrawer();
         // navigate(folderInfo.id);
+    }
+
+    const openFolder = () => {
+        navigate(folderInfo.id);
     }
 
     return (
         <div
             className="w-full max-w-xs h-fit max-h-32 p-4 flex gap-4 cursor-pointer text-[#6A6A6A] text-lg items-center rounded-sm border-[1px] border-[#44444A] hover:text-white hover:border-[#3071E8]"
-            onClick={openFolder}
+            onClick={openFolderDetails}
+            onDoubleClick={openFolder}
         >
             <MdFolder />
             <div className="w-full flex justify-between items-center">

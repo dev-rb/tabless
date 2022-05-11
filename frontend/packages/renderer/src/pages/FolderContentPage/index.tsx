@@ -13,7 +13,7 @@ const FolderContentPage = () => {
     const { data: folderData, isLoading, isFetching } = useGetFolderQuery(folderId!);
     const { documents } = useGetAllDocumentsQuery(undefined, {
         selectFromResult: ({ data }) => ({
-            documents: data?.filter((val) => folderData?.documents.includes(val))
+            documents: data?.filter((val) => folderData?.documents?.includes(val))
         })
     });
 
@@ -37,7 +37,7 @@ interface DocumentItemProps {
     documentInfo: ITextDocument
 }
 
-const DocumentItem = ({ documentInfo }: DocumentItemProps) => {
+export const DocumentItem = ({ documentInfo }: DocumentItemProps) => {
 
 
     const navigate = useNavigate();
