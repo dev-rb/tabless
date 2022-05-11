@@ -10,23 +10,25 @@ import { useNavigate, useParams } from 'react-router-dom';
 const FolderContentPage = () => {
 
     const { folderId } = useParams();
-    const { data: folderData, isLoading, isFetching } = useGetFolderQuery(folderId!);
-    const { documents } = useGetAllDocumentsQuery(undefined, {
-        selectFromResult: ({ data }) => ({
-            documents: data?.filter((val) => folderData?.documents?.includes(val))
-        })
+    const { documents: folderData } = useGetFolderQuery(folderId!, {
+        selectFromResult: ({ data }) => { console.log(data); return ({ documents: data?.documents }); }
     });
 
+    React.useEffect(() => {
+        if (folderData) {
+            console.log(folderData)
+        }
+    }, [folderData])
+
     return (
-        <div className="w-full h-full">
-
-            <div className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8">
-                {(isLoading || isFetching) ? <Loader /> : documents && documents.map((value) =>
-
+        <div className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8">
+            {/* {(data && data.documents) && Array.from(data.documents).map((val) => <DocumentItem key={val.id} documentInfo={val} />)} */}
+            {(folderData) ?
+                folderData.map((value) =>
                     <DocumentItem key={value.id} documentInfo={value} />
                 )
-                }
-            </div>
+                : <Loader />
+            }
         </div>
     );
 }
@@ -45,6 +47,10 @@ export const DocumentItem = ({ documentInfo }: DocumentItemProps) => {
     const openFolder = () => {
         navigate(`documents/${documentInfo.id}`);
     }
+
+    React.useEffect(() => {
+        console.log(documentInfo)
+    }, [])
 
     return (
         <div
