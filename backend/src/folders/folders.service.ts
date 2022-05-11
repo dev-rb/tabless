@@ -18,7 +18,11 @@ export class FoldersService {
                 }
             },
         })
-        return user.folders;
+        return user.folders.map((folder) => {
+            Object.defineProperty(folder, 'documents', Object.getOwnPropertyDescriptor(folder, 'textDoc'));
+            delete folder['textDoc'];
+            return folder;
+        });
     }
 
     async getFolderWithId(folderId: string, userId: string) {
@@ -37,8 +41,10 @@ export class FoldersService {
                 }
             },
         })
-
-        return user.folders.find((val) => val.id === folderId);
+        let folder = user.folders.find((val) => val.id === folderId);
+        folder = Object.defineProperty(folder, 'documents', Object.getOwnPropertyDescriptor(folder, 'textDoc'));
+        delete folder['textDoc'];
+        return folder;
     }
 
     async createFolder(newFolderData, userId: string) {
