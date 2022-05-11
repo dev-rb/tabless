@@ -98,6 +98,6 @@ code {
   padding-left: 0px !important;
 }
 
-.mantine-lh64uy>.__mantine-ref-itemTitle>.__mantine-ref-control .__mantine-ref-icon {
+#folder-accordions>.__mantine-ref-itemTitle>.__mantine-ref-control .__mantine-ref-icon {
   transform: rotate(90deg);
 }

@@ -5,7 +5,7 @@ import { Avatar, Loader, Accordion, AccordionItem, Menu, MenuItem, createStyles,
 import { getAuth, signOut } from "firebase/auth";
 import { HiDocument } from "react-icons/hi";
 import { MdFolder, MdPerson, MdLogout, MdHome, MdChevronRight } from "react-icons/md";
-import { FaCaretRight } from "react-icons/fa";
+import { FaCaretRight, FaCaretUp } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetAllFoldersQuery } from '@/redux/api/folderEndpoints';
@@ -61,6 +61,11 @@ export const DrawerContent = () => {
             }, 500)
         });
     }
+
+    React.useEffect(() => {
+        console.log(foldersData)
+    }, [foldersData])
+
     return (
         <div className="flex flex-col gap-4">
             <Menu
@@ -85,10 +90,10 @@ export const DrawerContent = () => {
                         {foldersData && foldersData.map((val) =>
                             <AccordionItem
                                 key={val.id}
-                                icon={<FaCaretRight />}
+                                icon={<FaCaretUp />}
                                 label={<AccordionLabel folderName={val.name} />}
                                 styles={
-                                    { icon: { color: '#797E8A', marginRight: 0, }, item: { paddingBottom: '10px', borderColor: '#4B4F5A' }, control: { color: '#797E8A', ":hover": { backgroundColor: '#4b5563', '> div': { color: 'white !important' } }, padding: '4px' } }
+                                    { icon: { color: '#797E8A', marginRight: 0, }, item: { paddingBottom: '10px', borderColor: '#4B4F5A' }, control: { color: '#797E8A', ".__mantine-ref-icon": { transform: 'rotate(90deg)' }, ":hover": { backgroundColor: '#4b5563', '> div': { color: 'white !important' } }, padding: '4px' } }
                                 }
                             >
                                 {val.documents && val.documents.map((doc) => <DrawerDocument key={doc.id} documentName={doc.title} documentId={doc.id} />)}
