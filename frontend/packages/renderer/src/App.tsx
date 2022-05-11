@@ -11,6 +11,7 @@ import DocumentPage from './pages/DocumentPage';
 import FoldersPage from './pages/FoldersPage';
 import HistoryRouter from './components/HistoryRouter';
 import { history } from './components/HistoryRouter/history';
+import { ModalsProvider } from '@mantine/modals';
 
 function App() {
   return (
@@ -38,12 +39,14 @@ function App() {
 
 const Layout = () => {
   return (
-    <div className="flex flex-col w-full h-full overflow-hidden">
-      <TopBar />
-      <div className="px-6 w-full h-full">
-        <Outlet />
+    <ModalsProvider>
+      <div className="flex flex-col w-full h-full overflow-hidden">
+        <TopBar />
+        <div className="px-6 w-full h-full">
+          <Outlet />
+        </div>
       </div>
-    </div>
+    </ModalsProvider>
   );
 }
 
