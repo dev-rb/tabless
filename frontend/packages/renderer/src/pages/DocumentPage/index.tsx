@@ -9,6 +9,7 @@ import { LoadingOverlay } from '@mantine/core';
 import { useGenerateSearchResults } from '@/hooks/useGenerateSearchResults';
 import PdfWindow from '@/components/PdfWindow';
 
+
 const DocumentPage = () => {
 
     const { documentId } = useParams();
@@ -24,7 +25,7 @@ const DocumentPage = () => {
     }
 
     return (
-        <div className="flex flex-row gap-4 h-full pl-10">
+        <div className="flex flex-row gap-4 h-full pl-10 relative">
             {
                 data && !isFetching ? <TextDocument updateText={updateText} {...data} />
                     :
@@ -33,6 +34,7 @@ const DocumentPage = () => {
                     </div>
             }
             <PdfWindow />
+
             <SearchResults searchResults={results} isLoading={isLoading} />
 
         </div>

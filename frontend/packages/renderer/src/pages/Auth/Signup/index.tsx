@@ -6,10 +6,11 @@ import { z } from 'zod';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { FirebaseError, initializeApp } from 'firebase/app';
-import { getAuth, signInWithCustomToken, onAuthStateChanged, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithCustomToken, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, User } from 'firebase/auth';
 import { ref, getDatabase, onValue } from 'firebase/database';
 import { useDispatch } from 'react-redux';
 import { signInUser, signOutLocal } from '@/redux/slices/authSlice';
+import { useCreateUserMutation } from '@/redux/api/authEndpoints';
 
 declare global {
     interface Window {
@@ -53,6 +54,22 @@ const SignupPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const [createUserMutation] = useCreateUserMutation();
+
+    const createUserBackend = async (user: User) => {
+
+        const token = await user.getIdToken();
+        if (token) {
+            createUserMutation({
+                user: {
+                    token: token,
+                    email: user.email,
+                    name: form.values.username
+                }
+            });
+        }
+    }
+
     const signUpWithGoogle = async () => {
         const uuid = nanoid();
         window.openUrl.openUrl(`http://localhost:3001/login?id=${uuid}`);
@@ -66,9 +83,12 @@ const SignupPage = () => {
         });
     }
 
-    const signUpWithEmail = async ({ email, password }: typeof form.values) => {
+    const signUpWithEmail = async ({ username, email, password }: typeof form.values) => {
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            await createUserWithEmailAndPassword(auth, email, password).then((val) => {
+                updateProfile(val.user, { displayName: username });
+                createUserBackend(val.user)
+            });
         } catch (err) {
             const error = err as FirebaseError;
             console.log(error)
@@ -82,7 +102,10 @@ const SignupPage = () => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 // console.log(user);
-                user.getIdToken().then((val) => dispatch(signInUser(val)));
+                user.getIdToken().then((val) => {
+                    dispatch(signInUser(val));
+
+                });
                 if (location.state) {
                     navigate((location.state as LocationState).from, { replace: true });
                 } else {

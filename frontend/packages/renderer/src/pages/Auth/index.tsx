@@ -10,6 +10,7 @@ import { getAuth, signInWithCustomToken, onAuthStateChanged, signInWithEmailAndP
 import { ref, getDatabase, onValue } from 'firebase/database';
 import { useDispatch } from 'react-redux';
 import { signInUser, signOutLocal } from '@/redux/slices/authSlice';
+import { useCreateUserMutation } from '@/redux/api/authEndpoints';
 
 const schema = z.object({
     email: z.string().email({ message: 'Invalid Email' }),
@@ -73,8 +74,17 @@ const AuthPage = () => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 // console.log(user);
-                user.getIdToken().then((val) => dispatch(signInUser(val)));
-                navigate((location.state as LocationState).from, { replace: true });
+                user.getIdToken().then((val) => {
+                    dispatch(signInUser(val));
+                });
+
+                setTimeout(() => {
+                    if (location.state) {
+                        navigate((location.state as LocationState).from, { replace: true });
+                    } else {
+                        navigate('/', { replace: true });
+                    }
+                }, 300)
             } else {
                 dispatch(signOutLocal())
             }

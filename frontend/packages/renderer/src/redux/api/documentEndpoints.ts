@@ -1,4 +1,4 @@
-import { ITextDocument, ITextDocumentTag } from "@/types";
+import { IDocument, ITextDocument, ITextDocumentTag } from "@/types";
 import { api } from ".";
 
 // Create document
@@ -22,19 +22,19 @@ export const documentsApi = api.injectEndpoints({
                     ]
                     : [{ type: 'TextDocument', id: 'LIST' }]
         }),
-        getRecentDocuments: build.query<ITextDocument, void>({
+        getRecentDocuments: build.query<IDocument, void>({
             query: () => ({
                 url: 'documents/recent',
                 method: 'GET'
             })
         }),
-        getDocument: build.query<ITextDocument, string>({
+        getDocument: build.query<IDocument, string>({
             query: (id) => ({
                 url: `documents/${id}`,
                 method: 'GET'
             })
         }),
-        newDocument: build.mutation<void, ITextDocument>({
+        newDocument: build.mutation<IDocument, Pick<ITextDocument, 'author' | 'title'>>({
             query: (doc: ITextDocument) => ({
                 url: 'documents/create',
                 method: 'POST',
@@ -43,8 +43,8 @@ export const documentsApi = api.injectEndpoints({
             }),
             invalidatesTags: [{ type: 'TextDocument', id: 'LIST' }]
         }),
-        updateDocument: build.mutation<void, ITextDocument>({
-            query: (doc: ITextDocument) => ({
+        updateDocument: build.mutation<void, IDocument>({
+            query: (doc: IDocument) => ({
                 url: `documents/update/${doc.id}`,
                 method: 'PUT',
                 body: doc,

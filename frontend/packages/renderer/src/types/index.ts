@@ -1,3 +1,14 @@
+export interface IDocument {
+    id: string,
+    title: string,
+    author: string,
+    createdAt: string,
+    tags: ITextDocumentTag[],
+    pdfs: [],
+    folders: IFolder[],
+    text?: string
+}
+
 export interface ITextDocument {
     id: string,
     title: string,
@@ -10,6 +21,12 @@ export interface ITextDocument {
 export interface ITextDocumentTag {
     id: string,
     title: string
+}
+
+export interface IFolder {
+    id: string,
+    name: string,
+    documents: ITextDocument[]
 }
 
 export interface ISearchResult {

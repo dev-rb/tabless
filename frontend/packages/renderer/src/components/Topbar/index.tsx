@@ -1,119 +1,98 @@
-import { Accordion, AccordionItem, Avatar, Burger, Button, CSSObject, Drawer, Group, Loader, Menu, MenuItem, Space, Switch } from '@mantine/core';
 import * as React from 'react';
-import { MdExpandMore, MdFolder, MdHome, MdLogout, MdPerson } from 'react-icons/md';
-import { HiDocument } from 'react-icons/hi';
-import { useGetAllDocumentsQuery } from '@/redux/api/documentEndpoints';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { signOutLocal } from '@/redux/slices/authSlice';
-import { getAuth, signOut } from 'firebase/auth';
+import { ActionIcon, Burger, CSSObject, Drawer, Group, Switch } from '@mantine/core';
+import { DrawerContent } from './components/Drawer';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { useLocation, Location, useNavigate } from 'react-router-dom';
+import { history } from '../HistoryRouter/history';
+import DocumentOptions from './components/DocumentOptions';
+import FolderOptions from './components/FolderOptions';
 
 const drawerStyles: CSSObject = {
     height: '70%',
     margin: 'auto',
     borderTopRightRadius: '10px',
     borderBottomRightRadius: '10px',
-    background: '#31343B'
+    background: '#31343B',
 }
 
 const TopBar = () => {
 
     const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const [locationPaths, setLocationPaths] = React.useState<string[]>([]);
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const updatePaths = () => {
+        console.log(history)
+
+        switch (history.action) {
+            case "POP":
+                {
+                    let copy = [...locationPaths];
+                    copy.pop();
+                    setLocationPaths([...copy])
+                    break;
+                }
+            case "PUSH":
+                {
+                    let copy = [...locationPaths];
+                    copy.push(history.location.pathname);
+                    setLocationPaths([...copy])
+                    break;
+                }
+            default:
+                break;
+        }
+
+    }
+
+    const getOptionsForPage = React.useCallback(() => {
+        if (location.pathname.includes('document')) {
+            return <DocumentOptions />
+        } else if (location.pathname.includes('folder')) {
+            return <FolderOptions />
+        }
+    }, [location])
+
+    React.useLayoutEffect(() => {
+        updatePaths();
+    }, [location])
+
+    React.useEffect(() => {
+        console.log("Current paths: ", locationPaths)
+    }, [locationPaths])
 
     return (
-        <div className="w-full h-fit justify-center px-6 py-1 border-b-[1px] border-[#A2A2A3]">
+        <div className="w-full h-fit justify-center px-6 py-2">
             <Drawer
                 opened={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
                 closeOnClickOutside={true}
                 withCloseButton={false}
-                padding="lg"
+                padding="xs"
                 size={"sm"}
                 overlayOpacity={0}
                 styles={{ drawer: drawerStyles }}
             >
                 <DrawerContent />
             </Drawer>
-            <Group position='apart'>
+            <div className="flex items-center w-full">
                 <Burger opened={drawerOpen} color='white' size={'sm'} onClick={() => setDrawerOpen((prev) => !prev)} />
-                <Switch></Switch>
-            </Group>
+                <div className="flex items-center gap-1 ml-4">
+                    <ActionIcon onClick={() => navigate(-1)} styles={{ root: { backgroundColor: locationPaths.length > 0 ? 'blue !important' : 'red !important' } }}>
+                        <FaArrowLeft />
+                    </ActionIcon>
+                    <ActionIcon onClick={() => navigate(1)} styles={{ root: { backgroundColor: locationPaths.length > 0 ? 'blue !important' : 'red !important' } }}>
+                        <FaArrowRight />
+                    </ActionIcon>
+                </div>
+                <div className="ml-auto">
+                    {getOptionsForPage()}
+                </div>
+            </div>
         </div>
     );
 }
 
 export default TopBar;
-
-const AccordionLabel = () => {
-    return (
-        <div className="flex flex-row gap-2 items-center text-md font-normal text-[#797E8A]">
-            <MdFolder size={24} color="#B24323" />
-            <h6 className="text-ellipsis overflow-hidden whitespace-nowrap"> School </h6>
-        </div>
-    );
-}
-
-interface DrawerDocumentProps {
-    documentName: string,
-    documentId: string
-}
-
-const DrawerDocument = ({ documentName, documentId }: DrawerDocumentProps) => {
-    return (
-        <Link className="flex flex-row gap-2 items-center text-md font-normal text-[#797E8A] hover:bg-gray-600 p-1 rounded-sm" to={`/document/${documentId}`}>
-            <HiDocument size={34} />
-            <h6 className="text-ellipsis overflow-hidden whitespace-nowrap"> {documentName} </h6>
-        </Link>
-    );
-}
-
-
-const DrawerContent = () => {
-
-    const { data, isLoading } = useGetAllDocumentsQuery();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const auth = getAuth();
-
-    const signUserOut = () => {
-        signOut(auth).then(() => {
-            setTimeout(() => {
-                dispatch(signOutLocal());
-            }, 500)
-        });
-    }
-    return (
-        <div className="flex flex-col gap-8">
-            <div className="flex flex-row items-center gap-4">
-                <Avatar radius={"xl"} size={"md"} styles={{ placeholder: { background: '#31343B' }, root: { border: '2px solid #797E8A' } }} >
-                    <MdPerson size={24} />
-                </Avatar>
-                <div className="flex flex-col text-white">
-                    <h4 className="text-lg"> Rahul's Space </h4>
-                    <p className="text-[#797E8A] text-sm"> {data && data.length} documents </p>
-                </div>
-                <Menu trigger='hover' closeOnItemClick>
-                    <MenuItem icon={<MdLogout />} onClick={signUserOut}> Sign out </MenuItem>
-                </Menu>
-            </div>
-            <Button variant='filled' size='lg' onClick={() => navigate('/')} leftIcon={<MdHome color="white" />}> Home </Button>
-            <div className="flex flex-col text-[#797E8A] gap-2">
-                <h1 className="uppercase text-sm font-bold"> Recent </h1>
-                <div className="flex flex-col">
-                    {data && !isLoading ? data.map((val) => <DrawerDocument key={val.id} documentId={val.id} documentName={val.title} />) : <Loader />}
-                </div>
-            </div>
-            <div className="flex flex-col text-[#797E8A] gap-2">
-                <h1 className="uppercase text-sm font-bold"> Folders </h1>
-                <Accordion>
-                    <AccordionItem label={<AccordionLabel />} styles={{ icon: { color: 'white' }, control: { ":hover": { backgroundColor: '#41444B' }, padding: '4px' } }}>
-                        {/* <DrawerDocument documentName="Random test document" /> */}
-                    </AccordionItem>
-                </Accordion>
-                <div className="flex flex-col">
-
-                </div>
-            </div>
-        </div>
-    );
-}
