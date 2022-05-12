@@ -1,6 +1,11 @@
 import * as React from 'react';
-import { Burger, CSSObject, Drawer, Group, Switch } from '@mantine/core';
+import { ActionIcon, Burger, CSSObject, Drawer, Group, Switch } from '@mantine/core';
 import { DrawerContent } from './components/Drawer';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { useLocation, Location, useNavigate } from 'react-router-dom';
+import { history } from '../HistoryRouter/history';
+import DocumentOptions from './components/DocumentOptions';
+import FolderOptions from './components/FolderOptions';
 
 const drawerStyles: CSSObject = {
     height: '70%',
@@ -13,9 +18,53 @@ const drawerStyles: CSSObject = {
 const TopBar = () => {
 
     const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const [locationPaths, setLocationPaths] = React.useState<string[]>([]);
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const updatePaths = () => {
+        console.log(history)
+
+        switch (history.action) {
+            case "POP":
+                {
+                    let copy = [...locationPaths];
+                    copy.pop();
+                    setLocationPaths([...copy])
+                    break;
+                }
+            case "PUSH":
+                {
+                    let copy = [...locationPaths];
+                    copy.push(history.location.pathname);
+                    setLocationPaths([...copy])
+                    break;
+                }
+            default:
+                break;
+        }
+
+    }
+
+    const getOptionsForPage = React.useCallback(() => {
+        if (location.pathname.includes('document')) {
+            return <DocumentOptions />
+        } else if (location.pathname.includes('folder')) {
+            return <FolderOptions />
+        }
+    }, [location])
+
+    React.useLayoutEffect(() => {
+        updatePaths();
+    }, [location])
+
+    React.useEffect(() => {
+        console.log("Current paths: ", locationPaths)
+    }, [locationPaths])
 
     return (
-        <div className="w-full h-fit justify-center px-6 py-1 border-b-[1px] border-[#A2A2A3] z-50">
+        <div className="w-full h-fit justify-center px-6 py-2">
             <Drawer
                 opened={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
@@ -28,10 +77,20 @@ const TopBar = () => {
             >
                 <DrawerContent />
             </Drawer>
-            <Group position='apart'>
+            <div className="flex items-center w-full">
                 <Burger opened={drawerOpen} color='white' size={'sm'} onClick={() => setDrawerOpen((prev) => !prev)} />
-                <Switch></Switch>
-            </Group>
+                <div className="flex items-center gap-1 ml-4">
+                    <ActionIcon onClick={() => navigate(-1)} styles={{ root: { backgroundColor: locationPaths.length > 0 ? 'blue !important' : 'red !important' } }}>
+                        <FaArrowLeft />
+                    </ActionIcon>
+                    <ActionIcon onClick={() => navigate(1)} styles={{ root: { backgroundColor: locationPaths.length > 0 ? 'blue !important' : 'red !important' } }}>
+                        <FaArrowRight />
+                    </ActionIcon>
+                </div>
+                <div className="ml-auto">
+                    {getOptionsForPage()}
+                </div>
+            </div>
         </div>
     );
 }

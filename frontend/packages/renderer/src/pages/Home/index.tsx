@@ -25,7 +25,7 @@ const HomePage = () => {
         const newDocument: Pick<ITextDocument, 'author' | 'title'> = { author: 'Rahul Batra', title: 'Untitled' };
         createNewDocument(newDocument).unwrap().then((val: IDocument) => {
             // console.log("Response from create: ", val);
-            navigate(`/document/${val.id}`, { replace: true, state: location.search });
+            navigate(`/document/${val.id}`);
         });
     }
 
@@ -76,7 +76,7 @@ const RecentDocument = ({ documentId, documentName, deleteDocument }: Props) => 
     const location = useLocation();
     return (
         <div className="flex flex-row justify-between w-full">
-            <Link className="flex gap-2 items-center text-xl px-0 text-[#707070] hover:text-white" to={`/document/${documentId}`} replace state={location.search} > <HiDocument /> {documentName} </Link>
+            <Link className="flex gap-2 items-center text-xl px-0 text-[#707070] hover:text-white" to={`/document/${documentId}`} state={location.search} > <HiDocument /> {documentName} </Link>
             <Button variant="filled" onClick={deleteDocument} className="text-[#707070] hover:bg-red-600 hover:text-white text-xl p-1"> <MdDelete /> </Button>
         </div>
     );

@@ -50,9 +50,9 @@ export const foldersApi = api.injectEndpoints({
         }),
         addDocumentToFolder: build.mutation<void, { id: string, documentId: string }>({
             query: (addDoc: { id: string, documentId: string }) => ({
-                url: `folders/update/${addDoc.id}/doc`,
+                url: `folders/update/add/doc`,
                 method: 'PUT',
-                body: addDoc.documentId,
+                body: addDoc,
                 headers: { 'Content-Type': 'application/json' }
             }),
             invalidatesTags: [{ type: 'Folder', id: 'LIST' }]

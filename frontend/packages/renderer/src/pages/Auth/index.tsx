@@ -47,8 +47,6 @@ const AuthPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [createUserMutation] = useCreateUserMutation();
-
     const signInWithGoogle = async () => {
         const uuid = nanoid();
         window.openUrl.openUrl(`http://localhost:3001/login?id=${uuid}`);
@@ -78,13 +76,6 @@ const AuthPage = () => {
                 // console.log(user);
                 user.getIdToken().then((val) => {
                     dispatch(signInUser(val));
-                    createUserMutation({
-                        user: {
-                            token: val,
-                            email: user.email,
-                            name: user.displayName
-                        }
-                    });
                 });
 
                 setTimeout(() => {
