@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { ActionIcon, Button, createStyles, Divider, Menu, MenuItem } from '@mantine/core';
-import { MdAdd, MdDelete, MdDriveFileMove, MdMoreHoriz, MdStar, MdStarBorder } from 'react-icons/md';
+import { MdAdd, MdDelete, MdDriveFileMove, MdMoreHoriz, MdStarBorder } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import FoldersModal from '../FoldersModal';
-import { useModals } from '@mantine/modals';
 import { useAddDocumentToFolderMutation } from '@/redux/api/folderEndpoints';
 
 const useButtonStyles = createStyles({
@@ -36,9 +35,9 @@ const useMenuStyles = createStyles({
 
         backgroundColor: 'transparent',
         ':hover': {
-            backgroundColor: '#4A4A4D',
+            backgroundColor: '#4A4A4D !important',
             ':last-child': {
-                background: '#E8303066 !important',
+                backgroundColor: '#E8303066 !important',
                 color: 'white !important'
             },
         }
@@ -57,10 +56,12 @@ const DocumentOptions = () => {
 
     const { documentId } = useParams();
 
-    const modals = useModals();
-
     const selectFolder = (folderId: string) => {
-        setSelectedFolder(folderId);
+        if (folderId === selectedFolder) {
+            setSelectedFolder(undefined);
+        } else {
+            setSelectedFolder(folderId);
+        }
     }
 
     const closeModal = () => {
@@ -71,21 +72,12 @@ const DocumentOptions = () => {
         setIsFoldersModalOpen(true);
     }
 
-    // const openFoldersModal = React.useCallback(() => modals.openConfirmModal({
-    //     title: "Add to Folder",
-    //     centered: true,
-    //     children: <FoldersModal setSelectedFolder={selectFolder} selectedFolderId={selectedFolder} />,
-    //     labels: { confirm: 'Add to Folder', cancel: 'Cancel' },
-    //     confirmProps: { color: 'blue' },
-    //     styles: {
-    //         'modal': { background: '#1D1D20', width: '100%', maxWidth: '65vw', height: '55vh' },
-    //         'title': { color: 'white', fontSize: '1.5rem' },
-    //         'body': { height: 'calc(90% - 20px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' },
-    //         'inner': { height: '100%' }
-    //     },
-    //     onCancel: () => console.log("Cancel"),
-    //     onConfirm: () => console.log("Confirm")
-    // }), [selectFolder]);
+    const submitUpdate = () => {
+        if (selectedFolder) {
+            console.log(documentId);
+            addToFolder({ id: selectedFolder, documentId: documentId! }).then(() => console.log("Called"));
+        }
+    }
 
     return (
         <div className="flex gap-2 items-center">
@@ -107,7 +99,14 @@ const DocumentOptions = () => {
                     Delete
                 </MenuItem>
             </Menu>
-            <FoldersModal setSelectedFolder={selectFolder} selectedFolderId={selectedFolder} isModalOpen={isFoldersModalOpen} closeModal={closeModal} onModalClose={closeModal} />
+            <FoldersModal
+                setSelectedFolder={selectFolder}
+                selectedFolderId={selectedFolder}
+                isModalOpen={isFoldersModalOpen}
+                closeModal={closeModal}
+                onModalClose={closeModal}
+                submitUpdate={submitUpdate}
+            />
         </div>
     );
 }
