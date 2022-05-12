@@ -21,7 +21,7 @@ const TitleBar = () => {
   }
 
   return (
-    <header className="title-bar-drag w-screen h-8 items-center flex z-50 border-b-[1px] border-b-[#A2A2A3]">
+    <header className="title-bar-drag w-screen h-8 items-center flex z-50 border-b-[1px] border-b-[#A2A2A3] bg-[#1D1D20]">
       <div className="flex">
         {/* Logo */}
       </div>
