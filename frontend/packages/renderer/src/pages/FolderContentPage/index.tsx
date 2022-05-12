@@ -10,29 +10,25 @@ import { useNavigate, useParams } from 'react-router-dom';
 const FolderContentPage = () => {
 
     const { folderId } = useParams();
-    const { data: folderData, isLoading, isFetching } = useGetFolderQuery(folderId!);
-    const { documents } = useGetAllDocumentsQuery(undefined, {
-        selectFromResult: ({ data }) => ({
-            documents: data?.filter((val) => folderData?.documents.includes(val))
-        })
+    const { documents: folderData } = useGetFolderQuery(folderId!, {
+        selectFromResult: ({ data }) => { console.log(data); return ({ documents: data?.documents }); }
     });
 
-    return (
-        <div className="w-full h-full">
-            {/* {data && data.documents.map((val) =>
-                <button className="w-full max-w-sm h-fit max-h-32 p-4 flex gap-4 text-[#6A6A6A] text-lg items-center rounded-sm border-[1px] border-[#44444A] hover:text-white hover:border-[#3071E8]">
-                    <HiDocument />
-                    <h6> {val.title} </h6>
-                </button>
-            )
-            } */}
-            <div className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8">
-                {(isLoading || isFetching) ? <Loader /> : documents && documents.map((value) =>
+    React.useEffect(() => {
+        if (folderData) {
+            console.log(folderData)
+        }
+    }, [folderData])
 
+    return (
+        <div className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8">
+            {/* {(data && data.documents) && Array.from(data.documents).map((val) => <DocumentItem key={val.id} documentInfo={val} />)} */}
+            {(folderData) ?
+                folderData.map((value) =>
                     <DocumentItem key={value.id} documentInfo={value} />
                 )
-                }
-            </div>
+                : <Loader />
+            }
         </div>
     );
 }
@@ -43,7 +39,7 @@ interface DocumentItemProps {
     documentInfo: ITextDocument
 }
 
-const DocumentItem = ({ documentInfo }: DocumentItemProps) => {
+export const DocumentItem = ({ documentInfo }: DocumentItemProps) => {
 
 
     const navigate = useNavigate();
@@ -51,6 +47,10 @@ const DocumentItem = ({ documentInfo }: DocumentItemProps) => {
     const openFolder = () => {
         navigate(`documents/${documentInfo.id}`);
     }
+
+    React.useEffect(() => {
+        console.log(documentInfo)
+    }, [])
 
     return (
         <div
