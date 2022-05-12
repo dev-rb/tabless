@@ -1,5 +1,5 @@
 import { app, BrowserWindow, dialog, ipcMain, protocol } from 'electron';
-import { join } from 'path';
+import { join, basename } from 'path';
 import { URL } from 'url';
 
 async function createWindow() {
@@ -80,8 +80,13 @@ app.on('ready', async () => {
     }
   });
 
-  ipcMain.handle('open-file-dialog', (e, cb) => {
-    return dialog.showOpenDialogSync({ properties: ['openFile'] });
+  ipcMain.handle('open-file-dialog', async (e, cb) => {
+    const results = await dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: 'PDFs', extensions: ['pdf'] }] });
+    let filePaths: { path: string; name: string; }[] = [];
+    if (!results.canceled) {
+      filePaths = results.filePaths.map((val) => ({ path: val, name: basename(val) }));
+    }
+    return filePaths;
   });
 
   ipcMain.on('open-window', (e, url) => {

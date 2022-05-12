@@ -1,50 +1,66 @@
 import * as React from 'react';
-import { SpecialZoomLevel, Viewer } from '@react-pdf-viewer/core';
+import { PageChangeEvent, ScrollMode, SpecialZoomLevel, Viewer, ZoomEvent } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { toolbarPlugin, ToolbarSlot } from '@react-pdf-viewer/toolbar';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
-import { dialog } from 'electron';
 import { Loader } from '@mantine/core';
-// const electron = window.require('electron');
-// const {shell} = window.require('electron');
-// const remote = electron.remote
-// const {dialog} = remote
+import { IPdf } from '@/types';
 
+interface PdfViewerProps extends IPdf {
+    isVisible: boolean,
+}
 
-const PdfViewer = () => {
+const PdfViewer = ({ location, initialPage }: IPdf) => {
 
-    const [filePath, setFilePath] = React.useState("");
-    const [isExpanded, setIsExpanded] = React.useState(false);
+    const [filePath, setFilePath] = React.useState(location);
+    const [currentPage, setCurrentPage] = React.useState(0);
+    const [currentZoom, setCurrentZoom] = React.useState(0.5);
 
     const toolbarPluginInstance = toolbarPlugin();
     const { Toolbar } = toolbarPluginInstance;
 
+    const handlePageChange = (e: PageChangeEvent) => {
+        setCurrentPage(e.currentPage);
+        // e.doc.getPage(1).then((val) => console.log(val.getTextContent().then((val) => console.log(val))))
+    }
+
+    const handleZoomChange = (e: ZoomEvent) => {
+        setCurrentZoom(e.scale);
+    }
+
+    React.useEffect(() => {
+        console.log("Created pdf view");
+
+        return () => {
+            console.log("Destroyed pdf view");
+        }
+    }, [])
+
     return (
-        <div className={`${isExpanded ? 'w-full' : 'w-0'} h-full max-w-4xl select-text pb-20 relative transition-all ml-auto`}>
-            <button className="absolute -left-2 m-auto top-0 bottom-0 w-8 h-32 bg-red-500 z-10 flex items-center justify-center" onClick={() => setIsExpanded((prev) => !prev)}>
-                {isExpanded ?
-                    <MdExpandLess size={80} transform={'rotate(90)'} /> :
-                    <MdExpandMore size={80} transform={'rotate(90)'} />
-                }
-            </button>
-            {isExpanded &&
-                <div className="h-full w-full">
-                    {isExpanded &&
-                        <div className="w-full flex flex-row items-center bg-white">
-                            <Toolbar>
-                                {(props: ToolbarSlot) => <CustomPdfToolbar {...props} updateFilePath={(str: string) => setFilePath(str)} />}
-                            </Toolbar>
-                        </div>}
-                    {filePath !== "" && isExpanded
-                        ?
-                        <Viewer fileUrl={`app://getMediaFile/${filePath}`} plugins={[toolbarPluginInstance]} defaultScale={SpecialZoomLevel.PageFit} />
-                        :
-                        <div className="h-full w-full flex items-center justify-center flex-col gap-8">
-                            <h1 className="text-white font-bold text-xl"> Open a file </h1>
-                            <Loader />
-                        </div>}
+        <div className={"w-full h-full select-text pb-20 relative transition-all ml-auto"}>
+
+            <div className="h-full w-full">
+                <div className="w-full flex flex-row items-center bg-[#A2A2A3]">
+                    <Toolbar>
+                        {(props: ToolbarSlot) => <CustomPdfToolbar {...props} updateFilePath={(str: string) => setFilePath(str)} />}
+                    </Toolbar>
                 </div>
-            }
+                {filePath !== "" &&
+                    <Viewer
+                        fileUrl={`app://getMediaFile/${location}`}
+                        onDocumentLoad={(e) => { console.log(e.doc) }}
+                        onPageChange={handlePageChange}
+                        onZoom={handleZoomChange}
+                        plugins={[toolbarPluginInstance]}
+                        initialPage={initialPage}
+                        defaultScale={SpecialZoomLevel.PageWidth} />
+                    // :
+                    // <div className="h-full w-full flex items-center justify-center flex-col gap-8">
+                    //     <h1 className="text-white font-bold text-xl"> Open a file </h1>
+                    //     <Loader />
+                    // </div>
+                }
+            </div>
         </div>
     );
 }
@@ -92,11 +108,7 @@ const CustomPdfToolbar = (props: AllProps) => {
 interface CustomOpenProps {
     updateFilePath: (newFilePath: string) => void
 }
-declare global {
-    interface Window {
-        openFile: any
-    }
-}
+
 const OpenFile = ({ updateFilePath }: CustomOpenProps) => {
 
     const openFileDialog = async () => {
