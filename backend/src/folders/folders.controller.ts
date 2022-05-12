@@ -29,9 +29,9 @@ export class FoldersController {
         return this.foldersService.updateFolderName(newFolderName, id, req.userId)
     }
 
-    @Put('/update/:id/doc')
-    addDocumentToFolder(@Request() req, @Body() documentId, @Param('id') id: string) {
-        console.log("Update controller called!")
+    @Put('/update/add/doc')
+    addDocumentToFolder(@Request() req, @Body('documentId') documentId, @Body('id') id: string) {
+        console.log("Update controller called! ", id, documentId)
         return this.foldersService.addDocumentToFolder(documentId, id, req.userId)
     }
 
