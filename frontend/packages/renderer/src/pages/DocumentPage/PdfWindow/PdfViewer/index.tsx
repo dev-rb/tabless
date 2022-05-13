@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { PageChangeEvent, ScrollMode, SpecialZoomLevel, Viewer, ZoomEvent } from '@react-pdf-viewer/core';
+import { PageChangeEvent, SpecialZoomLevel, Viewer, ZoomEvent } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { toolbarPlugin, ToolbarSlot } from '@react-pdf-viewer/toolbar';
-import { MdExpandLess, MdExpandMore } from 'react-icons/md';
-import { Loader } from '@mantine/core';
 import { IPdf } from '@/types';
 
 interface PdfViewerProps extends IPdf {

@@ -2,8 +2,8 @@ import * as React from 'react';
 import { ActionIcon, Button, createStyles, Divider, Menu, MenuItem } from '@mantine/core';
 import { MdAdd, MdDelete, MdDriveFileMove, MdMoreHoriz, MdStarBorder } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
-import FoldersModal from '../FoldersModal';
 import { useAddDocumentToFolderMutation } from '@/redux/api/folderEndpoints';
+import FoldersModal from './FoldersModal';
 
 const useButtonStyles = createStyles({
     root: {

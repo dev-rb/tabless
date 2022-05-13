@@ -5,7 +5,7 @@ import { Avatar, Loader, Accordion, AccordionItem, Menu, MenuItem, createStyles,
 import { getAuth, signOut } from "firebase/auth";
 import { HiDocument } from "react-icons/hi";
 import { MdFolder, MdPerson, MdLogout, MdHome, MdChevronRight } from "react-icons/md";
-import { FaCaretRight, FaCaretUp } from "react-icons/fa";
+import { FaCaretUp } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetAllFoldersQuery } from '@/redux/api/folderEndpoints';

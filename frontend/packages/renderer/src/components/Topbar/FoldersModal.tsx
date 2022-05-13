@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useAddDocumentToFolderMutation, useGetAllFoldersQuery } from '@/redux/api/folderEndpoints';
-import { Button, Grid, Group, Menu, MenuItem, Modal, Popover, SimpleGrid } from '@mantine/core';
+import { useGetAllFoldersQuery } from '@/redux/api/folderEndpoints';
+import { Button, Grid, Group, Modal, Popover } from '@mantine/core';
 import { MdFolder } from 'react-icons/md';
 import { IoMdAlert } from 'react-icons/io';
 

@@ -1,13 +1,11 @@
-import { nanoid } from 'nanoid';
 import * as React from 'react';
-import TextDocument from '@/components/TextDocument';
-import SearchResults from '@/components/SearchResults';
-import PdfViewer from '@/components/PdfViewer';
+import TextDocument from '@/pages/DocumentPage/TextDocument';
+import SearchResults from '@/pages/DocumentPage/SearchResults';
 import { useParams } from 'react-router-dom';
 import { useGetDocumentQuery } from '@/redux/api/documentEndpoints';
 import { LoadingOverlay } from '@mantine/core';
 import { useGenerateSearchResults } from '@/hooks/useGenerateSearchResults';
-import PdfWindow from '@/components/PdfWindow';
+import PdfWindow from '@/pages/DocumentPage/PdfWindow';
 
 
 const DocumentPage = () => {

@@ -1,13 +1,11 @@
-import NewFolderModal from '@/components/NewFolderModal';
-import { useDeleteFolderMutation, useGetAllFoldersQuery, useNewFolderMutation } from '@/redux/api/folderEndpoints';
-import { IFolder } from '@/types';
-import { Divider, Drawer, Loader, Menu, MenuItem, UnstyledButton } from '@mantine/core';
-import { useClickOutside } from '@mantine/hooks';
-import { nanoid } from 'nanoid';
 import * as React from 'react';
-import { MdArrowBack, MdCreateNewFolder, MdDelete, MdFolder, MdShortText } from 'react-icons/md';
-import { Outlet, useNavigate, useOutletContext } from 'react-router-dom';
-import FolderContentPage, { DocumentItem } from '../FolderContentPage';
+import NewFolderModal from '@/pages/FoldersPage/NewFolderModal';
+import { IFolder } from '@/types';
+import { UnstyledButton } from '@mantine/core';
+import { MdArrowBack, MdCreateNewFolder } from 'react-icons/md';
+import { Outlet, useNavigate } from 'react-router-dom';
+import FoldersHome from './FoldersHome';
+import FolderContentPage from './FoldersContent';
 
 const FoldersPage = () => {
 
@@ -53,132 +51,7 @@ const FoldersPage = () => {
     );
 }
 
-interface IOutletContext {
-    renameFolder: (folder: IFolder) => void,
-}
-
-const FoldersHome = () => {
-
-    const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
-
-    const { data, isLoading, isFetching } = useGetAllFoldersQuery();
-
-    const [selectedFolder, setSelectedFolder] = React.useState('');
-
-    const documentsInFolder = data?.find((val) => val.id === selectedFolder)?.documents;
-    const selectedFolderName = data?.find((val) => val.id === selectedFolder)?.name;
-
-    const openDrawer = (folderId: string) => {
-        setIsDrawerOpen(true);
-        setSelectedFolder(folderId);
-    }
-
-    return (
-        <>
-            <div className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8 relative">
-
-                {(isLoading || isFetching) ? <Loader /> : data && data.map((value) =>
-
-                    <FolderItem key={value.id} folderInfo={value} openDrawer={() => openDrawer(value.id)} />
-                )
-                }
-                <Drawer
-                    styles={{
-                        drawer: {
-                            marginTop: '2rem',
-                            background: '#1D1D20',
-                            borderLeft: '1px solid #A2A2A3',
-                            padding: '4rem 1rem 2rem 1rem !important',
-                        }
-                    }}
-                    position='right'
-                    size={'md'}
-                    withCloseButton
-                    withinPortal={false}
-                    withOverlay={false}
-                    opened={isDrawerOpen}
-                    onClose={() => setIsDrawerOpen(false)}
-                >
-                    <h1 className="text-white text-2xl"> {selectedFolderName} </h1>
-                    <Divider className="mt-2" />
-                    <div className="mt-8 flex flex-col">
-                        {documentsInFolder
-                            ?
-                            documentsInFolder.map((val) => <DocumentItem key={val.id} documentInfo={val} />)
-                            : <h1 className="text-[#6A6A6A] text-2xl"> No documents </h1>}
-                    </div>
-                </Drawer>
-            </div>
-        </>
-    );
-
-}
-
 FoldersPage.Content = FolderContentPage;
 FoldersPage.Home = FoldersHome;
 
 export default FoldersPage;
-
-interface FolderItemProps {
-    folderInfo: IFolder,
-    openDrawer: () => void
-}
-
-const FolderItem = ({ folderInfo, openDrawer }: FolderItemProps) => {
-
-
-    const navigate = useNavigate();
-    const [deleteFolderMutation] = useDeleteFolderMutation();
-    const { renameFolder } = useOutletContext<IOutletContext>();
-
-    const deleteFolder = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        if (folderInfo.id) {
-            deleteFolderMutation(folderInfo.id);
-        }
-    }
-
-    const openFolderDetails = () => {
-        openDrawer();
-        // navigate(folderInfo.id);
-    }
-
-    const openFolder = () => {
-        navigate(folderInfo.id);
-    }
-
-    return (
-        <div
-            className="w-full max-w-xs h-fit max-h-32 p-4 flex gap-4 cursor-pointer text-[#6A6A6A] text-lg items-center rounded-sm border-[1px] border-[#44444A] hover:text-white hover:border-[#3071E8]"
-            onClick={openFolderDetails}
-            onDoubleClick={openFolder}
-        >
-            <MdFolder />
-            <div className="w-full flex justify-between items-center">
-                <h6> {folderInfo.name.toString()} </h6>
-                <Menu
-                    onClick={(e) => e.stopPropagation()}
-                    styles={{ body: { backgroundColor: '#34343A', border: 'none' }, itemLabel: { color: 'white' }, item: { ':hover': { background: '#45454D' } } }}
-                >
-                    <MenuItem icon={<MdShortText color="white" size={20} />} onClick={() => renameFolder(folderInfo)}> Rename Folder </MenuItem>
-                    <MenuItem icon={<MdDelete color="#F64646" size={20} />} onClick={deleteFolder}> Delete Folder </MenuItem>
-                </Menu>
-            </div>
-        </div>
-    );
-}
-
-{/* 
-
-CONTEXT MENU
-
-<Menu
-opened={contextCoords !== null}
-ref={ref}
-control={<div style={{ display: 'none' }}> </div>}
-withinPortal={false}
-styles={{ body: { backgroundColor: '#34343A', border: 'none' }, itemLabel: { color: 'white' }, item: { ':hover': { background: '#45454D' } } }}
-style={{ position: 'fixed', top: contextCoords?.y + 'px', left: contextCoords?.x + 'px' }}>
-<MenuItem icon={<MdShortText color="white" size={20} />} onClick={renameFolder}> Rename Folder </MenuItem>
-<MenuItem icon={<MdDelete color="#F64646" size={20} />} onClick={deleteFolder}> Delete Folder </MenuItem>
-</Menu> */}

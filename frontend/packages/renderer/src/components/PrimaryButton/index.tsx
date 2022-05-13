@@ -1,5 +1,5 @@
-import { Button, ButtonProps } from '@mantine/core';
 import * as React from 'react';
+import { Button, ButtonProps } from '@mantine/core';
 
 
 const PrimaryButton = (props: ButtonProps<'button'>) => {

@@ -1,9 +1,7 @@
-import { useProcessTextMutation } from '@/redux/api/searchEndpoints';
+import * as React from 'react';
 import { ISearchResult } from '@/types';
 import { Avatar, Button, Loader } from '@mantine/core';
-import { BrowserWindow } from 'electron';
 import { nanoid } from 'nanoid';
-import * as React from 'react';
 import { MdBookmark, MdCopyAll, MdSearch } from 'react-icons/md';
 
 interface Props {

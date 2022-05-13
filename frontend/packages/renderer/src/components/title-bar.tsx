@@ -1,10 +1,7 @@
-// import { ipcRenderer, remote } from 'electron';
 import * as React from 'react';
 import { MdClose, MdMinimize } from 'react-icons/md';
 import { BiWindows } from 'react-icons/bi';
-// const {remote} = window.require('electron');
 
-// const currWindow = remote.getCurrentWindow();
 
 const TitleBar = () => {
 

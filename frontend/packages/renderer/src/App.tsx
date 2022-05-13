@@ -1,7 +1,6 @@
 import * as React from 'react';
 import TitleBar from './components/title-bar'
-import TopBar from './components/Topbar'
-import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import AuthPage from './pages/Auth';
 import { useSelector } from 'react-redux';
 import { IRootState } from './redux/store';
@@ -12,6 +11,7 @@ import FoldersPage from './pages/FoldersPage';
 import HistoryRouter from './components/HistoryRouter';
 import { history } from './components/HistoryRouter/history';
 import { ModalsProvider } from '@mantine/modals';
+import TopBar from './components/Topbar/Topbar';
 
 function App() {
   return (

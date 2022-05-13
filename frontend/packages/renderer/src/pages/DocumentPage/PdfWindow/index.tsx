@@ -1,9 +1,9 @@
+import * as React from 'react';
 import { IPdf } from '@/types';
 import { ActionIcon, Button, createStyles, Tab, Tabs } from '@mantine/core';
 import { nanoid } from 'nanoid';
-import * as React from 'react';
-import { MdClose, MdFilePresent, MdFileUpload } from 'react-icons/md';
-import PdfViewer from '../PdfViewer';
+import { MdClose, MdFilePresent } from 'react-icons/md';
+import PdfViewer from './PdfViewer';
 
 const useStyles = createStyles({
     root: { flex: 1 },

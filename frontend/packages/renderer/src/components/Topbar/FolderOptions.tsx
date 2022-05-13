@@ -1,6 +1,6 @@
-import { ActionIcon, Button, createStyles, Divider, Menu, MenuItem } from '@mantine/core';
 import * as React from 'react';
-import { MdDelete, MdMoreHoriz, MdStar, MdStarBorder } from 'react-icons/md';
+import { ActionIcon, Button, createStyles, Divider, Menu, MenuItem } from '@mantine/core';
+import { MdDelete, MdMoreHoriz, MdStarBorder } from 'react-icons/md';
 
 const useButtonStyles = createStyles({
     root: {
