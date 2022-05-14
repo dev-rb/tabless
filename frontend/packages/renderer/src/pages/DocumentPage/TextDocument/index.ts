@@ -1,0 +1,2 @@
+export { TextDocument } from './TextDocument';
+

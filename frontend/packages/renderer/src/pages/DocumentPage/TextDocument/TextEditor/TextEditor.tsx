@@ -3,6 +3,7 @@ import { DeltaStatic } from 'quill';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import CustomEditorToolbar from './CustomEditorToolbar';
+import { Box } from '@mantine/core';
 
 const initialValue = "Start Typing...";
 const formats = [
@@ -38,7 +39,7 @@ interface TextEditorProps {
     text?: string
 }
 
-const TextEditor = ({ updateText, text = '' }: TextEditorProps) => {
+export const TextEditor = ({ updateText, text = '' }: TextEditorProps) => {
 
     const [value, setValue] = React.useState(text);
     const editorRef = React.useRef<ReactQuill>(null);
@@ -54,10 +55,10 @@ const TextEditor = ({ updateText, text = '' }: TextEditorProps) => {
     }
 
     return (
-        <div className="w-full h-full">
-            <div className="border-b-2 border-toolbarBorderColor mt-4">
+        <Box sx={{ width: '100%', height: '100%' }}>
+            <Box sx={{ borderBottom: '2px solid #CFCFCF', marginTop: '1rem' }}>
                 <CustomEditorToolbar />
-            </div>
+            </Box>
             <ReactQuill
                 ref={editorRef}
                 className="placeholder-white border-none"
@@ -68,8 +69,6 @@ const TextEditor = ({ updateText, text = '' }: TextEditorProps) => {
                 formats={formats}
                 modules={modules}
             />
-        </div>
+        </Box>
     );
 }
-
-export default TextEditor;

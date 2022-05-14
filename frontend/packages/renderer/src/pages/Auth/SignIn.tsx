@@ -1,22 +1,15 @@
 import * as React from 'react';
 import { AiOutlineGoogle } from 'react-icons/ai'
-import { Anchor, Button, PasswordInput, TextInput } from '@mantine/core';
+import { Anchor, Box, Button, Group, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { FirebaseError, initializeApp } from 'firebase/app';
-import { getAuth, signInWithCustomToken, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, User } from 'firebase/auth';
+import { getAuth, signInWithCustomToken, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { ref, getDatabase, onValue } from 'firebase/database';
 import { useDispatch } from 'react-redux';
 import { signInUser, signOutLocal } from '@/redux/slices/authSlice';
-import { useCreateUserMutation } from '@/redux/api/authEndpoints';
-
-declare global {
-    interface Window {
-        openUrl: any
-    }
-}
 
 const schema = z.object({
     email: z.string().email({ message: 'Invalid Email' }),
@@ -38,12 +31,11 @@ interface LocationState {
     from: string
 }
 
-const SignupPage = () => {
+export const SignInPage = () => {
     const auth = getAuth();
 
     const form = useForm({
         initialValues: {
-            username: '',
             email: '',
             password: ''
         },
@@ -54,23 +46,7 @@ const SignupPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [createUserMutation] = useCreateUserMutation();
-
-    const createUserBackend = async (user: User) => {
-
-        const token = await user.getIdToken();
-        if (token) {
-            createUserMutation({
-                user: {
-                    token: token,
-                    email: user.email,
-                    name: form.values.username
-                }
-            });
-        }
-    }
-
-    const signUpWithGoogle = async () => {
+    const signInWithGoogle = async () => {
         const uuid = nanoid();
         window.openUrl.openUrl(`http://localhost:3001/login?id=${uuid}`);
         const db = getDatabase();
@@ -83,18 +59,13 @@ const SignupPage = () => {
         });
     }
 
-    const signUpWithEmail = async ({ username, email, password }: typeof form.values) => {
+    const signInWithEmail = async ({ email, password }: typeof form.values) => {
         try {
-            await createUserWithEmailAndPassword(auth, email, password).then((val) => {
-                updateProfile(val.user, { displayName: username });
-                createUserBackend(val.user)
-            });
+            await signInWithEmailAndPassword(auth, email, password);
         } catch (err) {
             const error = err as FirebaseError;
-            console.log(error)
-            if (error.code === 'auth/email-already-in-use') {
-                form.setErrors({ email: 'This email is already in use!' })
-            }
+            form.setErrors({ email: 'Wrong email or password' });
+            console.log(error.message, error.code)
         }
     }
 
@@ -104,15 +75,17 @@ const SignupPage = () => {
                 // console.log(user);
                 user.getIdToken().then((val) => {
                     dispatch(signInUser(val));
-
                 });
-                if (location.state) {
-                    navigate((location.state as LocationState).from, { replace: true });
-                } else {
-                    navigate('/', { replace: true });
-                }
+
+                setTimeout(() => {
+                    if (location.state) {
+                        navigate((location.state as LocationState).from, { replace: true });
+                    } else {
+                        navigate('/', { replace: true });
+                    }
+                }, 300)
             } else {
-                dispatch(signOutLocal());
+                dispatch(signOutLocal())
             }
         });
 
@@ -123,27 +96,13 @@ const SignupPage = () => {
 
 
     return (
-        <div className="flex w-full h-full items-center justify-center">
-            <div className="flex flex-col gap-4 max-w-xs w-full">
-                <form className="flex flex-col gap-4" onSubmit={form.onSubmit(signUpWithEmail)}>
-                    <h1 className="text-white font-medium text-4xl uppercase">Sign Up</h1>
-                    <div className="flex flex-col gap-4">
-                        <TextInput
-                            label='Username'
-                            placeholder='Enter a username'
-                            variant='filled'
-                            size='md'
-                            required
-                            styles={{
-                                input: {
-                                    background: 'transparent', border: '1px solid #606064', color: 'white', "::placeholder": { color: '#444448' },
-                                    ":focus-within": { border: '1px solid #3071E8' },
-                                    ":focus": { borderColor: '#3071E8 !important' }
-                                },
-                                label: { color: '#A2A2A3', fontWeight: 400 },
-                            }}
-                            {...form.getInputProps('username')}
-                        />
+        <Group align={'center'} position={'center'} sx={{ width: '100%', height: '100%' }}>
+            <Stack sx={{ gap: '1rem', maxWidth: '20rem', width: '100%' }}>
+                <Box component='form' sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} onSubmit={form.onSubmit(signInWithEmail)}>
+                    <Title order={1} sx={{ textTransform: 'uppercase', fontSize: '2.25rem', lineHeight: '2.5rem', color: 'white', fontWeight: 500 }}>
+                        Sign In
+                    </Title>
+                    <Stack sx={{ gap: '1rem' }}>
                         <TextInput
                             label='Email'
                             placeholder='email@example.com'
@@ -176,16 +135,15 @@ const SignupPage = () => {
                         // onChange={(e) => setPassword(e.target.value)}
                         />
 
-                    </div>
-                    <div className="flex flex-col gap-4 mt-8">
-                        <Button variant='filled' size='md' className="bg-[#3071E8] hover:bg-[#457fec]" type='submit'>Sign Up</Button>
-                        <Button variant='outline' size='md' leftIcon={<AiOutlineGoogle color="#3071E8" />} className="border-[#383737] text-white hover:bg-[#75727148]" onClick={signUpWithGoogle}> Sign up with Google </Button>
-                    </div>
-                </form>
-                <p className="self-center mt-8 text-white"> Already have an account? <Link className="text-[#3071E8]" to="/login">Sign in</Link></p>
-            </div>
-        </div>
+                        <Anchor sx={{ alignSelf: 'self-end', marginTop: '-0.5rem', color: '#515154' }}>Forgot Password?</Anchor>
+                    </Stack>
+                    <Stack sx={{ gap: '1rem' }} align={'center'}>
+                        <Button fullWidth variant='filled' size='md' type='submit'> Sign In </Button>
+                        <Button fullWidth variant='outline' size='md' leftIcon={<AiOutlineGoogle color="#3071E8" />} onClick={signInWithGoogle}> Sign in with Google </Button>
+                    </Stack>
+                </Box>
+                <Text sx={{ color: 'white', marginTop: '2rem', alignSelf: 'center' }}> Don't have an account? <Anchor component={Link} to="/signup" sx={{ color: '#3071E8' }}>Sign up</Anchor></Text>
+            </Stack>
+        </Group>
     );
 }
-
-export default SignupPage;

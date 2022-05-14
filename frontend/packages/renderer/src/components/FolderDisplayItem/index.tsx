@@ -3,9 +3,9 @@ import { useDeleteFolderMutation } from "@/redux/api/folderEndpoints";
 import { IFolder } from "@/types";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { MdFolder, MdShortText, MdDelete } from 'react-icons/md';
-import { Menu } from '@mantine/core';
+import { Box, BoxProps, Group, Menu, Text } from '@mantine/core';
 
-interface FolderDisplayItemProps {
+interface FolderDisplayItemProps extends BoxProps<"div"> {
     folderInfo: IFolder,
     openDrawer: () => void
 }
@@ -14,7 +14,7 @@ interface IOutletContext {
     renameFolder: (folder: IFolder) => void,
 }
 
-const FolderDisplayItem = ({ folderInfo, openDrawer }: FolderDisplayItemProps) => {
+const FolderDisplayItem = ({ folderInfo, openDrawer, ...rest }: FolderDisplayItemProps) => {
 
 
     const navigate = useNavigate();
@@ -38,14 +38,35 @@ const FolderDisplayItem = ({ folderInfo, openDrawer }: FolderDisplayItemProps) =
     }
 
     return (
-        <div
-            className="w-full max-w-xs h-fit max-h-32 p-4 flex gap-4 cursor-pointer text-[#6A6A6A] text-lg items-center rounded-sm border-[1px] border-[#44444A] hover:text-white hover:border-[#3071E8]"
+        <Box
+            component='div'
+            sx={(theme) => ({
+                width: '100%',
+                maxWidth: '20rem',
+                height: 'fit-content',
+                maxHeight: '8rem',
+                padding: '1rem',
+                borderRadius: '0.125rem',
+                border: '1px solid #44444A',
+                display: 'flex',
+                gap: '1rem',
+                alignItems: 'center',
+                cursor: 'pointer',
+                color: '#6A6A6A',
+                fontSize: '1.125rem',
+                lineHeight: '1.75rem',
+                ':hover': {
+                    color: 'white',
+                    borderColor: '#3071E8'
+                }
+            })}
             onClick={openFolderDetails}
-            onDoubleClick={openFolder}
+            onDoubleClick={openDrawer}
+            {...rest}
         >
             <MdFolder />
-            <div className="w-full flex justify-between items-center">
-                <h6> {folderInfo.name.toString()} </h6>
+            <Group position='apart' align={'center'} sx={{ width: '100%' }} noWrap>
+                <Text size='lg'> {folderInfo.name.toString()} </Text>
                 <Menu
                     onClick={(e) => e.stopPropagation()}
                     styles={{ body: { backgroundColor: '#34343A', border: 'none' }, itemLabel: { color: 'white' }, item: { ':hover': { background: '#45454D' } } }}
@@ -53,8 +74,8 @@ const FolderDisplayItem = ({ folderInfo, openDrawer }: FolderDisplayItemProps) =
                     <Menu.Item icon={<MdShortText color="white" size={20} />} onClick={() => renameFolder(folderInfo)}> Rename Folder </Menu.Item>
                     <Menu.Item icon={<MdDelete color="#F64646" size={20} />} onClick={deleteFolder}> Delete Folder </Menu.Item>
                 </Menu>
-            </div>
-        </div>
+            </Group>
+        </Box>
     );
 }
 

@@ -83,7 +83,7 @@ export const DocumentItemDelete = ({ documentId }: DocumentItemDeleteProps) => {
 
     return (
         <Button
-            variant="filled"
+            variant="subtle"
             sx={(theme) => ({
                 color: '#707070',
                 fontSize: '1.25rem',

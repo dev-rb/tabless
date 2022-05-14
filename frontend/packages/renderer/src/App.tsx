@@ -1,10 +1,8 @@
 import * as React from 'react';
 import TitleBar from './components/title-bar'
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
-import AuthPage from './pages/Auth';
 import { useSelector } from 'react-redux';
 import { IRootState } from './redux/store';
-import SignupPage from './pages/Auth/Signup';
 import HomePage from './pages/Home';
 import DocumentPage from './pages/DocumentPage';
 import FoldersPage from './pages/FoldersPage';
@@ -12,40 +10,45 @@ import HistoryRouter from './components/HistoryRouter';
 import { history } from './components/HistoryRouter/history';
 import { ModalsProvider } from '@mantine/modals';
 import TopBar from './components/Topbar/Topbar';
+import { SignInPage, SignupPage } from './pages/Auth';
+import { Box, MantineProvider } from '@mantine/core';
+import { theme } from './utils/theme';
 
 function App() {
   return (
-    <HistoryRouter history={history}>
-      <div className="h-screen w-screen flex flex-col">
-        <TitleBar />
-        <div className="h-full overflow-hidden">
-          <Routes>
-            <Route path='/' element={<RequireAuth />} >
-              <Route index element={<HomePage />} />
-              <Route path='/document/:documentId' element={<DocumentPage />} />
-              <Route path='/folders' element={<FoldersPage />} >
-                <Route index element={<FoldersPage.Home />} />
-                <Route path=':folderId' element={<FoldersPage.Content />} />
+    <MantineProvider theme={theme}>
+      <HistoryRouter history={history}>
+        <Box sx={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column' }}>
+          <TitleBar />
+          <Box sx={{ height: '100%', overflow: 'hidden' }}>
+            <Routes>
+              <Route path='/' element={<RequireAuth />} >
+                <Route index element={<HomePage />} />
+                <Route path='/document/:documentId' element={<DocumentPage />} />
+                <Route path='/folders' element={<FoldersPage />} >
+                  <Route index element={<FoldersPage.Home />} />
+                  <Route path=':folderId' element={<FoldersPage.Content />} />
+                </Route>
               </Route>
-            </Route>
-            <Route path='/login' element={<AuthPage />} />
-            <Route path='/signup' element={<SignupPage />} />
-          </Routes>
-        </div>
-      </div>
-    </HistoryRouter>
+              <Route path='/login' element={<SignInPage />} />
+              <Route path='/signup' element={<SignupPage />} />
+            </Routes>
+          </Box>
+        </Box>
+      </HistoryRouter>
+    </MantineProvider>
   )
 }
 
 const Layout = () => {
   return (
     <ModalsProvider>
-      <div className="flex flex-col w-full h-full overflow-hidden">
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', overflow: 'hidden' }}>
         <TopBar />
-        <div className="px-6 w-full h-full">
+        <Box sx={{ paddingLeft: '1.5rem', paddingRight: '1.5rem', width: '100%', height: '100%' }}>
           <Outlet />
-        </div>
-      </div>
+        </Box>
+      </Box>
     </ModalsProvider>
   );
 }

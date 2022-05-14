@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActionIcon, Button, createStyles, Divider, Menu, MenuItem } from '@mantine/core';
+import { ActionIcon, Button, createStyles, Divider, Group, Menu, MenuItem } from '@mantine/core';
 import { MdDelete, MdMoreHoriz, MdStarBorder } from 'react-icons/md';
 
 const useButtonStyles = createStyles({
@@ -48,8 +48,8 @@ const FolderOptions = () => {
     const { classes: menuClasses } = useMenuStyles();
 
     return (
-        <div className="flex gap-2 items-center">
-            <Button classNames={buttonClasses} size='sm' compact> New Folder </Button>
+        <Group noWrap align='center' sx={{ gap: '0.5rem' }}>
+            <Button classNames={buttonClasses} variant="subtle" size='sm' compact> New Folder </Button>
             <ActionIcon classNames={actionIconClasses}> <MdStarBorder size={22} /> </ActionIcon>
             <Menu classNames={menuClasses} control={<ActionIcon classNames={actionIconClasses}> <MdMoreHoriz size={22} /> </ActionIcon>}>
                 <MenuItem icon={<MdStarBorder size={16} />}>
@@ -60,7 +60,7 @@ const FolderOptions = () => {
                     Delete
                 </MenuItem>
             </Menu>
-        </div>
+        </Group>
     );
 }
 

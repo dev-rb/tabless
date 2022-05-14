@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ISearchResult } from '@/types';
-import { Avatar, Button, Loader } from '@mantine/core';
+import { Anchor, Avatar, Button, Divider, Group, Loader, Text, Title } from '@mantine/core';
 import { nanoid } from 'nanoid';
 import { MdBookmark, MdCopyAll, MdSearch } from 'react-icons/md';
 
@@ -17,13 +17,13 @@ const SearchResults = ({ searchResults, isLoading }: Props) => {
     }
 
     return (
-        <div className="flex flex-col min-w-min max-w-sm w-full h-full gap-2 border-l-2 border-l-[#72747B] pl-4 pt-8 items-center">
-            <div className="max-w-xs w-full h-11 flex flex-row justify-between items-center px-4 rounded-[4px] border-[1px] border-[#A67AE9] text-[#707071]">
+        <Group direction='column' align={'center'} noWrap sx={{ minWidth: 'min-content', maxWidth: '24rem', width: '100%', height: '100%', gap: '0.5rem', borderLeft: '2px solid #72747B', paddingLeft: '1rem', paddingTop: '2rem' }}>
+            <Group noWrap align={'center'} position='apart' sx={{ maxWidth: '24rem', width: '100%', height: '2.75rem', 'padding': '0 1rem', borderRadius: '4px', border: '1px solid #A67AE9', color: '#707071' }}>
                 <p> Search keywords </p>
                 <MdSearch size={25} />
-            </div>
-            <div className="w-1/2 h-1 bg-[#37373A] self-center rounded-full my-2" />
-            <div className="overflow-y-auto flex flex-col gap-4 h-full">
+            </Group>
+            <Divider my='sm' sx={{ width: '50%', height: '1px', backgroundColor: '#37373A', alignSelf: 'center', borderRadius: '9999px' }} />
+            <Group direction='column' sx={{ overflowY: 'auto', height: '100%', width: '100%' }} position='center'>
                 {/* <ResultItem
                     title={'Some Search result'}
                     url={'https://api.faviconkit.com/www.hollywoodsoapbox.com/192'}
@@ -36,10 +36,10 @@ const SearchResults = ({ searchResults, isLoading }: Props) => {
                 <ResultItem description='' favicons={{ high_res: '', low_res: '' }} title='' url='https://github.com' />
                 {isLoading ? <Loader /> : searchResults.map((val) => <ResultItem key={nanoid()} {...val} />)}
                 {/* {searchResults.map((val) => <ResultItem key={val.url} {...val} />)} */}
-            </div>
+            </Group>
 
             <Button onClick={openWindow} > Open Test </Button>
-        </div>
+        </Group>
     );
 }
 
@@ -56,20 +56,20 @@ const ResultItem = ({ description, title, favicons, url }: ISearchResult) => {
     }
 
     return (
-        <div className="bg-[#28282B] h-fit flex flex-col gap-6 p-3 flex-wrap">
-            <div className="flex flex-row items-center gap-6 min-w-min">
+        <Group direction='column' sx={{ height: 'fit-content', width: '100%', backgroundColor: '#28282B', gap: '1.5rem', padding: '0.75rem' }}>
+            <Group align={'center'} sx={{ minHeight: 'min-content', gap: '1.5rem' }}>
                 <Avatar src={favicons.high_res} radius='xl' />
-                <div className="flex flex-col gap-0 max-w-xs ">
-                    <h6 className="text-white text-lg font-medium overflow-hidden overflow-ellipsis"> {title} </h6>
-                    <a className="text-[#E9E9E9] text-sm overflow-hidden overflow-ellipsis" href={url}> {url}  </a>
-                </div>
-            </div>
-            <p className="text-[#E9E9E9] flex-1 max-w-xs break-words text-sm" > {description}</p>
-            <div className="flex flex-row gap-4 text-[#54565E] ml-auto pl-2 self-start ">
-                <button className="hover:text-white"> <MdBookmark size={24} /> </button>
-                <button className="hover:text-white"> <MdCopyAll size={24} /> </button>
-            </div>
+                <Group direction='column' sx={{ gap: 0, maxWidth: '24rem' }}>
+                    <Title order={6} sx={{ color: 'white', fontSize: '1.125rem', lineHeight: '1.75rem', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis' }}> {title} </Title>
+                    <Anchor sx={{ color: '#e9e9e9', fontSize: '0.875rem', lineHeight: '1.25rem', overflow: 'hidden', textOverflow: 'ellipsis' }} href={url}> {url}  </Anchor>
+                </Group>
+            </Group>
+            <Text sx={{ color: '#e9e9e9', fontSize: '0.875rem', lineHeight: '1.25rem', overflowWrap: 'break-word', maxWidth: '24rem' }}> {description}</Text>
+            <Group sx={{ alignSelf: 'start', color: '#54565E', marginLeft: 'auto', padding: '0.5rem' }}>
+                <Button className="hover:text-white"> <MdBookmark size={24} /> </Button>
+                <Button className="hover:text-white"> <MdCopyAll size={24} /> </Button>
+            </Group>
 
-        </div>
+        </Group>
     );
 }

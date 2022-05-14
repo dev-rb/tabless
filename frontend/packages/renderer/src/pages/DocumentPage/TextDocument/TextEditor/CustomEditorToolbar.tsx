@@ -1,3 +1,4 @@
+import { Group } from '@mantine/core';
 import * as React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { MdFormatAlignCenter, MdFormatAlignJustify, MdFormatAlignLeft, MdFormatAlignRight, MdFormatBold, MdFormatColorFill, MdFormatColorText, MdFormatItalic, MdFormatListBulleted, MdFormatListNumbered, MdFormatStrikethrough, MdFormatUnderlined } from 'react-icons/md';
@@ -20,8 +21,8 @@ icons['background'] = ReactDOMServer.renderToStaticMarkup(<MdFormatColorFill siz
 
 const CustomEditorToolbar = () => {
     return (
-        <div id="toolbar" className="!flex items-center gap-2 text-[#72747B] flex-wrap">
-            <span className="ql-formats !flex gap-2 !mr-0">
+        <Group id="toolbar" align="center" sx={{ gap: '0.5rem', color: '#72747B' }} noWrap={false} >
+            <Group className="ql-formats" sx={{ marginRight: '0 !important', gap: '0.5rem', display: 'flex !important' }}>
 
                 {/* <NativeSelect value={"Normal"} data={['Heading', 'Subheading', 'Normal']} styles={{root: {width: 'fit-content'}}} /> */}
 
@@ -30,36 +31,36 @@ const CustomEditorToolbar = () => {
                     <option value="2">Subheading</option>
                     <option value="3">Normal</option>
                 </select>
-            </span>
+            </Group>
 
             <span className="toolbar-separator" />
 
-            <span className="ql-formats !flex gap-2 !mr-0">
+            <Group className="ql-formats" sx={{ marginRight: '0 !important', gap: '0.5rem', display: 'flex !important' }}>
                 <button className="ql-bold" />
                 <button className="ql-italic" />
                 <button className="ql-underline" />
                 <button className="ql-strike" />
-            </span>
+            </Group>
             <span className="toolbar-separator" />
-            <span className="ql-formats !flex gap-2 justify-between !mr-0">
+            <Group className="ql-formats" position='apart' sx={{ marginRight: '0 !important', gap: '0.5rem', display: 'flex !important' }}>
                 <button className="ql-align" value="" />
                 <button className="ql-align" value="center" />
                 <button className="ql-align" value="right" />
                 <button className="ql-align" value="justify" />
-            </span>
+            </Group>
 
             <span className="toolbar-separator" />
-            <span className="ql-formats !flex gap-2 justify-between !mr-0">
+            <Group className="ql-formats" position='apart' sx={{ marginRight: '0 !important', gap: '0.5rem', display: 'flex !important' }}>
                 <button className="ql-list" value="ordered" />
                 <button className="ql-list" value="bullet" />
 
-            </span>
+            </Group>
             <span className="toolbar-separator" />
 
-            <span className="ql-formats !flex flex-row gap-2 !mr-0">
+            <Group className="ql-formats" sx={{ marginRight: '0 !important', gap: '0.5rem', display: 'flex !important' }}>
                 <select className="ql-color" />
                 <select className="ql-background" />
-            </span>
+            </Group>
             {/* <span className="toolbar-separator" /> */}
             {/*             
             <span className="ql-formats">
@@ -70,7 +71,7 @@ const CustomEditorToolbar = () => {
                     <CustomRedo />
                 </button>
             </span> */}
-        </div>
+        </Group>
     );
 }
 

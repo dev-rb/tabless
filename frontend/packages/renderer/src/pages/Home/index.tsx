@@ -1,13 +1,15 @@
 import * as React from "react";
 import { useGetAllDocumentsQuery, useNewDocumentMutation } from "@/redux/api/documentEndpoints";
 import { IDocument, ITextDocument } from "@/types";
-import { Loader } from "@mantine/core";
+import { Button, Loader, Stack } from "@mantine/core";
 import { MdAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import PrimaryButton from "@/components/PrimaryButton";
 import { DocumentDisplayItem, DocumentItemDelete } from "@/components/DocumentDisplayItem";
+import { useStyles } from "./styles";
 
 const HomePage = () => {
+
+    const { classes } = useStyles();
 
     const [createNewDocument] = useNewDocumentMutation();
     const { data, isLoading, isFetching } = useGetAllDocumentsQuery();
@@ -27,11 +29,11 @@ const HomePage = () => {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center w-full h-full">
-            <div className="flex flex-col justify-center items-center border-dashed border-2 border-[#707070] p-20 gap-16">
+        <div className={classes.container}>
+            <Stack justify={'center'} align={'center'} className={classes.inner}>
                 {data?.length && !isLoading ?
-                    <div className="flex flex-col gap-4 items-start w-full">
-                        <h1 className="text-[#9D9D9D] text-3xl font-medium"> Recent Documents </h1>
+                    <Stack spacing={'lg'} align={'start'}>
+                        <h1 className={classes.title}> Recent Documents </h1>
                         {data.map((val) =>
                             <DocumentDisplayItem
                                 key={val.id}
@@ -40,21 +42,22 @@ const HomePage = () => {
                                 rightSection={<DocumentItemDelete documentId={val.id} />}
                             />
                         )}
-                    </div>
+                    </Stack>
                     :
                     isFetching ? <Loader /> :
-                        <h1 className="text-[#9D9D9D] text-3xl font-medium"> You have no recent documents. </h1>
+                        <h1 className={classes.title}> You have no recent documents. </h1>
                 }
 
-                <PrimaryButton
+                <Button
+                    sx={{ width: '18rem' }}
                     leftIcon={<MdAdd size={20} />}
                     variant='filled'
                     size='md'
                     onClick={handleCreateNewDocument}
                 >
                     Create New
-                </PrimaryButton>
-            </div>
+                </Button>
+            </Stack>
         </div>
     );
 }

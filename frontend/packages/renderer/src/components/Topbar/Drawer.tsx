@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useGetAllDocumentsQuery } from "@/redux/api/documentEndpoints";
 import { signOutLocal } from "@/redux/slices/authSlice";
-import { Avatar, Loader, Accordion, AccordionItem, Menu, MenuItem, createStyles, UnstyledButton, Group, Text } from "@mantine/core";
+import { Avatar, Loader, Accordion, AccordionItem, Menu, MenuItem, createStyles, UnstyledButton, Group, Text, Stack, Anchor, Button, Title } from "@mantine/core";
 import { getAuth, signOut } from "firebase/auth";
 import { HiDocument } from "react-icons/hi";
 import { MdFolder, MdPerson, MdLogout, MdHome, MdChevronRight } from "react-icons/md";
@@ -15,11 +15,12 @@ interface AccordionFolderDetails {
 }
 
 const AccordionLabel = ({ folderName }: AccordionFolderDetails) => {
+    const { classes } = useStyles();
     return (
-        <div className="flex flex-row gap-2 items-center text-md font-normal ">
+        <Group align={'center'} spacing='md'>
             <MdFolder size={24} />
-            <h6 className="text-ellipsis overflow-hidden whitespace-nowrap"> {folderName} </h6>
-        </div>
+            <Text size='md' weight={400} className={classes.documentName}> {folderName} </Text>
+        </Group>
     );
 }
 
@@ -29,19 +30,35 @@ interface DrawerDocumentProps {
 }
 
 const DrawerDocument = ({ documentName, documentId }: DrawerDocumentProps) => {
+    const { classes } = useStyles();
     return (
-        <Link title={documentName} className="flex flex-row gap-2 items-center text-md font-normal text-[#797E8A] hover:bg-gray-600 hover:text-white p-1 rounded-sm" to={`/document/${documentId}`}>
-            <HiDocument size={25} />
-            <h6 className="text-ellipsis overflow-hidden whitespace-nowrap"> {documentName} </h6>
-        </Link>
+        <UnstyledButton title={documentName} component={Link} className={classes.link} to={`/document/${documentId}`} >   <HiDocument size={25} /> <h6 className={classes.documentName}> {documentName} </h6> </UnstyledButton>
+
     );
 }
 
-const useStyles = createStyles({
-    arrow: {
-        color: 'white'
+const useStyles = createStyles((theme) => ({
+    link: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+        color: theme.colors.dark[5],
+        fontSize: '1.125rem',
+        lineHeight: '1.75rem',
+        padding: '0.25rem',
+        borderRadius: 2,
+        ':hover': {
+            color: 'white',
+            backgroundColor: theme.colors.dark[5]
+        }
+    },
+    documentName: {
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        margin: 0,
     }
-})
+}))
 
 export const DrawerContent = () => {
 
@@ -67,25 +84,27 @@ export const DrawerContent = () => {
     }, [foldersData])
 
     return (
-        <div className="flex flex-col gap-4">
+        <Stack spacing={'sm'}>
             <Menu
                 closeOnItemClick
                 control={<UserButton documentCount={data ? data.length : 0} userName='Rahul' userImage='' />}
             >
                 <MenuItem icon={<MdLogout />} onClick={signUserOut}> Sign out </MenuItem>
             </Menu>
-            <Link className="flex gap-2 items-center text-lg p-1 text-[#797E8A] hover:text-white hover:bg-gray-600 rounded-sm" to={'/'} > <MdHome /> Home </Link>
-            <Link className="flex gap-2 items-center text-lg p-1 text-[#797E8A] hover:text-white hover:bg-gray-600 rounded-sm" to={'/folders'} > <MdFolder /> Folders </Link>
+            <UnstyledButton component={Link} className={classes.link} to={'/'} >  <MdHome /> Home </UnstyledButton>
+            <UnstyledButton component={Link} className={classes.link} to={'/folders'}> <MdFolder /> Folders </UnstyledButton>
             {/* <Button variant='filled' size='lg' onClick={() => navigate('/')} leftIcon={<MdHome color="white" />}> Home </Button> */}
-            <div className="flex flex-col gap-6">
-                <div className="flex flex-col text-[#797E8A] gap-2">
-                    <h1 className="uppercase text-sm font-bold"> Recent </h1>
-                    <div className="flex flex-col">
+            <Stack sx={{ gap: '1.5rem' }}>
+                <Stack sx={{ gap: '0.5rem' }}>
+                    <Text size='xl' color="#777e8d"> Recent </Text>
+                    {/* <h1 className="uppercase text-sm font-bold"> Recent </h1> */}
+                    <Stack className="flex flex-col">
                         {data && !isLoading ? data.map((val) => <DrawerDocument key={val.id} documentId={val.id} documentName={val.title} />) : <Loader />}
-                    </div>
-                </div>
-                <div className="flex flex-col text-[#797E8A] gap-2">
-                    <h1 className="uppercase text-sm font-bold"> Folders </h1>
+                    </Stack>
+                </Stack>
+                <Stack sx={{ gap: '0.5rem' }}>
+                    <Text size='xl' sx={{ color: '#797E8A' }}> Folders </Text>
+                    {/* <h1 className="uppercase text-sm font-bold"> Folders </h1> */}
                     <Accordion className="flex flex-col gap-4">
                         {foldersData && foldersData.map((val) =>
                             <AccordionItem
@@ -101,12 +120,9 @@ export const DrawerContent = () => {
                         )}
 
                     </Accordion>
-                    <div className="flex flex-col">
-
-                    </div>
-                </div>
-            </div>
-        </div>
+                </Stack>
+            </Stack>
+        </Stack>
     );
 }
 

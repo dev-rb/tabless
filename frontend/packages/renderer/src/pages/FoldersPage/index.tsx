@@ -1,7 +1,7 @@
 import * as React from 'react';
 import NewFolderModal from '@/pages/FoldersPage/NewFolderModal';
 import { IFolder } from '@/types';
-import { UnstyledButton } from '@mantine/core';
+import { Box, Button, Group, UnstyledButton } from '@mantine/core';
 import { MdArrowBack, MdCreateNewFolder } from 'react-icons/md';
 import { Outlet, useNavigate } from 'react-router-dom';
 import FoldersHome from './FoldersHome';
@@ -30,24 +30,23 @@ const FoldersPage = () => {
     }
 
     return (
-        <div className="w-full h-full flex flex-col">
+        <Group direction='column' noWrap sx={{ width: '100%', height: '100%' }}>
             <NewFolderModal isOpen={isCreateModalOpen} closeModal={() => setIsCreateModalOpen(false)} type='create' />
             <NewFolderModal isOpen={isRenameModalOpen} closeModal={() => setIsRenameModalOpen(false)} currentName={focusedFolder?.name} folderId={focusedFolder?.id} type={'rename'} />
-            <div className="w-full h-16 flex items-center justify-between">
-                <UnstyledButton className="text-[#646470] bg-[#38383f] p-2 rounded-md hover:bg-[#3071E8] hover:text-white" onClick={goBack}>
+            <Group position='apart' align={'center'} sx={{ width: '100%', height: '4rem' }}>
+                <UnstyledButton sx={{ backgroundColor: '#38383f', color: '#646470', padding: '0.5rem', borderRadius: '0.375rem', ':hover': { backgroundColor: '#3071E8', color: 'white' } }} onClick={goBack}>
                     <MdArrowBack size={30} />
                 </UnstyledButton>
 
-                <UnstyledButton className="text-white bg-[#3071E8] py-2 px-4 rounded-base flex gap-4 items-center hover:bg-[#4485ff]" onClick={openFolderModal}>
-                    <MdCreateNewFolder size={25} />
+                <Button variant='filled' leftIcon={<MdCreateNewFolder size={25} />} onClick={openFolderModal}>
                     New Folder
-                </UnstyledButton>
-            </div>
+                </Button>
+            </Group>
 
-            <div className="mt-6 relative">
+            <Box sx={{ marginTop: '1.5rem', position: 'relative', width: '100%', height: '100%' }}>
                 <Outlet context={{ renameFolder }} />
-            </div>
-        </div>
+            </Box>
+        </Group>
     );
 }
 

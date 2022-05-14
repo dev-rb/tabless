@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IPdf } from '@/types';
-import { ActionIcon, Button, createStyles, Tab, Tabs } from '@mantine/core';
+import { ActionIcon, Box, Button, createStyles, Group, Stack, Tab, Tabs, Title } from '@mantine/core';
 import { nanoid } from 'nanoid';
 import { MdClose, MdFilePresent } from 'react-icons/md';
 import PdfViewer from './PdfViewer';
@@ -42,17 +42,17 @@ const PdfWindow = ({ pdfs }: PdfWindowProps) => {
     }
 
     return (
-        <div className="flex flex-col h-full max-w-4xl w-full border-l-2 border-l-[#A2A2A3] pl-2">
+        <Stack sx={{ maxWidth: '56rem', width: '100%', height: '100%', paddingLeft: '0.5rem' }}>
             <OpenFile openPdf={openNewPdf} />
             {/* Tab System */}
-            <div className="flex flex-row" >
+            <Group noWrap sx={{ width: '100%' }} grow>
                 <Tabs variant='pills' tabPadding={"xl"} active={activeTab} onTabChange={onTabChange} classNames={classes}>
                     {currentPdfs ?
                         currentPdfs.map((val) =>
                             <Tab key={val.id} title={val.name} label={<TabControlLabel text={val.name} onClose={() => { }} />}>
-                                <div className="w-full h-full max-h-[80vh]">
+                                <Box sx={{ width: '100%', height: '100%', maxHeight: '80vh' }}>
                                     <PdfViewer {...val} />
-                                </div>
+                                </Box>
                             </Tab>
                         )
                         :
@@ -61,8 +61,8 @@ const PdfWindow = ({ pdfs }: PdfWindowProps) => {
                     }
 
                 </Tabs>
-            </div>
-        </div>
+            </Group>
+        </Stack>
     );
 }
 
@@ -75,12 +75,12 @@ interface TabControlLabelProps {
 
 const TabControlLabel = ({ onClose, text }: TabControlLabelProps) => {
     return (
-        <div className="flex items-center gap-2 text-white w-fit max-w-[10rem]">
-            <h6 className="max-w-full whitespace-nowrap text-ellipsis overflow-hidden"> {text} </h6>
+        <Group align='center' sx={{ gap: '0.5rem', color: 'white', width: 'fit-content', maxWidth: '10rem' }} noWrap>
+            <Title order={6} sx={{ maxWidth: '100%', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}> {text} </Title>
             <ActionIcon component='div' size={'xs'} styles={{ root: { ':hover': { background: '#54446E !important', color: 'white' }, color: '#6F5C8E' } }}>
                 <MdClose />
             </ActionIcon>
-        </div>
+        </Group>
     );
 }
 
@@ -102,7 +102,7 @@ const OpenFile = ({ openPdf }: CustomOpenProps) => {
     }
 
     return (
-        <Button className="bg-blue-600 min-h-fit mr-auto" leftIcon={<MdFilePresent size={20} />} onClick={openFileDialog}>
+        <Button variant='filled' leftIcon={<MdFilePresent size={20} />} onClick={openFileDialog} sx={{ minHeight: 'fit-content', marginRight: 'auto' }}>
             Open File
         </Button>
     );

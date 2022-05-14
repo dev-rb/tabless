@@ -79,7 +79,7 @@ const FoldersModal = ({ selectedFolderId, setSelectedFolder, closeModal, isModal
                         onClose={() => setIsNoneSelected(false)}
                         position='bottom'
                         withArrow
-                        target={<Button variant='filled' onClick={submitDocumentToFolder} styles={{ 'filled': { backgroundColor: '#3071E8 !important', ':hover': { backgroundColor: '#2A61C7 !important' } } }}> Add to Folder </Button>}
+                        target={<Button variant='filled' onClick={submitDocumentToFolder}> Add to Folder </Button>}
                         styles={{ 'popover': { background: '#34343A !important' }, 'body': { border: 'none' }, 'arrow': { background: '#34343A', border: 'none' } }}
                     >
                         <div className="flex items-center gap-4">

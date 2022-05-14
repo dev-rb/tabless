@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useGetAllFoldersQuery } from "@/redux/api/folderEndpoints";
-import { Loader, Drawer, Divider } from '@mantine/core';
+import { Loader, Drawer, Divider, Grid } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { DocumentDisplayItem, DocumentItemMenu } from '@/components/DocumentDisplayItem';
 import FolderDisplayItem from '@/components/FolderDisplayItem';
@@ -29,11 +29,13 @@ const FoldersHome = () => {
 
     return (
         <>
-            <div className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8 relative">
+            <Grid gutter={32} columns={4} sx={{ width: '100%', height: '100%', position: 'relative' }} className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8 relative">
 
                 {(isLoading || isFetching) ? <Loader /> : data && data.map((value) =>
 
-                    <FolderDisplayItem key={value.id} folderInfo={value} openDrawer={() => openDrawer(value.id)} />
+                    <Grid.Col key={value.id} span={1}>
+                        <FolderDisplayItem folderInfo={value} openDrawer={() => openDrawer(value.id)} />
+                    </Grid.Col>
                 )
                 }
                 <Drawer
@@ -63,7 +65,7 @@ const FoldersHome = () => {
                             : <h1 className="text-[#6A6A6A] text-2xl"> No documents </h1>}
                     </div>
                 </Drawer>
-            </div>
+            </Grid>
         </>
     );
 

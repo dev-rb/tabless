@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActionIcon, Burger, CSSObject, Drawer } from '@mantine/core';
+import { ActionIcon, Box, Burger, CSSObject, Drawer, Group } from '@mantine/core';
 import { DrawerContent } from './Drawer';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -64,7 +64,7 @@ const TopBar = () => {
     }, [locationPaths])
 
     return (
-        <div className="w-full h-fit justify-center px-6 py-2">
+        <Box sx={{ width: '100%', height: 'fit-content', padding: '0.5rem 1.5rem' }}>
             <Drawer
                 opened={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
@@ -77,21 +77,21 @@ const TopBar = () => {
             >
                 <DrawerContent />
             </Drawer>
-            <div className="flex items-center w-full">
+            <Group align={'center'} sx={{ width: '100%' }}>
                 <Burger opened={drawerOpen} color='white' size={'sm'} onClick={() => setDrawerOpen((prev) => !prev)} />
-                <div className="flex items-center gap-1 ml-4">
+                <Group align={'center'} sx={{ gap: '0.25rem', marginLeft: '1rem' }}>
                     <ActionIcon onClick={() => navigate(-1)} styles={{ root: { backgroundColor: locationPaths.length > 0 ? 'blue !important' : 'red !important' } }}>
                         <FaArrowLeft />
                     </ActionIcon>
                     <ActionIcon onClick={() => navigate(1)} styles={{ root: { backgroundColor: locationPaths.length > 0 ? 'blue !important' : 'red !important' } }}>
                         <FaArrowRight />
                     </ActionIcon>
-                </div>
-                <div className="ml-auto">
+                </Group>
+                <Box sx={{ marginLeft: 'auto' }}>
                     {getOptionsForPage()}
-                </div>
-            </div>
-        </div>
+                </Box>
+            </Group>
+        </Box>
     );
 }
 

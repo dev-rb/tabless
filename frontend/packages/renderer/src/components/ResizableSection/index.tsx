@@ -1,3 +1,4 @@
+import { Box } from '@mantine/core';
 import * as React from 'react';
 import { Rnd, ResizeEnable } from 'react-rnd';
 
@@ -15,9 +16,11 @@ const ResizeableSection = ({ maxWidth, minWidth, maxHeight, minHeight = '100%', 
 
 
     return (
-        <Rnd minHeight={minHeight} maxHeight={maxHeight} maxWidth={maxWidth} minWidth={minWidth} bounds='parent' disableDragging enableResizing={defaultResizeDirections} className="!relative !translate-x-0" resizeHandleStyles={{ right: { borderRight: '2px solid #A2A2A3' } }}>
-            {children}
-        </Rnd>
+        <Box sx={{ position: 'relative', transform: 'unset', width: '100%', height: '100%' }}>
+            <Rnd minHeight={minHeight} maxHeight={maxHeight} maxWidth={maxWidth} minWidth={minWidth} bounds='parent' disableDragging enableResizing={defaultResizeDirections} resizeHandleStyles={{ right: { borderRight: '2px solid #A2A2A3' } }}>
+                {children}
+            </Rnd>
+        </Box>
     );
 }
 
