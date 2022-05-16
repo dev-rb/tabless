@@ -1,10 +1,8 @@
-// import { ipcRenderer, remote } from 'electron';
 import * as React from 'react';
 import { MdClose, MdMinimize } from 'react-icons/md';
 import { BiWindows } from 'react-icons/bi';
-// const {remote} = window.require('electron');
+import { Group, Header, UnstyledButton } from '@mantine/core';
 
-// const currWindow = remote.getCurrentWindow();
 
 const TitleBar = () => {
 
@@ -21,17 +19,22 @@ const TitleBar = () => {
   }
 
   return (
-    <header className="title-bar-drag w-screen h-8 items-center flex z-50 border-b-[1px] border-b-[#A2A2A3] bg-[#1D1D20]">
+    <Header height={'2rem'} sx={{ width: '100vw', display: 'flex', alignItems: 'center', zIndex: 50, backgroundColor: '#1D1D20' }} className="title-bar-drag">
       <div className="flex">
         {/* Logo */}
       </div>
 
-      <div className="flex h-full ml-auto title-bar-no-drag">
-        <button type='button' className="w-12 h-full flex items-center justify-center cursor-pointer text-lg text-[#79797c] hover:bg-[#74747c4d]" onClick={handleMinimizeWindow}> <MdMinimize /> </button>
-        <button type='button' className="w-12 h-full flex items-center justify-center cursor-pointer text-[#79797c] hover:bg-[#74747c4d]" onClick={handleMaximizeWindow}> <BiWindows /> </button>
-        <button type='button' className="w-12 h-full flex items-center justify-center cursor-pointer text-[#79797c] hover:bg-red-700 hover:text-white" onClick={handleCloseWindow}> <MdClose /> </button>
-      </div>
-    </header>
+      <Group noWrap className="title-bar-no-drag" sx={{ height: '100%', marginLeft: 'auto' }} grow>
+        <UnstyledButton type='button' sx={{ width: '3rem', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', fontSize: '1.125rem', lineHeight: '1.75rem', color: '#79797c', ':hover': { backgroundColor: '#74747c4d' } }}
+          onClick={handleMinimizeWindow}> <MdMinimize /> </UnstyledButton>
+        <UnstyledButton type='button'
+          sx={{ width: '3rem', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', fontSize: '1.125rem', lineHeight: '1.75rem', color: '#79797c', ':hover': { backgroundColor: '#74747c4d' } }}
+          onClick={handleMaximizeWindow}> <BiWindows /> </UnstyledButton>
+        <UnstyledButton type='button'
+          sx={{ width: '3rem', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', fontSize: '1.125rem', lineHeight: '1.75rem', color: '#79797c', ':hover': { backgroundColor: 'red', color: 'white' } }}
+          onClick={handleCloseWindow}> <MdClose /> </UnstyledButton>
+      </Group>
+    </Header>
   );
 }
 

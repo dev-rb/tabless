@@ -1,5 +1,5 @@
-import { History } from 'history';
 import * as React from 'react';
+import { History } from 'history';
 import { HistoryRouterProps, Router } from 'react-router-dom';
 
 export interface BrowserRouterProps extends Omit<HistoryRouterProps, "window"> {

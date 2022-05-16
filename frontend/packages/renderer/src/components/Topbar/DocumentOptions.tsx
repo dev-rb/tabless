@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { ActionIcon, Button, createStyles, Divider, Menu, MenuItem } from '@mantine/core';
+import { ActionIcon, Button, createStyles, Divider, Group, Menu, MenuItem } from '@mantine/core';
 import { MdAdd, MdDelete, MdDriveFileMove, MdMoreHoriz, MdStarBorder } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
-import FoldersModal from '../FoldersModal';
 import { useAddDocumentToFolderMutation } from '@/redux/api/folderEndpoints';
+import FoldersModal from './FoldersModal';
 
 const useButtonStyles = createStyles({
     root: {
@@ -80,9 +80,9 @@ const DocumentOptions = () => {
     }
 
     return (
-        <div className="flex gap-2 items-center">
-            <Button classNames={buttonClasses} size='sm' compact> Export </Button>
-            <Button classNames={buttonClasses} size='sm' compact> Open PDF Viewer </Button>
+        <Group noWrap align='center' sx={{ gap: '0.5rem' }}>
+            <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Export </Button>
+            <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Open PDF Viewer </Button>
             <ActionIcon classNames={actionIconClasses}> <MdStarBorder size={22} /> </ActionIcon>
             <Menu classNames={menuClasses} control={<ActionIcon classNames={actionIconClasses}> <MdMoreHoriz size={22} /> </ActionIcon>} size={'md'}>
                 <MenuItem icon={<MdAdd size={16} />} onClick={openFolderModal}>
@@ -107,7 +107,7 @@ const DocumentOptions = () => {
                 onModalClose={closeModal}
                 submitUpdate={submitUpdate}
             />
-        </div>
+        </Group>
     );
 }
 

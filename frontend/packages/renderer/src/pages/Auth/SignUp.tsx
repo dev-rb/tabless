@@ -1,16 +1,22 @@
 import * as React from 'react';
 import { AiOutlineGoogle } from 'react-icons/ai'
-import { Anchor, Button, PasswordInput, TextInput } from '@mantine/core';
+import { Anchor, Box, Button, Group, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { FirebaseError, initializeApp } from 'firebase/app';
-import { getAuth, signInWithCustomToken, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithCustomToken, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, User } from 'firebase/auth';
 import { ref, getDatabase, onValue } from 'firebase/database';
 import { useDispatch } from 'react-redux';
 import { signInUser, signOutLocal } from '@/redux/slices/authSlice';
 import { useCreateUserMutation } from '@/redux/api/authEndpoints';
+
+declare global {
+    interface Window {
+        openUrl: any
+    }
+}
 
 const schema = z.object({
     email: z.string().email({ message: 'Invalid Email' }),
@@ -32,11 +38,12 @@ interface LocationState {
     from: string
 }
 
-const AuthPage = () => {
+export const SignupPage = () => {
     const auth = getAuth();
 
     const form = useForm({
         initialValues: {
+            username: '',
             email: '',
             password: ''
         },
@@ -47,7 +54,23 @@ const AuthPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const signInWithGoogle = async () => {
+    const [createUserMutation] = useCreateUserMutation();
+
+    const createUserBackend = async (user: User) => {
+
+        const token = await user.getIdToken();
+        if (token) {
+            createUserMutation({
+                user: {
+                    token: token,
+                    email: user.email,
+                    name: form.values.username
+                }
+            });
+        }
+    }
+
+    const signUpWithGoogle = async () => {
         const uuid = nanoid();
         window.openUrl.openUrl(`http://localhost:3001/login?id=${uuid}`);
         const db = getDatabase();
@@ -60,13 +83,18 @@ const AuthPage = () => {
         });
     }
 
-    const signInWithEmail = async ({ email, password }: typeof form.values) => {
+    const signUpWithEmail = async ({ username, email, password }: typeof form.values) => {
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            await createUserWithEmailAndPassword(auth, email, password).then((val) => {
+                updateProfile(val.user, { displayName: username });
+                createUserBackend(val.user)
+            });
         } catch (err) {
             const error = err as FirebaseError;
-            form.setErrors({ email: 'Wrong email or password' });
-            console.log(error.message, error.code)
+            console.log(error)
+            if (error.code === 'auth/email-already-in-use') {
+                form.setErrors({ email: 'This email is already in use!' })
+            }
         }
     }
 
@@ -76,17 +104,15 @@ const AuthPage = () => {
                 // console.log(user);
                 user.getIdToken().then((val) => {
                     dispatch(signInUser(val));
-                });
 
-                setTimeout(() => {
-                    if (location.state) {
-                        navigate((location.state as LocationState).from, { replace: true });
-                    } else {
-                        navigate('/', { replace: true });
-                    }
-                }, 300)
+                });
+                if (location.state) {
+                    navigate((location.state as LocationState).from, { replace: true });
+                } else {
+                    navigate('/', { replace: true });
+                }
             } else {
-                dispatch(signOutLocal())
+                dispatch(signOutLocal());
             }
         });
 
@@ -97,11 +123,29 @@ const AuthPage = () => {
 
 
     return (
-        <div className="flex w-full h-full items-center justify-center">
-            <div className="flex flex-col gap-4 max-w-xs w-full">
-                <form className="flex flex-col gap-4" onSubmit={form.onSubmit(signInWithEmail)}>
-                    <h1 className="text-white font-medium text-4xl uppercase">Sign In</h1>
-                    <div className="flex flex-col gap-4">
+        <Group align={'center'} position={'center'} sx={{ width: '100%', height: '100%' }}>
+            <Stack sx={{ gap: '1rem', maxWidth: '20rem', width: '100%' }}>
+                <Box component='form' sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} onSubmit={form.onSubmit(signUpWithEmail)}>
+                    <Title order={1} sx={{ textTransform: 'uppercase', fontSize: '2.25rem', lineHeight: '2.5rem', color: 'white', fontWeight: 500 }}>
+                        Sign Up
+                    </Title>
+                    <Stack sx={{ gap: '1rem' }}>
+                        <TextInput
+                            label='Username'
+                            placeholder='Enter a username'
+                            variant='filled'
+                            size='md'
+                            required
+                            styles={{
+                                input: {
+                                    background: 'transparent', border: '1px solid #606064', color: 'white', "::placeholder": { color: '#444448' },
+                                    ":focus-within": { border: '1px solid #3071E8' },
+                                    ":focus": { borderColor: '#3071E8 !important' }
+                                },
+                                label: { color: '#A2A2A3', fontWeight: 400 },
+                            }}
+                            {...form.getInputProps('username')}
+                        />
                         <TextInput
                             label='Email'
                             placeholder='email@example.com'
@@ -134,17 +178,15 @@ const AuthPage = () => {
                         // onChange={(e) => setPassword(e.target.value)}
                         />
 
-                        <Anchor className="self-end -mt-2 text-[#515154]">Forgot Password?</Anchor>
-                    </div>
-                    <div className="flex flex-col gap-4">
-                        <Button variant='filled' size='md' className="bg-[#3071E8] hover:bg-[#457fec]" type='submit'>Sign In</Button>
-                        <Button variant='outline' size='md' leftIcon={<AiOutlineGoogle color="#3071E8" />} className="border-[#383737] text-white hover:bg-[#75727148]" onClick={signInWithGoogle}> Sign in with Google </Button>
-                    </div>
-                </form>
-                <p className="self-center mt-8 text-white"> Don't have an account? <Link className="text-[#3071E8]" to="/signup">Sign up</Link></p>
-            </div>
-        </div>
+                    </Stack>
+                    <Stack sx={{ gap: '1rem', marginTop: '2rem' }} align={'center'}>
+                        <Button fullWidth variant='filled' size='md' type='submit'> Sign Up </Button>
+                        <Button fullWidth variant='outline' size='md' leftIcon={<AiOutlineGoogle color="#3071E8" />} onClick={signUpWithGoogle}> Sign up with Google </Button>
+
+                    </Stack>
+                </Box>
+                <Text sx={{ color: 'white', marginTop: '2rem', alignSelf: 'center' }}> Already have an account? <Anchor component={Link} to="/login" sx={{ color: '#3071E8' }}>Sign in</Anchor></Text>
+            </Stack>
+        </Group>
     );
 }
-
-export default AuthPage;
