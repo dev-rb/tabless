@@ -3,6 +3,7 @@ import { PageChangeEvent, SpecialZoomLevel, Viewer, ZoomEvent } from '@react-pdf
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { toolbarPlugin, ToolbarSlot } from '@react-pdf-viewer/toolbar';
 import { IPdf } from '@/types';
+import { Box, Group } from '@mantine/core';
 
 interface PdfViewerProps extends IPdf {
     isVisible: boolean,
@@ -35,14 +36,14 @@ const PdfViewer = ({ location, initialPage }: IPdf) => {
     }, [])
 
     return (
-        <div className={"w-full h-full select-text pb-20 relative transition-all ml-auto"}>
+        <Box sx={{ width: '100%', height: '100%', userSelect: 'text', position: 'relative', transition: 'all', marginLeft: 'auto' }}>
 
-            <div className="h-full w-full">
-                <div className="w-full flex flex-row items-center bg-[#A2A2A3]">
+            <Box sx={{ width: '100%', height: '80vh', paddingBottom: '2rem' }}>
+                <Group align='center' sx={{ backgroundColor: '#A2A2A3', width: '100%', gap: 0 }} noWrap>
                     <Toolbar>
                         {(props: ToolbarSlot) => <CustomPdfToolbar {...props} updateFilePath={(str: string) => setFilePath(str)} />}
                     </Toolbar>
-                </div>
+                </Group>
                 {filePath !== "" &&
                     <Viewer
                         fileUrl={`app://getMediaFile/${location}`}
@@ -58,8 +59,8 @@ const PdfViewer = ({ location, initialPage }: IPdf) => {
                     //     <Loader />
                     // </div>
                 }
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 }
 

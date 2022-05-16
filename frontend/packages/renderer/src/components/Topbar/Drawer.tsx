@@ -99,7 +99,7 @@ export const DrawerContent = () => {
                     <Text size='xl' color="#777e8d"> Recent </Text>
                     {/* <h1 className="uppercase text-sm font-bold"> Recent </h1> */}
                     <Stack className="flex flex-col">
-                        {data && !isLoading ? data.map((val) => <DrawerDocument key={val.id} documentId={val.id} documentName={val.title} />) : <Loader />}
+                        {data ? data.map((val) => <DrawerDocument key={val.id} documentId={val.id} documentName={val.title} />) : <Loader />}
                     </Stack>
                 </Stack>
                 <Stack sx={{ gap: '0.5rem' }}>
