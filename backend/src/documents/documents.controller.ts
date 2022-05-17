@@ -53,6 +53,11 @@ export class DocumentsController {
         return this.documentsService.updateDocument(newDocumentData, id, req.userId)
     }
 
+    @Post('/add/:id/pdf')
+    addPdf(@Body() pdfInfo, @Param('id') id: string) {
+        return this.documentsService.addPdf(pdfInfo, id);
+    }
+
     @Delete('/delete/:id')
     deleteDocument(@Request() req, @Param('id') id: string) {
         return this.documentsService.deleteDocument(id, req.userId)

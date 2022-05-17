@@ -46,10 +46,10 @@ model TextTag {
 }
 
 model Pdf {
-  id          String   @id @default(uuid())
+  id          String   @id
   name        String
   location    String
-  initialPage String?
+  initialPage Int?
   textDoc     TextDoc? @relation(fields: [textDocId], references: [id])
   textDocId   String?
 }

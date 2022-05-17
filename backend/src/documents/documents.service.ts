@@ -75,6 +75,20 @@ export class DocumentsService {
             }
         })
     }
+
+    async addPdf(pdfInfo, docId: string) {
+        return this.prisma.textDoc.update({
+            data: {
+                pdfs: {
+                    create: pdfInfo
+                }
+            },
+            where: {
+                id: docId
+            }
+        });
+    }
+
     async deleteDocument(docId: string, userId: string) {
         return this.prisma.textDoc.delete({
             where: {
