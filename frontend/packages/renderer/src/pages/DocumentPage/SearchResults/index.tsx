@@ -66,8 +66,8 @@ const ResultItem = ({ description, title, favicons, url }: ISearchResult) => {
             </Group>
             <Text sx={{ color: '#e9e9e9', fontSize: '0.875rem', lineHeight: '1.25rem', overflowWrap: 'break-word', maxWidth: '24rem' }}> {description}</Text>
             <Group sx={{ alignSelf: 'start', color: '#54565E', marginLeft: 'auto', padding: '0.5rem' }}>
-                <Button className="hover:text-white"> <MdBookmark size={24} /> </Button>
-                <Button className="hover:text-white"> <MdCopyAll size={24} /> </Button>
+                <Button> <MdBookmark size={24} /> </Button>
+                <Button> <MdCopyAll size={24} /> </Button>
             </Group>
 
         </Group>

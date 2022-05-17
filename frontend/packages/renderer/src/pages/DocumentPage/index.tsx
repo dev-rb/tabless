@@ -6,6 +6,9 @@ import { Box, Group, LoadingOverlay } from '@mantine/core';
 import { useGenerateSearchResults } from '@/hooks/useGenerateSearchResults';
 import PdfWindow from '@/pages/DocumentPage/PdfWindow';
 import { TextDocument } from './TextDocument';
+import { IRootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
+import { useGetAllPdfsForDocumentQuery } from '@/redux/api/pdfEndpoints';
 
 
 const DocumentPage = () => {
@@ -17,6 +20,7 @@ const DocumentPage = () => {
     const [documentText, setDocumentText] = React.useState('');
 
     const { results, isLoading, error } = useGenerateSearchResults(documentText);
+
 
     const updateText = (newVal: string) => {
         setDocumentText(newVal);
@@ -31,7 +35,7 @@ const DocumentPage = () => {
                         <LoadingOverlay visible={isFetching || !data} overlayColor={'#28282B'} overlayOpacity={0.8} />
                     </Box>
             }
-            <PdfWindow />
+            <PdfWindow pdfs={data?.pdfs} />
 
             <SearchResults searchResults={results} isLoading={isLoading} />
 

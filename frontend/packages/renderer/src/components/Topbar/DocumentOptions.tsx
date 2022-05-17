@@ -4,6 +4,9 @@ import { MdAdd, MdDelete, MdDriveFileMove, MdMoreHoriz, MdStarBorder } from 'rea
 import { useParams } from 'react-router-dom';
 import { useAddDocumentToFolderMutation } from '@/redux/api/folderEndpoints';
 import FoldersModal from './FoldersModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { togglePdfViewer } from '@/redux/slices/settingsSlice';
+import { IRootState } from '@/redux/store';
 
 const useButtonStyles = createStyles({
     root: {
@@ -56,6 +59,9 @@ const DocumentOptions = () => {
 
     const { documentId } = useParams();
 
+    const isPDFViewerOpen = useSelector((state: IRootState) => state.settings.isPDFViewerOpen);
+    const dispatch = useDispatch();
+
     const selectFolder = (folderId: string) => {
         if (folderId === selectedFolder) {
             setSelectedFolder(undefined);
@@ -72,6 +78,10 @@ const DocumentOptions = () => {
         setIsFoldersModalOpen(true);
     }
 
+    const pdfViewerToggle = () => {
+        dispatch(togglePdfViewer());
+    }
+
     const submitUpdate = () => {
         if (selectedFolder) {
             console.log(documentId);
@@ -82,7 +92,7 @@ const DocumentOptions = () => {
     return (
         <Group noWrap align='center' sx={{ gap: '0.5rem' }}>
             <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Export </Button>
-            <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Open PDF Viewer </Button>
+            <Button classNames={buttonClasses} size='sm' variant="subtle" compact onClick={pdfViewerToggle}> {isPDFViewerOpen ? 'Close' : 'Open'} PDF Viewer </Button>
             <ActionIcon classNames={actionIconClasses}> <MdStarBorder size={22} /> </ActionIcon>
             <Menu classNames={menuClasses} control={<ActionIcon classNames={actionIconClasses}> <MdMoreHoriz size={22} /> </ActionIcon>} size={'md'}>
                 <MenuItem icon={<MdAdd size={16} />} onClick={openFolderModal}>
