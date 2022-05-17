@@ -76,7 +76,7 @@ app.on('ready', async () => {
     }
     catch (error) {
       console.error(error)
-      return callback('404')
+      return callback(`Error: ${error}`,)
     }
   });
 
