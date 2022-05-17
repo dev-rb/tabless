@@ -17,7 +17,16 @@ const ResizeableSection = ({ maxWidth, minWidth, maxHeight, minHeight = '100%', 
 
     return (
         <Box sx={{ position: 'relative', transform: 'unset', width: '100%', height: '100%' }}>
-            <Rnd minHeight={minHeight} maxHeight={maxHeight} maxWidth={maxWidth} minWidth={minWidth} bounds='parent' disableDragging enableResizing={defaultResizeDirections} resizeHandleStyles={{ right: { borderRight: '2px solid #A2A2A3' } }}>
+            <Rnd
+                minHeight={minHeight}
+                maxHeight={maxHeight}
+                maxWidth={maxWidth}
+                minWidth={minWidth}
+                bounds='parent'
+                disableDragging
+                enableResizing={defaultResizeDirections}
+                resizeHandleClasses={{ right: 'rightHandleStyle' }}
+            >
                 {children}
             </Rnd>
         </Box>
