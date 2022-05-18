@@ -108,3 +108,7 @@ code {
 #folder-accordions>.__mantine-ref-itemTitle>.__mantine-ref-control .__mantine-ref-icon {
   transform: rotate(90deg);
 }
+
+.rightHandleStyle:hover {
+  border-right: 4px solid #343437;
+}
