@@ -64,7 +64,7 @@ const TopBar = () => {
     }, [locationPaths])
 
     return (
-        <Box sx={{ width: '100%', height: 'fit-content', padding: '0.5rem 1.5rem' }}>
+        <Box sx={{ width: '100%', height: 'fit-content', padding: '0.5rem 1.5rem', zIndex: 50 }}>
             <Drawer
                 opened={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
@@ -80,10 +80,10 @@ const TopBar = () => {
             <Group align={'center'} sx={{ width: '100%' }}>
                 <Burger opened={drawerOpen} color='white' size={'sm'} onClick={() => setDrawerOpen((prev) => !prev)} />
                 <Group align={'center'} sx={{ gap: '0.25rem', marginLeft: '1rem' }}>
-                    <ActionIcon onClick={() => navigate(-1)} styles={{ root: { backgroundColor: locationPaths.length > 0 ? 'blue !important' : 'red !important' } }}>
+                    <ActionIcon onClick={() => navigate(-1)} >
                         <FaArrowLeft />
                     </ActionIcon>
-                    <ActionIcon onClick={() => navigate(1)} styles={{ root: { backgroundColor: locationPaths.length > 0 ? 'blue !important' : 'red !important' } }}>
+                    <ActionIcon onClick={() => navigate(1)} >
                         <FaArrowRight />
                     </ActionIcon>
                 </Group>

@@ -48,6 +48,20 @@ export const foldersApi = api.injectEndpoints({
             }),
             invalidatesTags: [{ type: 'Folder', id: 'LIST' }]
         }),
+        favoriteFolder: build.mutation<void, string>({
+            query: (id: string) => ({
+                url: `folders/favorite/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: (result, error, id) => [{ type: 'Folder', id }]
+        }),
+        unFavoriteFolder: build.mutation<void, string>({
+            query: (id: string) => ({
+                url: `folders/unfavorite/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: (result, error, id) => [{ type: 'Folder', id }]
+        }),
         addDocumentToFolder: build.mutation<void, { id: string, documentId: string }>({
             query: (addDoc: { id: string, documentId: string }) => ({
                 url: `folders/update/add/doc`,
@@ -73,6 +87,8 @@ export const {
     useGetFolderQuery,
     useNewFolderMutation,
     useUpdateFolderNameMutation,
+    useFavoriteFolderMutation,
+    useUnFavoriteFolderMutation,
     useAddDocumentToFolderMutation,
     useDeleteFolderMutation,
 } = foldersApi;

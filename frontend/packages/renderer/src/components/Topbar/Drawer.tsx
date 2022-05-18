@@ -62,8 +62,11 @@ const useStyles = createStyles((theme) => ({
 
 export const DrawerContent = () => {
 
-    const { data, isLoading } = useGetAllDocumentsQuery();
+    const { data: documentData, isLoading } = useGetAllDocumentsQuery();
     const { data: foldersData } = useGetAllFoldersQuery();
+
+    const allFavoriteDocuments = documentData?.filter((val) => val.favorite === true);
+    const allFavoriteFolders = foldersData?.filter((val) => val.favorite === true);
 
     const { classes } = useStyles();
 
@@ -79,6 +82,14 @@ export const DrawerContent = () => {
         });
     }
 
+    const getAllFavoriteDocuments = () => {
+        return documentData?.filter((val) => val.favorite === true);
+    }
+
+    const getAllFavoriteFolders = () => {
+        return foldersData?.filter((val) => val.favorite === true);
+    }
+
     React.useEffect(() => {
         console.log(foldersData)
     }, [foldersData])
@@ -87,7 +98,7 @@ export const DrawerContent = () => {
         <Stack spacing={'sm'}>
             <Menu
                 closeOnItemClick
-                control={<UserButton documentCount={data ? data.length : 0} userName='Rahul' userImage='' />}
+                control={<UserButton documentCount={documentData ? documentData.length : 0} userName='Rahul' userImage='' />}
             >
                 <MenuItem icon={<MdLogout />} onClick={signUserOut}> Sign out </MenuItem>
             </Menu>
@@ -96,10 +107,35 @@ export const DrawerContent = () => {
             {/* <Button variant='filled' size='lg' onClick={() => navigate('/')} leftIcon={<MdHome color="white" />}> Home </Button> */}
             <Stack sx={{ gap: '1.5rem' }}>
                 <Stack sx={{ gap: '0.5rem' }}>
+                    <Text size='xl' color="#777e8d"> Favorites </Text>
+                    {/* <h1 className="uppercase text-sm font-bold"> Recent </h1> */}
+                    <Stack className="flex flex-col">
+                        {documentData ? allFavoriteDocuments?.map((val) => <DrawerDocument key={val.id} documentId={val.id} documentName={val.title} />) : <Loader />}
+                    </Stack>
+                    <Stack className="flex flex-col">
+                        <Accordion className="flex flex-col gap-4">
+                            {foldersData ? allFavoriteFolders?.map((val) =>
+                                <AccordionItem
+                                    key={val.id}
+                                    icon={<FaCaretUp />}
+                                    label={<AccordionLabel folderName={val.name} />}
+                                    styles={
+                                        { icon: { color: '#797E8A', marginRight: 0, }, item: { paddingBottom: '10px', borderColor: '#4B4F5A' }, control: { color: '#797E8A', ".__mantine-ref-icon": { transform: 'rotate(90deg)' }, ":hover": { backgroundColor: '#4b5563', '> div': { color: 'white !important' } }, padding: '4px' } }
+                                    }
+                                >
+                                    {val.documents && val.documents.map((doc) => <DrawerDocument key={doc.id} documentName={doc.title} documentId={doc.id} />)}
+                                </AccordionItem>)
+
+                                : <Loader />
+                            }
+                        </Accordion>
+                    </Stack>
+                </Stack>
+                <Stack sx={{ gap: '0.5rem' }}>
                     <Text size='xl' color="#777e8d"> Recent </Text>
                     {/* <h1 className="uppercase text-sm font-bold"> Recent </h1> */}
                     <Stack className="flex flex-col">
-                        {data ? data.map((val) => <DrawerDocument key={val.id} documentId={val.id} documentName={val.title} />) : <Loader />}
+                        {documentData ? documentData.map((val) => <DrawerDocument key={val.id} documentId={val.id} documentName={val.title} />) : <Loader />}
                     </Stack>
                 </Stack>
                 <Stack sx={{ gap: '0.5rem' }}>

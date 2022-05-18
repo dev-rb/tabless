@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { ActionIcon, Button, createStyles, Divider, Group, Menu, MenuItem } from '@mantine/core';
-import { MdAdd, MdDelete, MdDriveFileMove, MdMoreHoriz, MdStarBorder } from 'react-icons/md';
-import { useParams } from 'react-router-dom';
+import { MdAdd, MdDelete, MdDriveFileMove, MdMoreHoriz, MdStar, MdStarBorder } from 'react-icons/md';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useAddDocumentToFolderMutation } from '@/redux/api/folderEndpoints';
 import FoldersModal from './FoldersModal';
+import { useDeleteDocumentMutation, useFavoriteDocumentMutation, useGetDocumentQuery, useUnFavoriteDocumentMutation } from '@/redux/api/documentEndpoints';
 import { useDispatch, useSelector } from 'react-redux';
 import { togglePdfViewer } from '@/redux/slices/settingsSlice';
 import { IRootState } from '@/redux/store';
@@ -53,11 +54,21 @@ const DocumentOptions = () => {
     const { classes: actionIconClasses } = useActionIconStyles();
     const { classes: menuClasses } = useMenuStyles();
 
+    const { documentId } = useParams();
+
     const [isFoldersModalOpen, setIsFoldersModalOpen] = React.useState(false);
     const [selectedFolder, setSelectedFolder] = React.useState<string | undefined>(undefined);
-    const [addToFolder] = useAddDocumentToFolderMutation();
 
-    const { documentId } = useParams();
+    const [addToFolder] = useAddDocumentToFolderMutation();
+    const [deleteThisDocument] = useDeleteDocumentMutation();
+    const [favoriteDocumentMutation] = useFavoriteDocumentMutation();
+    const [unFavoriteDocumentMutation] = useUnFavoriteDocumentMutation();
+
+    const { data: documentData } = useGetDocumentQuery(documentId!);
+
+    const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
+
+    const navigate = useNavigate();
 
     const isPDFViewerOpen = useSelector((state: IRootState) => state.settings.isPDFViewerOpen);
     const dispatch = useDispatch();
@@ -89,23 +100,48 @@ const DocumentOptions = () => {
         }
     }
 
+    const deleteDocument = () => {
+        deleteThisDocument(documentId!);
+        setTimeout(() => {
+            navigate(-1);
+        }, 150)
+    }
+
+    const toggleFavorite = () => {
+        if (isFavorite) {
+            unFavoriteDocumentMutation(documentId!);
+            setIsFavorite(false);
+        } else {
+            favoriteDocumentMutation(documentId!);
+            setIsFavorite(true);
+        }
+    }
+
+    React.useEffect(() => {
+        console.log(documentData)
+        if (documentData) {
+            setIsFavorite(documentData.favorite);
+        }
+    }, [documentData])
+
     return (
         <Group noWrap align='center' sx={{ gap: '0.5rem' }}>
-            <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Export </Button>
-            <Button classNames={buttonClasses} size='sm' variant="subtle" compact onClick={pdfViewerToggle}> {isPDFViewerOpen ? 'Close' : 'Open'} PDF Viewer </Button>
-            <ActionIcon classNames={actionIconClasses}> <MdStarBorder size={22} /> </ActionIcon>
+            {/* <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Export </Button> */}
+            <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Open PDF Viewer </Button>
+            <ActionIcon classNames={actionIconClasses} onClick={toggleFavorite}> {isFavorite ? <MdStar size={16} color="gold" /> : <MdStarBorder size={16} />} </ActionIcon>
+
             <Menu classNames={menuClasses} control={<ActionIcon classNames={actionIconClasses}> <MdMoreHoriz size={22} /> </ActionIcon>} size={'md'}>
                 <MenuItem icon={<MdAdd size={16} />} onClick={openFolderModal}>
                     Add to Folder
                 </MenuItem>
-                <MenuItem icon={<MdStarBorder size={16} />}>
+                <MenuItem icon={isFavorite ? <MdStar size={16} color="gold" /> : <MdStarBorder size={16} />} onClick={toggleFavorite}>
                     Add to Favorites
                 </MenuItem>
                 <Divider />
-                <MenuItem icon={<MdDriveFileMove size={16} />}>
+                {/* <MenuItem icon={<MdDriveFileMove size={16} />}>
                     Move To
-                </MenuItem>
-                <MenuItem icon={<MdDelete size={16} />} >
+                </MenuItem> */}
+                <MenuItem icon={<MdDelete size={16} />} onClick={deleteDocument}>
                     Delete
                 </MenuItem>
             </Menu>

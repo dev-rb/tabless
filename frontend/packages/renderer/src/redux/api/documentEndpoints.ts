@@ -9,7 +9,7 @@ import { api } from ".";
 
 export const documentsApi = api.injectEndpoints({
     endpoints: (build) => ({
-        getAllDocuments: build.query<ITextDocument[], void>({
+        getAllDocuments: build.query<IDocument[], void>({
             query: () => ({
                 url: 'documents',
                 method: 'GET'
@@ -49,7 +49,22 @@ export const documentsApi = api.injectEndpoints({
                 method: 'PUT',
                 body: doc,
                 headers: { 'Content-Type': 'application/json' }
-            })
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'TextDocument', id }]
+        }),
+        favoriteDocument: build.mutation<void, string>({
+            query: (id: string) => ({
+                url: `documents/favorite/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: (result, error, id) => [{ type: 'TextDocument', id }]
+        }),
+        unFavoriteDocument: build.mutation<void, string>({
+            query: (id: string) => ({
+                url: `documents/unfavorite/${id}`,
+                method: 'PUT',
+            }),
+            invalidatesTags: (result, error, id) => [{ type: 'TextDocument', id }]
         }),
         deleteDocument: build.mutation<void, string>({
             query: (id: string) => ({
@@ -67,5 +82,7 @@ export const {
     useGetDocumentQuery,
     useNewDocumentMutation,
     useUpdateDocumentMutation,
+    useFavoriteDocumentMutation,
+    useUnFavoriteDocumentMutation,
     useDeleteDocumentMutation
 } = documentsApi;
