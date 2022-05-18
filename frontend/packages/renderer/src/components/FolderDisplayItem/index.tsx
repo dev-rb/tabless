@@ -7,14 +7,15 @@ import { Box, BoxProps, Group, Menu, Text } from '@mantine/core';
 
 interface FolderDisplayItemProps extends BoxProps<"div"> {
     folderInfo: IFolder,
-    openDrawer: () => void
+    openDrawer: () => void,
+    closeDrawer: () => void
 }
 
 interface IOutletContext {
     renameFolder: (folder: IFolder) => void,
 }
 
-const FolderDisplayItem = ({ folderInfo, openDrawer, ...rest }: FolderDisplayItemProps) => {
+const FolderDisplayItem = ({ folderInfo, openDrawer, closeDrawer, ...rest }: FolderDisplayItemProps) => {
 
 
     const navigate = useNavigate();
@@ -24,7 +25,9 @@ const FolderDisplayItem = ({ folderInfo, openDrawer, ...rest }: FolderDisplayIte
     const deleteFolder = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         if (folderInfo.id) {
-            deleteFolderMutation(folderInfo.id);
+            setTimeout(() => {
+                deleteFolderMutation(folderInfo.id);
+            }, 100)
         }
     }
 
@@ -34,7 +37,10 @@ const FolderDisplayItem = ({ folderInfo, openDrawer, ...rest }: FolderDisplayIte
     }
 
     const openFolder = () => {
-        navigate(folderInfo.id);
+        closeDrawer();
+        setTimeout(() => {
+            navigate(folderInfo.id);
+        }, 150)
     }
 
     return (
@@ -61,7 +67,7 @@ const FolderDisplayItem = ({ folderInfo, openDrawer, ...rest }: FolderDisplayIte
                 }
             })}
             onClick={openFolderDetails}
-            onDoubleClick={openDrawer}
+            onDoubleClick={openFolder}
             {...rest}
         >
             <MdFolder />

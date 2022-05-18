@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useGetAllFoldersQuery } from "@/redux/api/folderEndpoints";
-import { Loader, Drawer, Divider, Grid } from '@mantine/core';
+import { Loader, Drawer, Divider, Grid, Group, Title } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { DocumentDisplayItem, DocumentItemMenu } from '@/components/DocumentDisplayItem';
 import FolderDisplayItem from '@/components/FolderDisplayItem';
@@ -34,7 +34,7 @@ const FoldersHome = () => {
                 {(isLoading || isFetching) ? <Loader /> : data && data.map((value) =>
 
                     <Grid.Col key={value.id} span={1}>
-                        <FolderDisplayItem folderInfo={value} openDrawer={() => openDrawer(value.id)} />
+                        <FolderDisplayItem folderInfo={value} openDrawer={() => openDrawer(value.id)} closeDrawer={() => { setIsDrawerOpen(false); setSelectedFolder(''); }} />
                     </Grid.Col>
                 )
                 }
@@ -55,15 +55,15 @@ const FoldersHome = () => {
                     opened={isDrawerOpen}
                     onClose={() => setIsDrawerOpen(false)}
                 >
-                    <h1 className="text-white text-2xl"> {selectedFolderName} </h1>
-                    <Divider className="mt-2" />
-                    <div className="mt-8 flex flex-col">
-                        {documentsInFolder
+                    <Title order={1} sx={{ color: 'white' }}> {selectedFolderName} </Title>
+                    <Divider sx={{ marginTop: '0.5rem' }} />
+                    <Group direction='column' sx={{ marginTop: '2rem' }} className="mt-8 flex flex-col">
+                        {documentsInFolder?.length
                             ?
                             documentsInFolder.map((val) =>
-                                <DocumentDisplayItem key={val.id} documentDetails={val} rightSection={<DocumentItemMenu />} onClick={() => openDocument(val.id)} />)
-                            : <h1 className="text-[#6A6A6A] text-2xl"> No documents </h1>}
-                    </div>
+                                <DocumentDisplayItem key={val.id} documentDetails={val} onClick={() => openDocument(val.id)} />)
+                            : <Title order={4} sx={{ color: '#6A6A6A' }}> No documents </Title>}
+                    </Group>
                 </Drawer>
             </Grid>
         </>

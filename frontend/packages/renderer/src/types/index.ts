@@ -2,6 +2,7 @@ export interface IDocument {
     id: string,
     title: string,
     author: string,
+    favorite: boolean,
     createdAt: string,
     tags: ITextDocumentTag[],
     pdfs: [],
@@ -26,6 +27,7 @@ export interface ITextDocumentTag {
 export interface IFolder {
     id: string,
     name: string,
+    favorite: boolean,
     documents: ITextDocument[]
 }
 
