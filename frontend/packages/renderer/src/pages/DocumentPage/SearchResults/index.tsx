@@ -17,12 +17,16 @@ const SearchResults = ({ searchResults, isLoading }: Props) => {
     }
 
     return (
-        <Group direction='column' align={'center'} noWrap sx={{ minWidth: 'min-content', maxWidth: '24rem', width: '100%', height: '100%', gap: '0.5rem', borderLeft: '2px solid #72747B', paddingLeft: '1rem', paddingTop: '2rem' }}>
-            <Group noWrap align={'center'} position='apart' sx={{ maxWidth: '24rem', width: '100%', height: '2.75rem', 'padding': '0 1rem', borderRadius: '4px', border: '1px solid #A67AE9', color: '#707071' }}>
+        <Group direction='column' align={'center'} noWrap sx={{ minWidth: 'min-content', maxWidth: '24rem', width: '100%', height: '100%', gap: '0.5rem', paddingLeft: '1rem', paddingTop: '2rem' }}>
+            {/* <Group noWrap align={'center'} position='apart' sx={{ maxWidth: '24rem', width: '100%', height: '2.75rem', 'padding': '0 1rem', borderRadius: '4px', border: '1px solid #A67AE9', color: '#707071' }}>
                 <p> Search keywords </p>
                 <MdSearch size={25} />
             </Group>
-            <Divider my='sm' sx={{ width: '50%', height: '1px', backgroundColor: '#37373A', alignSelf: 'center', borderRadius: '9999px' }} />
+            <Divider my='sm' sx={{ width: '50%', height: '1px', backgroundColor: '#37373A', alignSelf: 'center', borderRadius: '9999px' }} /> */}
+            <Group spacing={0} sx={{ alignSelf: 'start', width: '100%' }}>
+                <Title order={3} sx={{ color: 'white' }}> Search Results </Title>
+                <Divider my='sm' sx={{ width: '100%', height: '1px', backgroundColor: '#37373A', alignSelf: 'center', borderRadius: '9999px' }} />
+            </Group>
             <Group direction='column' sx={{ overflowY: 'auto', height: '100%', width: '100%' }} position='center'>
                 {/* <ResultItem
                     title={'Some Search result'}
@@ -33,12 +37,12 @@ const SearchResults = ({ searchResults, isLoading }: Props) => {
                         low_res: 'https://www.google.com/s2/favicons?sz=64&domain_url=www.hollywoodsoapbox.com'
                     }}
                 /> */}
-                <ResultItem description='' favicons={{ high_res: '', low_res: '' }} title='' url='https://github.com' />
+                {/* <ResultItem description='' favicons={{ high_res: '', low_res: '' }} title='' url='https://github.com' /> */}
                 {isLoading ? <Loader /> : searchResults.map((val) => <ResultItem key={nanoid()} {...val} />)}
                 {/* {searchResults.map((val) => <ResultItem key={val.url} {...val} />)} */}
             </Group>
 
-            <Button onClick={openWindow} > Open Test </Button>
+            {/* <Button onClick={openWindow} > Open Test </Button> */}
         </Group>
     );
 }

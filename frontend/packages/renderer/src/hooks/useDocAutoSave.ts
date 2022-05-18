@@ -1,11 +1,11 @@
 import { useDebouncedValue, useDidUpdate } from "@mantine/hooks";
 import { RefObject, useEffect, useState } from "react"
 
-interface Props {
-    updateDocument: (field: string, newValue: string) => void
-}
+export type InputTypes = 'text' | 'author' | 'title';
 
-type InputTypes = 'text' | 'author' | 'title';
+interface Props {
+    updateDocument: (field: InputTypes, newValue: string) => void
+}
 
 export const useDocAutoSave = ({ updateDocument }: Props) => {
     const [inputType, setInputType] = useState<InputTypes>('text');

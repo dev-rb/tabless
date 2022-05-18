@@ -77,7 +77,8 @@ interface DocumentItemDeleteProps {
 export const DocumentItemDelete = ({ documentId }: DocumentItemDeleteProps) => {
     const [deleteDocumentWithId] = useDeleteDocumentMutation();
 
-    const deleteDocument = () => {
+    const deleteDocument = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         deleteDocumentWithId(documentId);
     }
 

@@ -3,7 +3,7 @@ import { Group, Loader, Stack, Text, TextInput, UnstyledButton } from '@mantine/
 import { MdAdd, MdPerson, MdTag } from 'react-icons/md';
 import { nanoid } from 'nanoid';
 import { IDocument, ITextDocumentTag } from '@/types';
-import { useDocAutoSave } from '@/hooks/useDocAutoSave';
+import { useDocAutoSave, InputTypes } from '@/hooks/useDocAutoSave';
 import { useUpdateDocumentMutation } from '@/redux/api/documentEndpoints';
 import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 import ResizeableSection from '../../../components/ResizableSection';
@@ -25,7 +25,7 @@ export const TextDocument = ({ updateText, ...doc }: IDocumentProps) => {
 
     const [updateDocumentMutation, { isLoading, status }] = useUpdateDocumentMutation();
 
-    const updateDocument = (fieldToUpdate: string, newValue: string) => {
+    const updateDocument = (fieldToUpdate: InputTypes, newValue: string) => {
         console.log("Update called!")
         updateDocumentMutation({ ...doc, [fieldToUpdate]: newValue })
     }
@@ -35,6 +35,12 @@ export const TextDocument = ({ updateText, ...doc }: IDocumentProps) => {
     const updateTextFromEditor = (val: string) => {
         updateText(val);
         onInputChange(val, 'text');
+    }
+
+    const updateTitle = (val: string) => {
+        console.log(val);
+        setDocTitle(val);
+        onInputChange(val, 'title');
     }
 
     const addNewTag = (newTagName: string = '') => {
@@ -70,10 +76,10 @@ export const TextDocument = ({ updateText, ...doc }: IDocumentProps) => {
                             <p> Autosaving... </p>
                         </div>
                     }
-                    <TextInput placeholder='Untitled' value={docTitle}
+                    <TextInput placeholder='Untitled'
                         type="text"
                         styles={{ input: { color: 'white', background: 'none', border: 'none', fontSize: '1.875rem', fontWeight: 600, padding: 0, textOverflow: 'ellipsis', wordWrap: 'break-word' } }}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setDocTitle(e.target.value); onInputChange(e.target.value, 'title'); }} />
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => { updateTitle(e.target.value); }} />
 
                     {/* <h1 className="text-white font-semibold text-3xl"> {title} </h1> */}
 
