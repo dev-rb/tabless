@@ -5,6 +5,9 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useAddDocumentToFolderMutation } from '@/redux/api/folderEndpoints';
 import FoldersModal from './FoldersModal';
 import { useDeleteDocumentMutation, useFavoriteDocumentMutation, useGetDocumentQuery, useUnFavoriteDocumentMutation } from '@/redux/api/documentEndpoints';
+import { useDispatch, useSelector } from 'react-redux';
+import { togglePdfViewer } from '@/redux/slices/settingsSlice';
+import { IRootState } from '@/redux/store';
 
 const useButtonStyles = createStyles({
     root: {
@@ -67,6 +70,9 @@ const DocumentOptions = () => {
 
     const navigate = useNavigate();
 
+    const isPDFViewerOpen = useSelector((state: IRootState) => state.settings.isPDFViewerOpen);
+    const dispatch = useDispatch();
+
     const selectFolder = (folderId: string) => {
         if (folderId === selectedFolder) {
             setSelectedFolder(undefined);
@@ -81,6 +87,10 @@ const DocumentOptions = () => {
 
     const openFolderModal = () => {
         setIsFoldersModalOpen(true);
+    }
+
+    const pdfViewerToggle = () => {
+        dispatch(togglePdfViewer());
     }
 
     const submitUpdate = () => {
@@ -119,6 +129,7 @@ const DocumentOptions = () => {
             {/* <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Export </Button> */}
             <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Open PDF Viewer </Button>
             <ActionIcon classNames={actionIconClasses} onClick={toggleFavorite}> {isFavorite ? <MdStar size={16} color="gold" /> : <MdStarBorder size={16} />} </ActionIcon>
+
             <Menu classNames={menuClasses} control={<ActionIcon classNames={actionIconClasses}> <MdMoreHoriz size={22} /> </ActionIcon>} size={'md'}>
                 <MenuItem icon={<MdAdd size={16} />} onClick={openFolderModal}>
                     Add to Folder
