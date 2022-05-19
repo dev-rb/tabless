@@ -7,6 +7,7 @@ export class SearchController {
 
     @Post('/process')
     async processText(@Body('text') textToCheck) {
+        console.log("Got text! ", textToCheck)
         return await this.searchService.processText(textToCheck);
     }
 }

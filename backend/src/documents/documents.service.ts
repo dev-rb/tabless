@@ -68,12 +68,39 @@ export class DocumentsService {
                 id: docId
             },
             data: {
-                text: newDocumentData.text
+                text: newDocumentData.text,
+                title: newDocumentData.title
             },
             include: {
                 pdfs: true
             }
         })
+    }
+
+    async favoriteDocument(docId: string) {
+        return this.prisma.textDoc.update({
+            data: {
+                favorite: {
+                    set: true
+                },
+            },
+            where: {
+                id: docId
+            }
+        });
+    }
+
+    async unFavoriteDocument(docId: string) {
+        return this.prisma.textDoc.update({
+            data: {
+                favorite: {
+                    set: false
+                },
+            },
+            where: {
+                id: docId
+            }
+        });
     }
 
     async addPdf(pdfInfo, docId: string) {

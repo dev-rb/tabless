@@ -11,6 +11,7 @@ import { FoldersModule } from './folders/folders.module';
 import { PrismaService } from './prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
 import { PdfsModule } from './pdfs/pdfs.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { PdfsModule } from './pdfs/pdfs.module';
     SearchModule,
     FoldersModule,
     AuthModule,
-    PdfsModule],
+    PdfsModule,
+    UsersModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

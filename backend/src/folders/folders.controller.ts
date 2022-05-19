@@ -35,6 +35,17 @@ export class FoldersController {
         return this.foldersService.addDocumentToFolder(documentId, id, req.userId)
     }
 
+    @Put('/favorite/:id')
+    favoriteFolder(@Param('id') id: string) {
+        return this.foldersService.favoriteFolder(id);
+    }
+
+    @Put('/unfavorite/:id')
+    unFavoriteFolder(@Param('id') id: string) {
+        return this.foldersService.unFavoriteFolder(id);
+    }
+
+
     @Delete('/delete/:id/doc')
     deleteDocumentFromFolder(@Request() req, @Body() documentId, @Param('id') id: string) {
         return this.foldersService.deleteDocumentFromFolder(documentId, id, req.userId)

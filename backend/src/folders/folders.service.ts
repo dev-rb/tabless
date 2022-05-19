@@ -71,6 +71,32 @@ export class FoldersService {
         });
     }
 
+    async favoriteFolder(folderId: string) {
+        return this.prisma.folder.update({
+            data: {
+                favorite: {
+                    set: true
+                },
+            },
+            where: {
+                id: folderId
+            }
+        });
+    }
+
+    async unFavoriteFolder(folderId: string) {
+        return this.prisma.folder.update({
+            data: {
+                favorite: {
+                    set: false
+                },
+            },
+            where: {
+                id: folderId
+            }
+        });
+    }
+
     async addDocumentToFolder(documentId: string, folderId: string, userId: string) {
         return this.prisma.folder.update({
             where: {

@@ -53,6 +53,17 @@ export class DocumentsController {
         return this.documentsService.updateDocument(newDocumentData, id, req.userId)
     }
 
+    @Put('/favorite/:id')
+    favoriteDocument(@Param('id') id: string) {
+        console.log("Favorite document called", id)
+        return this.documentsService.favoriteDocument(id);
+    }
+
+    @Put('/unfavorite/:id')
+    unFavoriteDocument(@Param('id') id: string) {
+        return this.documentsService.unFavoriteDocument(id);
+    }
+
     @Post('/add/:id/pdf')
     addPdf(@Body() pdfInfo, @Param('id') id: string) {
         return this.documentsService.addPdf(pdfInfo, id);
