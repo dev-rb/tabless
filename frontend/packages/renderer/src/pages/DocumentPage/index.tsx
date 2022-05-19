@@ -6,16 +6,15 @@ import { Box, Group, LoadingOverlay } from '@mantine/core';
 import { useGenerateSearchResults } from '@/hooks/useGenerateSearchResults';
 import PdfWindow from '@/pages/DocumentPage/PdfWindow';
 import { TextDocument } from './TextDocument';
-import { IRootState } from '@/redux/store';
-import { useSelector } from 'react-redux';
-import { useGetAllPdfsForDocumentQuery } from '@/redux/api/pdfEndpoints';
 
 
 const DocumentPage = () => {
 
     const { documentId } = useParams();
 
-    const { data, isFetching, isError } = useGetDocumentQuery(documentId!);
+    const { data, isFetching, isError } = useGetDocumentQuery(documentId!, {
+        refetchOnMountOrArgChange: true
+    });
 
     const [documentText, setDocumentText] = React.useState('');
 

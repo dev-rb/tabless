@@ -9,6 +9,7 @@ import { FaCaretUp } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetAllFoldersQuery } from '@/redux/api/folderEndpoints';
+import { useGetUserInfoQuery } from '@/redux/api/authEndpoints';
 
 interface AccordionFolderDetails {
     folderName: string
@@ -65,6 +66,8 @@ export const DrawerContent = () => {
     const { data: documentData, isLoading } = useGetAllDocumentsQuery();
     const { data: foldersData } = useGetAllFoldersQuery();
 
+    const { data: userData } = useGetUserInfoQuery();
+
     const allFavoriteDocuments = documentData?.filter((val) => val.favorite === true);
     const allFavoriteFolders = foldersData?.filter((val) => val.favorite === true);
 
@@ -82,14 +85,6 @@ export const DrawerContent = () => {
         });
     }
 
-    const getAllFavoriteDocuments = () => {
-        return documentData?.filter((val) => val.favorite === true);
-    }
-
-    const getAllFavoriteFolders = () => {
-        return foldersData?.filter((val) => val.favorite === true);
-    }
-
     React.useEffect(() => {
         console.log(foldersData)
     }, [foldersData])
@@ -98,7 +93,7 @@ export const DrawerContent = () => {
         <Stack spacing={'sm'}>
             <Menu
                 closeOnItemClick
-                control={<UserButton documentCount={documentData ? documentData.length : 0} userName='Rahul' userImage='' />}
+                control={<UserButton documentCount={documentData ? documentData.length : 0} userName={(userData?.name ? userData.name : 'Your')} userImage='' />}
             >
                 <MenuItem icon={<MdLogout />} onClick={signUserOut}> Sign out </MenuItem>
             </Menu>

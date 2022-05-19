@@ -24,8 +24,6 @@ const TopBar = () => {
     const navigate = useNavigate();
 
     const updatePaths = () => {
-        console.log(history)
-
         switch (history.action) {
             case "POP":
                 {
@@ -59,9 +57,9 @@ const TopBar = () => {
         updatePaths();
     }, [location])
 
-    React.useEffect(() => {
-        console.log("Current paths: ", locationPaths)
-    }, [locationPaths])
+    // React.useEffect(() => {
+    //     console.log("Current paths: ", locationPaths)
+    // }, [locationPaths])
 
     return (
         <Box sx={{ width: '100%', height: 'fit-content', padding: '0.5rem 1.5rem', zIndex: 50 }}>

@@ -48,6 +48,11 @@ export interface IPdf {
     initialPage?: number
 }
 
+export interface IUser {
+    email: string,
+    name?: string
+}
+
 declare global {
     interface Window {
         openUrl: any,

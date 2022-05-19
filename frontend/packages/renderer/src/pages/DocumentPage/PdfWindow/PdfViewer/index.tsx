@@ -68,7 +68,7 @@ const PdfViewer = ({ id, location, name, initialPage, updatePdfPage }: PdfViewer
                         onZoom={handleZoomChange}
                         plugins={[toolbarPluginInstance]}
                         initialPage={currentPage}
-                        defaultScale={SpecialZoomLevel.PageWidth}
+                        defaultScale={SpecialZoomLevel.PageFit}
                         renderError={renderError}
                     />
                     // :

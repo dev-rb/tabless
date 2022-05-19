@@ -1,4 +1,4 @@
-import { ITextDocument, ITextDocumentTag } from "@/types";
+import { ITextDocument, ITextDocumentTag, IUser } from "@/types";
 import { User } from "firebase/auth";
 import { api } from ".";
 
@@ -21,11 +21,18 @@ export const authApi = api.injectEndpoints({
                 body: user,
                 method: 'POST'
             })
+        }),
+        getUserInfo: build.query<IUser, void>({
+            query: () => ({
+                url: '/users',
+                method: 'GET'
+            })
         })
     }),
     overrideExisting: false
 });
 
 export const {
-    useCreateUserMutation
+    useCreateUserMutation,
+    useGetUserInfoQuery
 } = authApi;

@@ -8,6 +8,7 @@ import { IRootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import { useDeletePdfMutation, useNewPdfMutation, useUpdatePdfMutation } from '@/redux/api/pdfEndpoints';
 import { useParams } from 'react-router-dom';
+import ResizeableSection from '@/components/ResizableSection';
 
 const useStyles = createStyles({
     root: { flex: 1, height: '100%' },
@@ -80,7 +81,7 @@ const PdfWindow = ({ pdfs }: PdfWindowProps) => {
     }
 
     React.useEffect(() => {
-        console.log(`PDFs props: `, pdfs)
+        // console.log(`PDFs props: `, pdfs)
 
         if (pdfs) {
             setCurrentPdfs([...pdfs]);
@@ -88,7 +89,7 @@ const PdfWindow = ({ pdfs }: PdfWindowProps) => {
     }, [pdfs])
 
     return (
-        <Stack sx={{ maxWidth: '56rem', width: '100%', height: '100%', paddingLeft: '0.5rem', display: isPDFViewerOpen ? 'flex' : 'none' }}>
+        <Stack sx={{ maxWidth: '56rem', width: '100%', height: '100%', paddingLeft: '0.5rem', paddingTop: '2rem', display: isPDFViewerOpen ? 'flex' : 'none' }}>
             {/* Tab System */}
             <Group noWrap sx={{ width: '100%', height: '100%' }} grow align={'start'}>
                 <Tabs variant='pills' tabPadding={"xl"} active={activeTab} onTabChange={onTabChange} classNames={classes}>

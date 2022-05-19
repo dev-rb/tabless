@@ -118,7 +118,6 @@ const DocumentOptions = () => {
     }
 
     React.useEffect(() => {
-        console.log(documentData)
         if (documentData) {
             setIsFavorite(documentData.favorite);
         }
@@ -127,7 +126,7 @@ const DocumentOptions = () => {
     return (
         <Group noWrap align='center' sx={{ gap: '0.5rem' }}>
             {/* <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Export </Button> */}
-            <Button classNames={buttonClasses} size='sm' variant="subtle" compact> Open PDF Viewer </Button>
+            <Button classNames={buttonClasses} size='sm' variant="subtle" compact onClick={pdfViewerToggle}>{isPDFViewerOpen ? 'Close' : 'Open'} PDF Viewer </Button>
             <ActionIcon classNames={actionIconClasses} onClick={toggleFavorite}> {isFavorite ? <MdStar size={16} color="gold" /> : <MdStarBorder size={16} />} </ActionIcon>
 
             <Menu classNames={menuClasses} control={<ActionIcon classNames={actionIconClasses}> <MdMoreHoriz size={22} /> </ActionIcon>} size={'md'}>

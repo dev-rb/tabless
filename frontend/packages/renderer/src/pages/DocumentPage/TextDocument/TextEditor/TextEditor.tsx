@@ -49,7 +49,8 @@ export const TextEditor = ({ updateText, text = '' }: TextEditorProps) => {
         setValue(newVal);
 
         if (editor) {
-            const text = editor.getEditor().getText();
+            // console.log(editor.getEditorContents().toString());
+            const text = editor.getEditorContents().toString();
             updateText(text);
         }
     }

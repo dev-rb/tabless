@@ -24,10 +24,14 @@ const SearchResults = ({ searchResults, isLoading }: Props) => {
             </Group>
             <Divider my='sm' sx={{ width: '50%', height: '1px', backgroundColor: '#37373A', alignSelf: 'center', borderRadius: '9999px' }} /> */}
             <Group spacing={0} sx={{ alignSelf: 'start', width: '100%' }}>
-                <Title order={3} sx={{ color: 'white' }}> Search Results </Title>
+                <Group spacing={0} noWrap sx={{ alignSelf: 'start', width: '100%' }} position='apart'>
+                    <Title order={3} sx={{ color: 'white' }}> Search Results </Title>
+                    <Button> Clear </Button>
+                </Group>
+
                 <Divider my='sm' sx={{ width: '100%', height: '1px', backgroundColor: '#37373A', alignSelf: 'center', borderRadius: '9999px' }} />
             </Group>
-            <Group direction='column' sx={{ overflowY: 'auto', height: '100%', width: '100%' }} position='center'>
+            <Group direction='column' sx={{ overflowY: 'auto', height: '100%', width: '100%' }} position='center' noWrap>
                 {/* <ResultItem
                     title={'Some Search result'}
                     url={'https://api.faviconkit.com/www.hollywoodsoapbox.com/192'}
@@ -61,15 +65,15 @@ const ResultItem = ({ description, title, favicons, url }: ISearchResult) => {
 
     return (
         <Group direction='column' sx={{ height: 'fit-content', width: '100%', backgroundColor: '#28282B', gap: '1.5rem', padding: '0.75rem' }}>
-            <Group align={'center'} sx={{ minHeight: 'min-content', gap: '1.5rem' }}>
+            <Group align={'center'} noWrap sx={{ minHeight: 'min-content', gap: '10px' }}>
                 <Avatar src={favicons.high_res} radius='xl' />
                 <Group direction='column' sx={{ gap: 0, maxWidth: '24rem' }}>
-                    <Title order={6} sx={{ color: 'white', fontSize: '1.125rem', lineHeight: '1.75rem', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis' }}> {title} </Title>
+                    <Title order={6} sx={{ color: 'white', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis' }}> {title} </Title>
                     <Anchor sx={{ color: '#e9e9e9', fontSize: '0.875rem', lineHeight: '1.25rem', overflow: 'hidden', textOverflow: 'ellipsis' }} href={url}> {url}  </Anchor>
                 </Group>
             </Group>
             <Text sx={{ color: '#e9e9e9', fontSize: '0.875rem', lineHeight: '1.25rem', overflowWrap: 'break-word', maxWidth: '24rem' }}> {description}</Text>
-            <Group sx={{ alignSelf: 'start', color: '#54565E', marginLeft: 'auto', padding: '0.5rem' }}>
+            <Group sx={{ alignSelf: 'start', color: '#54565E', marginLeft: 'auto' }}>
                 <Button> <MdBookmark size={24} /> </Button>
                 <Button> <MdCopyAll size={24} /> </Button>
             </Group>

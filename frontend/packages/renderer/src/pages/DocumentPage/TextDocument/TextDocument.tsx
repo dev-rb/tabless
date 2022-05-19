@@ -26,7 +26,6 @@ export const TextDocument = ({ updateText, ...doc }: IDocumentProps) => {
     const [updateDocumentMutation, { isLoading, status }] = useUpdateDocumentMutation();
 
     const updateDocument = (fieldToUpdate: InputTypes, newValue: string) => {
-        console.log("Update called!")
         updateDocumentMutation({ ...doc, [fieldToUpdate]: newValue })
     }
 
@@ -38,7 +37,6 @@ export const TextDocument = ({ updateText, ...doc }: IDocumentProps) => {
     }
 
     const updateTitle = (val: string) => {
-        console.log(val);
         setDocTitle(val);
         onInputChange(val, 'title');
     }
@@ -76,7 +74,7 @@ export const TextDocument = ({ updateText, ...doc }: IDocumentProps) => {
                             <p> Autosaving... </p>
                         </div>
                     }
-                    <TextInput placeholder='Untitled'
+                    <TextInput placeholder='Untitled' value={docTitle}
                         type="text"
                         styles={{ input: { color: 'white', background: 'none', border: 'none', fontSize: '1.875rem', fontWeight: 600, padding: 0, textOverflow: 'ellipsis', wordWrap: 'break-word' } }}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => { updateTitle(e.target.value); }} />
