@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useNewFolderMutation, useUpdateFolderNameMutation } from '@/redux/api/folderEndpoints';
-import { IFolder } from '@/types';
+import { useNewFolderMutation, useUpdateFolderNameMutation } from '/@/redux/api/folderEndpoints';
+import { IFolder } from '/@/types';
 import { Button, Group, LoadingOverlay, Modal, TextInput, UnstyledButton } from '@mantine/core';
 import { nanoid } from 'nanoid';
 

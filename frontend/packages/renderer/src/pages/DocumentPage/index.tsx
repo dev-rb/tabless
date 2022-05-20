@@ -1,10 +1,10 @@
 import * as React from 'react';
-import SearchResults from '@/pages/DocumentPage/SearchResults';
+import SearchResults from '/@/pages/DocumentPage/SearchResults';
 import { useParams } from 'react-router-dom';
-import { useGetDocumentQuery } from '@/redux/api/documentEndpoints';
+import { useGetDocumentQuery } from '/@/redux/api/documentEndpoints';
 import { Box, Group, LoadingOverlay } from '@mantine/core';
-import { useGenerateSearchResults } from '@/hooks/useGenerateSearchResults';
-import PdfWindow from '@/pages/DocumentPage/PdfWindow';
+import { useGenerateSearchResults } from '/@/hooks/useGenerateSearchResults';
+import PdfWindow from '/@/pages/DocumentPage/PdfWindow';
 import { TextDocument } from './TextDocument';
 
 

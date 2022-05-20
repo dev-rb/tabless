@@ -1,12 +1,12 @@
-import { useProcessTextMutation } from "@/redux/api/searchEndpoints";
-import { IRootState } from "@/redux/store";
-import { ISearchResult } from "@/types";
+import { useProcessTextMutation } from "/@/redux/api/searchEndpoints";
+import { IRootState } from "/@/redux/store";
+import { ISearchResult } from "/@/types";
 import { useDebouncedValue, useDidUpdate } from "@mantine/hooks";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { diffWords, diffSentences, diffTrimmedLines } from "diff";
 import Diff from "text-diff";
-import { addTextToHistory } from "@/redux/slices/historySlice";
+import { addTextToHistory } from "/@/redux/slices/historySlice";
 
 const MAX_CHAR_LIMIT = 800;
 const MIN_CHAR_LIMIT = 200;

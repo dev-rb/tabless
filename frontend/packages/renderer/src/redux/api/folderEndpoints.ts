@@ -1,4 +1,4 @@
-import { IFolder, ITextDocument, ITextDocumentTag } from "@/types";
+import { IFolder, ITextDocument, ITextDocumentTag } from "/@/types";
 import { api } from ".";
 
 // Create folder

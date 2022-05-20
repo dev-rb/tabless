@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useGetAllFoldersQuery } from '@/redux/api/folderEndpoints';
+import { useGetAllFoldersQuery } from '/@/redux/api/folderEndpoints';
 import { Button, Grid, Group, Modal, Popover, Text, Title } from '@mantine/core';
 import { MdFolder } from 'react-icons/md';
 import { IoMdAlert } from 'react-icons/io';

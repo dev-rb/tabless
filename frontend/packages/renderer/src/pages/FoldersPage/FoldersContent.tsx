@@ -1,23 +1,27 @@
 import * as React from 'react';
-import { useGetFolderQuery } from '@/redux/api/folderEndpoints';
-import { ITextDocument } from '@/types';
-import { Loader, Menu, MenuItem } from '@mantine/core';
-import { HiDocument } from 'react-icons/hi';
-import { MdShortText, MdDelete } from 'react-icons/md';
+import { useGetFolderQuery } from '/@/redux/api/folderEndpoints';
+import { Grid, Loader } from '@mantine/core';
 import { useNavigate, useParams } from 'react-router-dom';
-import { DocumentDisplayItem, DocumentItemMenu } from '@/components/DocumentDisplayItem';
+import { DocumentDisplayItem } from '/@/components/DocumentDisplayItem';
+import { IDocument, ITextDocument } from '/@/types';
 
 const FolderContentPage = () => {
 
     const { folderId } = useParams();
+
+    if (!folderId) {
+        return;
+    }
+
     const { documents: folderData } = useGetFolderQuery(folderId!, {
+        refetchOnMountOrArgChange: true,
         selectFromResult: ({ data }) => { console.log(data); return ({ documents: data?.documents }); }
     });
 
     const navigate = useNavigate();
 
     const openDocument = (documentId: string) => {
-        navigate(`documents/${documentId}`);
+        navigate(`/document/${documentId}`);
     }
 
 
@@ -28,20 +32,21 @@ const FolderContentPage = () => {
     }, [folderData])
 
     return (
-        <div className="w-full h-full grid grid-cols-[repeat(auto-fill,20rem)] gap-8">
+        <Grid gutter={32} columns={4} sx={{ width: '100%', height: '100%', position: 'relative' }}>
             {/* {(data && data.documents) && Array.from(data.documents).map((val) => <DocumentItem key={val.id} documentInfo={val} />)} */}
             {(folderData) ?
-                folderData.map((value) =>
-                    <DocumentDisplayItem
-                        key={value.id}
-                        documentDetails={value}
-                        rightSection={<DocumentItemMenu />}
-                        onClick={() => openDocument(value.id)}
-                    />
+                folderData.map((value: IDocument | ITextDocument) =>
+                    <Grid.Col key={value.id} span={1}>
+                        <DocumentDisplayItem
+                            documentDetails={value}
+                            onClick={() => openDocument(value.id)}
+                        />
+                    </Grid.Col>
+
                 )
                 : <Loader />
             }
-        </div>
+        </Grid>
     );
 }
 

@@ -1,4 +1,4 @@
-import { IDocument, ITextDocument, ITextDocumentTag } from "@/types";
+import { IDocument, ITextDocument, ITextDocumentTag } from "/@/types";
 import { api } from ".";
 
 // Create document
@@ -12,7 +12,8 @@ export const documentsApi = api.injectEndpoints({
         getAllDocuments: build.query<IDocument[], void>({
             query: () => ({
                 url: 'documents',
-                method: 'GET'
+                method: 'GET',
+                mode: 'cors'
             }),
             providesTags: (result = [], error, arg) =>
                 result

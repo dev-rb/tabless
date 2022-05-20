@@ -1,4 +1,4 @@
-import { IPdf } from "@/types";
+import { IPdf } from "/@/types";
 import { api } from ".";
 
 // Create pdf

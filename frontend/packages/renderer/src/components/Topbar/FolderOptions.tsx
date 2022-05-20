@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ActionIcon, Button, createStyles, Divider, Group, Menu, MenuItem } from '@mantine/core';
 import { MdDelete, MdMoreHoriz, MdStar, MdStarBorder } from 'react-icons/md';
-import NewFolderModal from '@/pages/FoldersPage/NewFolderModal';
+import NewFolderModal from '/@/pages/FoldersPage/NewFolderModal';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDeleteFolderMutation, useFavoriteFolderMutation, useGetFolderQuery, useUnFavoriteFolderMutation } from '@/redux/api/folderEndpoints';
+import { useDeleteFolderMutation, useFavoriteFolderMutation, useGetFolderQuery, useUnFavoriteFolderMutation } from '/@/redux/api/folderEndpoints';
 
 const useButtonStyles = createStyles({
     root: {

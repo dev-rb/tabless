@@ -9,8 +9,8 @@ import { FirebaseError, initializeApp } from 'firebase/app';
 import { getAuth, signInWithCustomToken, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, User } from 'firebase/auth';
 import { ref, getDatabase, onValue } from 'firebase/database';
 import { useDispatch } from 'react-redux';
-import { signInUser, signOutLocal } from '@/redux/slices/authSlice';
-import { useCreateUserMutation } from '@/redux/api/authEndpoints';
+import { signInUser, signOutLocal } from '/@/redux/slices/authSlice';
+import { useCreateUserMutation } from '/@/redux/api/authEndpoints';
 
 declare global {
     interface Window {
@@ -78,7 +78,9 @@ export const SignupPage = () => {
         onValue(dbRef, async (snap) => {
             const val = snap.val();
             if (val) {
-                await signInWithCustomToken(auth, val.token);
+                await signInWithCustomToken(auth, val.token).then((val) => {
+                    createUserBackend(val.user)
+                });
             }
         });
     }

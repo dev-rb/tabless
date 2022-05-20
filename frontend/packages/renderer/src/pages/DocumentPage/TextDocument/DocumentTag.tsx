@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ITextDocumentTag } from "@/types";
+import { ITextDocumentTag } from "/@/types";
 import { Button, Group, TextInput, UnstyledButton } from '@mantine/core';
 import { MdClose } from 'react-icons/md';
 

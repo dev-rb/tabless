@@ -1,6 +1,6 @@
 import * as React from 'react';
-import NewFolderModal from '@/pages/FoldersPage/NewFolderModal';
-import { IFolder } from '@/types';
+import NewFolderModal from '/@/pages/FoldersPage/NewFolderModal';
+import { IFolder } from '/@/types';
 import { Box, Group } from '@mantine/core';
 import { Outlet, useNavigate } from 'react-router-dom';
 import FoldersHome from './FoldersHome';

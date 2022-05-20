@@ -2,9 +2,9 @@ import * as React from 'react';
 import { LoadError, PageChangeEvent, SpecialZoomLevel, Viewer, ZoomEvent } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { toolbarPlugin, ToolbarSlot } from '@react-pdf-viewer/toolbar';
-import { IPdf } from '@/types';
+import { IPdf } from '/@/types';
 import { Box, Group } from '@mantine/core';
-import { useUpdatePdfMutation } from '@/redux/api/pdfEndpoints';
+import { useUpdatePdfMutation } from '/@/redux/api/pdfEndpoints';
 import { useInterval } from '@mantine/hooks';
 
 interface PdfViewerProps extends IPdf {

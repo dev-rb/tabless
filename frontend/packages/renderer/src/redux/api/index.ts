@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IRootState } from '../store';
 
-const BASE_URL = "http://localhost:3002";
+// http://localhost:3002
+const BASE_URL = "https://antho-server.herokuapp.com/";
 
 export const api = createApi({
     baseQuery: fetchBaseQuery({
@@ -11,7 +12,7 @@ export const api = createApi({
 
             if (token) {
                 // headers.set('Access-Control-Allow-Origin', '*')
-                headers.set('Access-Control-Allow-Credentials', 'true')
+                // headers.set('Access-Control-Allow-Credentials', 'true')
                 headers.set('Authorization', `${token}`);
             }
             // console.log(headers.get('Authorization'))

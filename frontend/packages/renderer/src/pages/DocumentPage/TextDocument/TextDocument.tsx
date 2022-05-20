@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Group, Loader, Stack, Text, TextInput, UnstyledButton } from '@mantine/core';
 import { MdAdd, MdPerson, MdTag } from 'react-icons/md';
 import { nanoid } from 'nanoid';
-import { IDocument, ITextDocumentTag } from '@/types';
-import { useDocAutoSave, InputTypes } from '@/hooks/useDocAutoSave';
-import { useUpdateDocumentMutation } from '@/redux/api/documentEndpoints';
+import { IDocument, ITextDocumentTag } from '/@/types';
+import { useDocAutoSave, InputTypes } from '/@/hooks/useDocAutoSave';
+import { useUpdateDocumentMutation } from '/@/redux/api/documentEndpoints';
 import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 import ResizeableSection from '../../../components/ResizableSection';
 import DocumentTag from './DocumentTag';
@@ -31,14 +31,14 @@ export const TextDocument = ({ updateText, ...doc }: IDocumentProps) => {
 
     const { onInputChange } = useDocAutoSave({ updateDocument });
 
-    const updateTextFromEditor = (val: string) => {
+    const updateTextFromEditor = (raw: string, val: string) => {
         updateText(val);
-        onInputChange(val, 'text');
+        onInputChange(raw, 'text');
     }
 
     const updateTitle = (val: string) => {
         setDocTitle(val);
-        onInputChange(val, 'title');
+        onInputChange(docTitle, 'title');
     }
 
     const addNewTag = (newTagName: string = '') => {

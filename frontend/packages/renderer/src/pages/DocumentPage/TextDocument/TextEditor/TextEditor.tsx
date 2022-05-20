@@ -35,7 +35,7 @@ const modules = {
 };
 
 interface TextEditorProps {
-    updateText: (newVal: string) => void,
+    updateText: (raw: string, newVal: string) => void,
     text?: string
 }
 
@@ -51,7 +51,7 @@ export const TextEditor = ({ updateText, text = '' }: TextEditorProps) => {
         if (editor) {
             // console.log(editor.getEditorContents().toString());
             const text = editor.getEditorContents().toString();
-            updateText(text);
+            updateText(text, editor.getEditor().getText());
         }
     }
 
@@ -62,11 +62,10 @@ export const TextEditor = ({ updateText, text = '' }: TextEditorProps) => {
             </Box>
             <ReactQuill
                 ref={editorRef}
-                className="placeholder-white border-none"
                 value={value}
                 placeholder={initialValue}
                 onChange={(val: React.SetStateAction<string>, delta) => getEditorText(val, delta)}
-                style={{ color: 'white', wordBreak: 'break-word' }}
+                style={{ color: 'white', wordBreak: 'break-word', height: '70vh' }}
                 formats={formats}
                 modules={modules}
             />

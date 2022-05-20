@@ -6,10 +6,11 @@ import { z } from 'zod';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { FirebaseError, initializeApp } from 'firebase/app';
-import { getAuth, signInWithCustomToken, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithCustomToken, onAuthStateChanged, signInWithEmailAndPassword, User } from 'firebase/auth';
 import { ref, getDatabase, onValue } from 'firebase/database';
 import { useDispatch } from 'react-redux';
-import { signInUser, signOutLocal } from '@/redux/slices/authSlice';
+import { signInUser, signOutLocal } from '/@/redux/slices/authSlice';
+import { useCreateUserMutation } from '/@/redux/api/authEndpoints';
 
 const schema = z.object({
     email: z.string().email({ message: 'Invalid Email' }),
@@ -46,6 +47,22 @@ export const SignInPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const [createUserMutation] = useCreateUserMutation();
+
+    const createUserBackend = async (user: User) => {
+
+        const token = await user.getIdToken();
+        if (token) {
+            createUserMutation({
+                user: {
+                    token: token,
+                    email: user.email,
+                    name: null
+                }
+            });
+        }
+    }
+
     const signInWithGoogle = async () => {
         const uuid = nanoid();
         window.openUrl.openUrl(`http://localhost:3001/login?id=${uuid}`);
@@ -54,7 +71,9 @@ export const SignInPage = () => {
         onValue(dbRef, async (snap) => {
             const val = snap.val();
             if (val) {
-                await signInWithCustomToken(auth, val.token);
+                await signInWithCustomToken(auth, val.token).then((val) => {
+                    createUserBackend(val.user);
+                });
             }
         });
     }

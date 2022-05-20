@@ -1,4 +1,4 @@
-import { ISearchResult } from "@/types";
+import { ISearchResult } from "/@/types";
 import { api } from ".";
 
 // Send text to backend and receive search results

@@ -1,4 +1,4 @@
-import { ITextDocument, ITextDocumentTag, IUser } from "@/types";
+import { ITextDocument, ITextDocumentTag, IUser } from "/@/types";
 import { User } from "firebase/auth";
 import { api } from ".";
 

@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { useGetAllFoldersQuery } from "@/redux/api/folderEndpoints";
+import { useGetAllFoldersQuery } from "/@/redux/api/folderEndpoints";
 import { Loader, Drawer, Divider, Grid, Group, Title } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { DocumentDisplayItem, DocumentItemMenu } from '@/components/DocumentDisplayItem';
-import FolderDisplayItem from '@/components/FolderDisplayItem';
+import { DocumentDisplayItem, DocumentItemMenu } from '/@/components/DocumentDisplayItem';
+import FolderDisplayItem from '/@/components/FolderDisplayItem';
+import { IDocument, ITextDocument } from '/@/types';
 
 const FoldersHome = () => {
 
@@ -19,7 +20,7 @@ const FoldersHome = () => {
     const navigate = useNavigate();
 
     const openDocument = (documentId: string) => {
-        navigate(`documents/${documentId}`);
+        navigate(`/document/${documentId}`);
     }
 
     const openDrawer = (folderId: string) => {
@@ -60,7 +61,7 @@ const FoldersHome = () => {
                     <Group direction='column' sx={{ marginTop: '2rem' }} className="mt-8 flex flex-col">
                         {documentsInFolder?.length
                             ?
-                            documentsInFolder.map((val) =>
+                            documentsInFolder.map((val: IDocument | ITextDocument) =>
                                 <DocumentDisplayItem key={val.id} documentDetails={val} onClick={() => openDocument(val.id)} />)
                             : <Title order={4} sx={{ color: '#6A6A6A' }}> No documents </Title>}
                     </Group>

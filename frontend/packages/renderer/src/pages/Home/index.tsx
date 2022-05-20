@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useGetAllDocumentsQuery, useNewDocumentMutation } from "@/redux/api/documentEndpoints";
-import { IDocument, ITextDocument } from "@/types";
+import { useGetAllDocumentsQuery, useNewDocumentMutation } from "/@/redux/api/documentEndpoints";
+import { IDocument, ITextDocument } from "/@/types";
 import { Button, Loader, Stack } from "@mantine/core";
 import { MdAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { DocumentDisplayItem, DocumentItemDelete } from "@/components/DocumentDisplayItem";
+import { DocumentDisplayItem, DocumentItemDelete } from "/@/components/DocumentDisplayItem";
 import { useStyles } from "./styles";
 
 const HomePage = () => {

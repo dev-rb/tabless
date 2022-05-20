@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useGetAllDocumentsQuery } from "@/redux/api/documentEndpoints";
-import { signOutLocal } from "@/redux/slices/authSlice";
+import { useGetAllDocumentsQuery } from "/@/redux/api/documentEndpoints";
+import { signOutLocal } from "/@/redux/slices/authSlice";
 import { Avatar, Loader, Accordion, AccordionItem, Menu, MenuItem, createStyles, UnstyledButton, Group, Text, Stack, Anchor, Button, Title } from "@mantine/core";
 import { getAuth, signOut } from "firebase/auth";
 import { HiDocument } from "react-icons/hi";
@@ -8,8 +8,8 @@ import { MdFolder, MdPerson, MdLogout, MdHome, MdChevronRight } from "react-icon
 import { FaCaretUp } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useGetAllFoldersQuery } from '@/redux/api/folderEndpoints';
-import { useGetUserInfoQuery } from '@/redux/api/authEndpoints';
+import { useGetAllFoldersQuery } from '/@/redux/api/folderEndpoints';
+import { useGetUserInfoQuery } from '/@/redux/api/authEndpoints';
 
 interface AccordionFolderDetails {
     folderName: string
@@ -18,7 +18,7 @@ interface AccordionFolderDetails {
 const AccordionLabel = ({ folderName }: AccordionFolderDetails) => {
     const { classes } = useStyles();
     return (
-        <Group align={'center'} spacing='md'>
+        <Group align={'center'} spacing='md' noWrap sx={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
             <MdFolder size={24} />
             <Text size='md' weight={400} className={classes.documentName}> {folderName} </Text>
         </Group>
@@ -98,7 +98,7 @@ export const DrawerContent = () => {
                 <MenuItem icon={<MdLogout />} onClick={signUserOut}> Sign out </MenuItem>
             </Menu>
             <UnstyledButton component={Link} className={classes.link} to={'/'} >  <MdHome /> Home </UnstyledButton>
-            <UnstyledButton component={Link} className={classes.link} to={'/folders'}> <MdFolder /> Folders </UnstyledButton>
+            <UnstyledButton component={Link} className={classes.link} to={'/folders/'}> <MdFolder /> Folders </UnstyledButton>
             {/* <Button variant='filled' size='lg' onClick={() => navigate('/')} leftIcon={<MdHome color="white" />}> Home </Button> */}
             <Stack sx={{ gap: '1.5rem' }}>
                 <Stack sx={{ gap: '0.5rem' }}>
@@ -129,14 +129,14 @@ export const DrawerContent = () => {
                 <Stack sx={{ gap: '0.5rem' }}>
                     <Text size='xl' color="#777e8d"> Recent </Text>
                     {/* <h1 className="uppercase text-sm font-bold"> Recent </h1> */}
-                    <Stack className="flex flex-col">
+                    <Stack>
                         {documentData ? documentData.map((val) => <DrawerDocument key={val.id} documentId={val.id} documentName={val.title} />) : <Loader />}
                     </Stack>
                 </Stack>
                 <Stack sx={{ gap: '0.5rem' }}>
                     <Text size='xl' sx={{ color: '#797E8A' }}> Folders </Text>
                     {/* <h1 className="uppercase text-sm font-bold"> Folders </h1> */}
-                    <Accordion className="flex flex-col gap-4">
+                    <Accordion sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         {foldersData && foldersData.map((val) =>
                             <AccordionItem
                                 key={val.id}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ISearchResult } from '@/types';
+import { ISearchResult } from '/@/types';
 import { Anchor, Avatar, Button, Divider, Group, Loader, Text, Title } from '@mantine/core';
 import { nanoid } from 'nanoid';
 import { MdBookmark, MdCopyAll, MdSearch } from 'react-icons/md';
@@ -63,20 +63,24 @@ const ResultItem = ({ description, title, favicons, url }: ISearchResult) => {
 
     }
 
+    const openUrl = (url: string) => {
+        window.openWindow.openExternalWindow(url)
+    }
+
     return (
         <Group direction='column' sx={{ height: 'fit-content', width: '100%', backgroundColor: '#28282B', gap: '1.5rem', padding: '0.75rem' }}>
             <Group align={'center'} noWrap sx={{ minHeight: 'min-content', gap: '10px' }}>
                 <Avatar src={favicons.high_res} radius='xl' />
                 <Group direction='column' sx={{ gap: 0, maxWidth: '24rem' }}>
                     <Title order={6} sx={{ color: 'white', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis' }}> {title} </Title>
-                    <Anchor sx={{ color: '#e9e9e9', fontSize: '0.875rem', lineHeight: '1.25rem', overflow: 'hidden', textOverflow: 'ellipsis' }} href={url}> {url}  </Anchor>
+                    <Anchor sx={{ color: '#e9e9e9', fontSize: '0.875rem', lineHeight: '1.25rem', overflow: 'hidden', textOverflow: 'ellipsis' }} onClick={() => openUrl(url)} href={url}> {url}  </Anchor>
                 </Group>
             </Group>
             <Text sx={{ color: '#e9e9e9', fontSize: '0.875rem', lineHeight: '1.25rem', overflowWrap: 'break-word', maxWidth: '24rem' }}> {description}</Text>
-            <Group sx={{ alignSelf: 'start', color: '#54565E', marginLeft: 'auto' }}>
+            {/* <Group sx={{ alignSelf: 'start', color: '#54565E', marginLeft: 'auto' }}>
                 <Button> <MdBookmark size={24} /> </Button>
                 <Button> <MdCopyAll size={24} /> </Button>
-            </Group>
+            </Group> */}
 
         </Group>
     );

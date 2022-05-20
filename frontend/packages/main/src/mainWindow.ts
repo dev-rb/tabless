@@ -15,7 +15,8 @@ async function createWindow() {
     },
     show: false, // Use 'ready-to-show' event to show window
     webPreferences: {
-      nativeWindowOpen: true,
+      contextIsolation: true,
+      nodeIntegration: true,
       webviewTag: false, // The webview tag is not recommended. Consider alternatives like iframe or Electron's BrowserView. https://www.electronjs.org/docs/latest/api/webview-tag#warning
       preload: join(__dirname, '../../preload/dist/index.cjs'),
     },
@@ -91,7 +92,7 @@ app.on('ready', async () => {
 
   ipcMain.on('open-window', (e, url) => {
     console.log("Main open called: ", url)
-    const win = new BrowserWindow({ width: 600, height: 400, frame: false, titleBarStyle: 'hidden' });
+    const win = new BrowserWindow({ width: 600, height: 400 });
     win.loadURL(url);
   })
 

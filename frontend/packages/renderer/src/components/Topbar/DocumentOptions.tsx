@@ -2,12 +2,12 @@ import * as React from 'react';
 import { ActionIcon, Button, createStyles, Divider, Group, Menu, MenuItem } from '@mantine/core';
 import { MdAdd, MdDelete, MdDriveFileMove, MdMoreHoriz, MdStar, MdStarBorder } from 'react-icons/md';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useAddDocumentToFolderMutation } from '@/redux/api/folderEndpoints';
+import { useAddDocumentToFolderMutation } from '/@/redux/api/folderEndpoints';
 import FoldersModal from './FoldersModal';
-import { useDeleteDocumentMutation, useFavoriteDocumentMutation, useGetDocumentQuery, useUnFavoriteDocumentMutation } from '@/redux/api/documentEndpoints';
+import { useDeleteDocumentMutation, useFavoriteDocumentMutation, useGetDocumentQuery, useUnFavoriteDocumentMutation } from '/@/redux/api/documentEndpoints';
 import { useDispatch, useSelector } from 'react-redux';
-import { togglePdfViewer } from '@/redux/slices/settingsSlice';
-import { IRootState } from '@/redux/store';
+import { togglePdfViewer } from '/@/redux/slices/settingsSlice';
+import { IRootState } from '/@/redux/store';
 
 const useButtonStyles = createStyles({
     root: {

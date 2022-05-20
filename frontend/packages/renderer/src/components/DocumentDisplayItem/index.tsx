@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useDeleteDocumentMutation } from '@/redux/api/documentEndpoints';
-import { IDocument, ITextDocument } from '@/types';
+import { useDeleteDocumentMutation } from '/@/redux/api/documentEndpoints';
+import { IDocument, ITextDocument } from '/@/types';
 import { Box, Button, Menu, BoxProps, Text } from '@mantine/core';
 import { HiDocument } from 'react-icons/hi';
 import { MdShortText, MdDelete } from 'react-icons/md';

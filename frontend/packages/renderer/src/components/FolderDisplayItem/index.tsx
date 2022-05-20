@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useDeleteFolderMutation } from "@/redux/api/folderEndpoints";
-import { IFolder } from "@/types";
+import { useDeleteFolderMutation } from "/@/redux/api/folderEndpoints";
+import { IFolder } from "/@/types";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { MdFolder, MdShortText, MdDelete } from 'react-icons/md';
 import { Box, BoxProps, Group, Menu, Text } from '@mantine/core';

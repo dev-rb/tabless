@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { IPdf } from '@/types';
+import { IPdf } from '/@/types';
 import { ActionIcon, Box, Button, createStyles, Group, Stack, Tab, Tabs, Title, Text, Sx, UnstyledButton } from '@mantine/core';
 import { nanoid } from 'nanoid';
 import { MdClose, MdFilePresent, MdAdd } from 'react-icons/md';
 import PdfViewer from './PdfViewer';
-import { IRootState } from '@/redux/store';
+import { IRootState } from '/@/redux/store';
 import { useSelector } from 'react-redux';
-import { useDeletePdfMutation, useNewPdfMutation, useUpdatePdfMutation } from '@/redux/api/pdfEndpoints';
+import { useDeletePdfMutation, useNewPdfMutation, useUpdatePdfMutation } from '/@/redux/api/pdfEndpoints';
 import { useParams } from 'react-router-dom';
-import ResizeableSection from '@/components/ResizableSection';
+import ResizeableSection from '/@/components/ResizableSection';
 
 const useStyles = createStyles({
     root: { flex: 1, height: '100%' },

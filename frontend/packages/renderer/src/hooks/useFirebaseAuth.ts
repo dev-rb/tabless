@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { signInUser, signOutLocal } from '@/redux/slices/authSlice';
+import { signInUser, signOutLocal } from '/@/redux/slices/authSlice';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 
 interface Props {
