@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import serviceAccountKey from './config/serviceAccountKey';
+// import serviceAccountKey from './config/serviceAccountKey';
 import { FirestoreModule } from './firestore/firestore.module';
 import { OpenaiModule } from './openai/openai.module';
 import { ConfigModule } from '@nestjs/config';
@@ -22,7 +22,10 @@ import { UsersModule } from './users/users.module';
       imports: [],
       useFactoy: () => ({
         projectId: 'tabless-notes',
-        credentials: { client_email: serviceAccountKey.client_email, private_key: serviceAccountKey.private_key }
+        credentials: {
+          client_email: JSON.parse(process.env.FIREBASE_CLIENT_EMAIL),
+          private_key: JSON.parse(process.env.FIREBASE_PRIVATE_KEY)
+        }
       }),
       inject: []
     }),

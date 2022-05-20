@@ -8,6 +8,7 @@ export class AuthController {
 
     @Post('/create')
     async createUser(@Body() body) {
+        console.log("Create user called");
         try {
             await this.authService.createUser(body.email, body.name, body.token);
         } catch (e) {
