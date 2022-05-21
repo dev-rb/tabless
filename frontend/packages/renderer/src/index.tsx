@@ -8,7 +8,7 @@ import { store } from './redux/store';
 
 ReactDOM.render(
     <React.StrictMode>
-        <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.worker.min.js">
+        <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js">
             <Provider store={store}>
                 <App />
             </Provider>

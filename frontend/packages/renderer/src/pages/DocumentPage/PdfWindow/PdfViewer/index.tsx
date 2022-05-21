@@ -125,6 +125,7 @@ const CustomPdfToolbar = (props: AllProps) => {
 
 const renderError = (error: LoadError) => {
     let message = '';
+    console.log(error)
     switch (error.name) {
         case 'InvalidPDFException':
             message = 'The document is invalid or corrupted';
