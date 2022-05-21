@@ -18,6 +18,8 @@ export class SearchService {
             frequency_penalty: 0.8,
             presence_penalty: 0.0
         }, { headers: { "Authorization": `Bearer ${process.env.OPENAI_API_KEY}` } })
+
+        // console.log(err.response.data.error)
         // .then((val) => console.log("RESULT: ", val.data.choices[0].text))
         let generatedKeywords = result.data.choices[0].text.trim().split('\n');
         let parsedKeywords = [];
